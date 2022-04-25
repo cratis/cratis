@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const webpack = require('@aksio/cratis-webpack/frontend');
 module.exports = (env, argv) => {
@@ -17,5 +18,14 @@ module.exports = (env, argv) => {
             '/swagger': 'http://localhost:8080'
         };
         config.resolve.alias.API = path.resolve('./API');
-    }, 'Cratis Compliance Workbench');
+        config.plugins.push(
+            new CopyPlugin({
+                patterns: [
+                    { from: 'images', to: 'images' },
+                    { from: 'scripts', to: 'scripts' },
+                    { from: 'lib', to: 'lib' }
+                ]
+            })
+        )
+    }, 'Cratis Workbench');
 };

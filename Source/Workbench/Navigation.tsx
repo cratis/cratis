@@ -70,6 +70,12 @@ const groups: INavLinkGroup[] = [
                         route: '/events/store/sequence'
                     },
                     {
+                        name: 'Pivot Viewer',
+                        key: 'pivot-viewer',
+                        url: '',
+                        route: '/events/store/pivotviewer'
+                    },
+                    {
                         name: 'Observers',
                         key: 'observers',
                         url: '',
