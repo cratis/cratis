@@ -11,4 +11,8 @@
     <ItemGroup>
         <PackageReference Include="System.Reactive" Version="$(SystemReactive)" />
     </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../../Fundamentals/Fundamentals.csproj" />
+    </ItemGroup>
 </Project>

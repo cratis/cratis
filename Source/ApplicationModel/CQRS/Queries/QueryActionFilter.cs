@@ -1,6 +1,7 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using Aksio.Cratis.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -28,7 +29,7 @@ public class QueryActionFilter : IAsyncActionFilter
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         if (context.HttpContext.Request.Method == HttpMethod.Get.Method
-            && context.ActionDescriptor is ControllerActionDescriptor)
+            && context.ActionDescriptor is ControllerActionDescriptor controllerAction)
         {
             var result = await next();
             if (result.Result is ObjectResult objectResult)
@@ -47,7 +48,14 @@ public class QueryActionFilter : IAsyncActionFilter
 
                     default:
                         {
-                            result.Result = new ObjectResult(new QueryResult(objectResult.Value!, true));
+                            if (controllerAction.ControllerTypeInfo.AsType().HasAttribute<SkipEnvelopeAttribute>())
+                            {
+                                result.Result = new ObjectResult(objectResult.Value!);
+                            }
+                            else
+                            {
+                                result.Result = new ObjectResult(new QueryResult(objectResult.Value!, true));
+                            }
                         }
                         break;
                 }
