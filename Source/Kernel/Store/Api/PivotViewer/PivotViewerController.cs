@@ -3,6 +3,10 @@
 
 using System.Text.Json;
 using Aksio.Cratis.Applications;
+using Aksio.Cratis.DependencyInversion;
+using Aksio.Cratis.Dynamic;
+using Aksio.Cratis.Events.Schemas;
+using Aksio.Cratis.Execution;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aksio.Cratis.Events.Store.Api.PivotViewer;
@@ -13,8 +17,22 @@ namespace Aksio.Cratis.Events.Store.Api.PivotViewer;
 [SkipEnvelope]
 public class PivotViewerController : Controller
 {
+    readonly ProviderFor<IEventSequenceStorageProvider> _eventSequenceStorageProviderProvider;
+    readonly ProviderFor<ISchemaStore> _schemaStore;
+    readonly IExecutionContextManager _executionContextManager;
+
+    public PivotViewerController(
+        ProviderFor<IEventSequenceStorageProvider> eventSequenceStorageProviderProvider,
+        ProviderFor<ISchemaStore> schemaStore,
+        IExecutionContextManager executionContextManager)
+    {
+        _eventSequenceStorageProviderProvider = eventSequenceStorageProviderProvider;
+        _schemaStore = schemaStore;
+        _executionContextManager = executionContextManager;
+    }
+
     [HttpGet]
-    public Task<JsonResult> All()
+    public async Task<JsonResult> All()
     {
         var pivotViewer = new PivotViewer
         {
@@ -33,22 +51,58 @@ public class PivotViewerController : Controller
                 }
             }
         };
-        pivotViewer.Items.ImgBase = "images";
-        pivotViewer.Items.Item = new PivotItem[]
+        pivotViewer.Items.ImgBase = "/images";
+
+        _executionContextManager.Establish(TenantId.Development, CorrelationId.New(), MicroserviceId.Unspecified);
+
+        var events = new List<AppendedEvent>();
+        var cursor = await _eventSequenceStorageProviderProvider().GetFromSequenceNumber(EventSequenceNumber.First);
+        while (await cursor.MoveNext())
         {
-            new()
+            events.AddRange(cursor.Current);
+        }
+
+        pivotViewer.Items.Item = events.Select(_ =>
+        {
+            var task = _schemaStore().GetFor(_.Metadata.Type.Id);
+            task.Wait();
+            var type = task.Result;
+            var name = type.Schema.GetDisplayName();
+            return new PivotItem
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = _.Metadata.SequenceNumber.ToString(),
                 Img = "event.png",
-                Name = "Something",
+                Name = name,
                 Facets = new()
                 {
                     Facet = new PivotItemFacet[]
                     {
-                        new StringPivotItemFacet("Event", "Something"),
-                        new DateTimePivotItemFacet("Occurred", DateTimeOffset.UtcNow)
+                        new StringPivotItemFacet("Event", name),
+                        new DateTimePivotItemFacet("Occurred", _.Context.Occurred),
+                        new StringArrayPivotItemFacet("Content", _.Content.Select(kvp => $"{kvp.Key} : {kvp.Value}"))
                     }
                 }
+            };
+        });
+
+        var options = new JsonSerializerOptions(JsonSerializerDefaults.Web)
+        {
+            IgnoreReadOnlyProperties = false,
+            PropertyNamingPolicy = null,
+            WriteIndented = true
+        };
+
+        return new JsonResult(pivotViewer.AsExpandoObject(), options);
+    }
+
+    [HttpGet("/api/events/store/images/imagelist.json")]
+    public Task<JsonResult> ImageList()
+    {
+        var imageList = new
+        {
+            ImageFiles = new string[]
+            {
+                "event.png"
             }
         };
 
@@ -56,6 +110,6 @@ public class PivotViewerController : Controller
         {
             PropertyNamingPolicy = null
         };
-        return Task.FromResult(new JsonResult(pivotViewer, options));
+        return Task.FromResult(new JsonResult(imageList, options));
     }
 }

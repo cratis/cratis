@@ -11,6 +11,6 @@ public class DateTimeValue
 
     public DateTimeValue(DateTimeOffset value)
     {
-        this.Value = value.ToString();
+        Value = value.ToString("o");
     }
 }

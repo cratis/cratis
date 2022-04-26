@@ -10,11 +10,10 @@ export const EventStorePivotViewer = () => {
 
         ($(pivotViewerContainer.current!) as any).PivotViewer({
             Loader: new PivotViewer.Models.Loaders.JSONLoader('api/events/store/pivotviewer'),
+            //Loader: new PivotViewer.Models.Loaders.JSONLoader('samples/data/t.json'),
             //Loader: new PivotViewer.Models.Loaders.CXMLLoader("samples/data/simple_ski.cxml"),
             ImageController: new PivotViewer.Views.SimpleImageController()
         });
-
-
     }, []);
 
     return (

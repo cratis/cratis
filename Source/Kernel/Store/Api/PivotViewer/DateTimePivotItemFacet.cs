@@ -7,7 +7,7 @@ namespace Aksio.Cratis.Events.Store.Api.PivotViewer;
 
 public class DateTimePivotItemFacet : PivotItemFacet
 {
-    public DateTimeValue DateTime { get; init; } = new DateTimeValue(DateTimeOffset.UtcNow);
+    public DateTimeValue DateTime { get; set; } = new DateTimeValue(DateTimeOffset.UtcNow);
 
     public DateTimePivotItemFacet(string name, DateTimeOffset value)
     {

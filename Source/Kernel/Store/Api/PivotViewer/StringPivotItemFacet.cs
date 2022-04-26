@@ -3,15 +3,15 @@
 
 namespace Aksio.Cratis.Events.Store.Api.PivotViewer;
 
-#pragma warning disable SA1600
+#pragma warning disable SA1600, CA1720
 
 public class StringPivotItemFacet : PivotItemFacet
 {
-    public StringValue StringValue { get; init; } = new StringValue(string.Empty);
+    public StringValue String { get; init; } = new StringValue(string.Empty);
 
     public StringPivotItemFacet(string name, string value)
     {
         Name = name;
-        StringValue = new StringValue(value);
+        String = new StringValue(value);
     }
 }
