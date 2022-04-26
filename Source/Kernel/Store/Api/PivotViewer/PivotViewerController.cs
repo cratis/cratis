@@ -46,6 +46,7 @@ public class PivotViewerController : Controller
                 FacetCategory = new PivotFacetCategory[]
                 {
                     new() { Name = "Event", Type = "String", IsFilterVisible = BooleanAsString.TRUE },
+                    new() { Name = "Event Source", Type = "String", IsFilterVisible = BooleanAsString.TRUE },
                     new() { Name = "Occurred", Type = "DateTime", IsFilterVisible = BooleanAsString.TRUE },
                     new() { Name = "Content", Type = "String", IsFilterVisible = BooleanAsString.TRUE, IsMetaDataVisible = BooleanAsString.TRUE, IsWordWheelVisible = BooleanAsString.TRUE }
                 }
@@ -78,6 +79,7 @@ public class PivotViewerController : Controller
                     Facet = new PivotItemFacet[]
                     {
                         new StringPivotItemFacet("Event", name),
+                        new StringPivotItemFacet("Event Source", _.Context.EventSourceId.Value),
                         new DateTimePivotItemFacet("Occurred", _.Context.Occurred),
                         new StringArrayPivotItemFacet("Content", _.Content.Select(kvp => $"{kvp.Key} : {kvp.Value}"))
                     }
