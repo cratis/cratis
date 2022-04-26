@@ -79,7 +79,7 @@ export const EventSequences = () => {
 
     const [selectedEvent, setSelectedEvent] = useState<AppendedEvent | undefined>(undefined);
     const [selectedEventType, setSelectedEventType] = useState<EventType | undefined>(undefined);
-    const [eventTypes] = AllEventTypes.use({
+    const [eventTypes, refreshEventTypes] = AllEventTypes.use({
         microserviceId: selectedMicroservice?.id || undefined!,
     });
 
@@ -126,6 +126,7 @@ export const EventSequences = () => {
 
     useEffect(() => {
         if (selectedEventSequence && selectedMicroservice && selectedTenant) {
+            refreshEventTypes({ microserviceId: selectedMicroservice!.id });
             refreshEvents(getFindForArguments());
         }
     }, [selectedEventSequence, selectedMicroservice, selectedTenant]);
