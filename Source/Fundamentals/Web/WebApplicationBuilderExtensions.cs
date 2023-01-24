@@ -28,6 +28,12 @@ public static class WebApplicationBuilderExtensions
 
         app.Run(async context =>
         {
+            if(context.Request.Path.StartsWithSegments("/api"))
+            {
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                return;
+            }
+            
             if (Path.HasExtension(context.Request.Path))
             {
                 return;
@@ -37,6 +43,10 @@ public static class WebApplicationBuilderExtensions
             if (File.Exists(fileInfo.PhysicalPath))
             {
                 await context.Response.SendFileAsync(fileInfo);
+            }
+            else
+            {
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
             }
         });
     }
