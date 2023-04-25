@@ -54,10 +54,10 @@ public class PivotViewerController : Controller
         };
         pivotViewer.Items.ImgBase = "/images";
 
-        _executionContextManager.Establish(TenantId.Development, CorrelationId.New(), MicroserviceId.Unspecified);
+        _executionContextManager.Establish("9c6efc52-5d53-41ae-86d2-de9fe9fc58c5", CorrelationId.New(), "85dc950d-1900-4407-a484-ec1e83da16c6");
 
         var events = new List<AppendedEvent>();
-        var cursor = await _eventSequenceStorage().GetFromSequenceNumber(EventSequenceId.Log, EventSequenceNumber.First);
+        var cursor = await _eventSequenceStorage().GetRange(EventSequenceId.Log, EventSequenceNumber.First, 2000);
         while (await cursor.MoveNext())
         {
             events.AddRange(cursor.Current);

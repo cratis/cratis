@@ -48,7 +48,7 @@ export const EventStore = () => {
                 content: <Projections />
             }, {
                 title: 'Pivot viewer',
-                icon: <icons.Mediation />,
+                icon: <icons.Assessment />,
                 targetPath: 'pivot-viewer',
                 content: <PivotViewer />
             }]
