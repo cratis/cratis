@@ -3,6 +3,7 @@
 
 using Aksio.Cratis.Applications.Validation;
 using Aksio.Cratis.Queries;
+using Aksio.Cratis.Reflection;
 using Aksio.Cratis.Strings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -109,7 +110,16 @@ public class QueryActionFilter : IAsyncActionFilter
                     context.HttpContext.Response.StatusCode = 500;  // Internal Server error: https://www.rfc-editor.org/rfc/rfc9110.html#name-500-internal-server-error
                 }
 
-                var actualResult = new ObjectResult(queryResult);
+                ObjectResult actualResult;
+
+                if (controllerActionDescriptor.ControllerTypeInfo.AsType().HasAttribute<SkipEnvelopeAttribute>())
+                {
+                    actualResult = new ObjectResult(response);
+                }
+                else
+                {
+                    actualResult = new ObjectResult(queryResult);
+                }
 
                 if (result is not null)
                 {
