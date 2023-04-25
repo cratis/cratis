@@ -10,6 +10,7 @@ import { FailedPartitions } from './FailedPartitions';
 import { Observers } from './Observers';
 import { Projections } from './Projections';
 import { EventSequences } from './EventSequences';
+import { PivotViewer } from './PivotViewer';
 
 export const EventStore = () => {
     const [microservices] = AllMicroservices.use();
@@ -45,6 +46,11 @@ export const EventStore = () => {
                 icon: <icons.Mediation />,
                 targetPath: 'projections',
                 content: <Projections />
+            }, {
+                title: 'Pivot viewer',
+                icon: <icons.Mediation />,
+                targetPath: 'pivot-viewer',
+                content: <PivotViewer />
             }]
         } as NavigationItem;
     });

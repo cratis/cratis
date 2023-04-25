@@ -110,11 +110,11 @@ public class QueryActionFilter : IAsyncActionFilter
                     context.HttpContext.Response.StatusCode = 500;  // Internal Server error: https://www.rfc-editor.org/rfc/rfc9110.html#name-500-internal-server-error
                 }
 
-                ObjectResult actualResult;
+                IActionResult actualResult;
 
                 if (controllerActionDescriptor.ControllerTypeInfo.AsType().HasAttribute<SkipEnvelopeAttribute>())
                 {
-                    actualResult = new ObjectResult(response);
+                    actualResult = result?.Result ?? new ObjectResult(new { });
                 }
                 else
                 {

@@ -4,6 +4,7 @@
 using System.Text.Json;
 using Aksio.Cratis.Applications;
 using Aksio.Cratis.DependencyInversion;
+using Aksio.Cratis.Dynamic;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Execution;
