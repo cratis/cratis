@@ -12,7 +12,7 @@ export const useExternalScript = (url) => {
             return;
         }
 
-        let script = document.querySelector(`script[src="${url}"]`);
+        let script = (document.querySelector(`script[src="${url}"]`) as any)!;
 
         const handleScript = (e) => {
             setState(e.type === "load" ? "ready" : "error");
