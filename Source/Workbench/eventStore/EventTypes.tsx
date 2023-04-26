@@ -7,8 +7,9 @@ import { AllEventTypes, AllEventTypesArguments } from 'API/events/store/types/Al
 import { GenerationSchemasForType } from 'API/events/store/types/GenerationSchemasForType';
 import { useRouteParams } from './RouteParams';
 import { DataGrid, GridColDef, GridRowSelectionModel, GridCallbackDetails } from '@mui/x-data-grid';
-import { Box, Divider, Grid, Stack, Tab, Tabs, Typography  } from '@mui/material';
+import { Box, Divider, Grid, Stack, Tab, Tabs, Typography } from '@mui/material';
 import { EventTypeInformation } from '../API/events/store/types/EventTypeInformation';
+import { Schema } from './Schema';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -128,23 +129,17 @@ export const EventTypes = () => {
 
                     <Box sx={{ height: '100%', flex: 1 }}>
 
-                        {generationalSchemas.data.map((schema: EventTypeSchema, index: number) => {
+                        {generationalSchemas.data.map((untypedSchema: any, index: number) => {
+                            const schema = new Schema(untypedSchema);
                             const properties = Object.keys(schema.properties || []).map(_ => {
-                                let type = schema.properties[_].type;
-                                if (Array.isArray(type)) {
-                                    type = type[0];
-                                }
-
                                 return {
                                     name: _,
-                                    type
+                                    type: schema.getPropertyType(_)
                                 };
                             });
 
-                            console.log(properties);
-
                             return (
-                                <TabPanel key={schema.type} value={selectedGeneration} index={index}>
+                                <TabPanel key={untypedSchema.type} value={selectedGeneration} index={index}>
 
                                     <DataGrid
                                         columns={eventSchemaColumns}
