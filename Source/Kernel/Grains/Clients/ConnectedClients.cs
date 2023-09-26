@@ -1,11 +1,9 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Clients;
-using Aksio.Cratis.Execution;
+using Aksio.Cratis.Connections;
 using Aksio.Cratis.Kernel.Orleans.Observers;
 using Microsoft.Extensions.Logging;
-using Orleans;
 using Orleans.Providers;
 
 namespace Aksio.Cratis.Kernel.Grains.Clients;
@@ -41,7 +39,7 @@ public class ConnectedClients : Grain<ConnectedClientsState>, IConnectedClients
     }
 
     /// <inheritdoc/>
-    public override Task OnActivateAsync()
+    public override Task OnActivateAsync(CancellationToken cancellationToken)
     {
         _metrics = _metricsFactory.Create(this.GetPrimaryKey());
         RegisterTimer(ReviseConnectedClients, null!, TimeSpan.Zero, TimeSpan.FromSeconds(1));
@@ -54,13 +52,20 @@ public class ConnectedClients : Grain<ConnectedClientsState>, IConnectedClients
         ConnectionId connectionId,
         Uri clientUri,
         string version,
-        bool isRunningWithDebugger)
+        bool isRunningWithDebugger,
+        bool isMultiTenanted)
     {
         var microserviceId = (MicroserviceId)this.GetPrimaryKey();
 
         _logger.ClientConnected(microserviceId, connectionId);
         State.Clients.Where(_ => _.ClientUri == clientUri).ToList().ForEach(_ => State.Clients.Remove(_));
-        State.Clients.Add(new ConnectedClient(connectionId, clientUri, version, DateTimeOffset.UtcNow, isRunningWithDebugger));
+        State.Clients.Add(new ConnectedClient(
+            connectionId,
+            clientUri,
+            version,
+            DateTimeOffset.UtcNow,
+            isRunningWithDebugger,
+            isMultiTenanted));
         _metrics?.SetConnectedClients(State.Clients.Count);
 
         await WriteStateAsync();

@@ -1,16 +1,17 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Clients;
+using System.Diagnostics;
+using Aksio.Cratis.Connections;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
-using Aksio.Cratis.Execution;
+using Aksio.Cratis.Kernel.Configuration;
 using Aksio.Cratis.Kernel.Grains.Clients;
 using Aksio.Cratis.Kernel.Grains.Observation;
 using Aksio.Cratis.Observation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Orleans;
+using IClientObservers = Aksio.Cratis.Kernel.Grains.Observation.Clients.IClientObservers;
 
 namespace Aksio.Cratis.Kernel.Domain.Observation;
 
@@ -20,18 +21,22 @@ namespace Aksio.Cratis.Kernel.Domain.Observation;
 [Route("/api/events/store/{microserviceId}/observers")]
 public class Observers : Controller
 {
+    readonly KernelConfiguration _configuration;
     readonly IGrainFactory _grainFactory;
     readonly ILogger<Observers> _logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Observers"/> class.
     /// </summary>
+    /// <param name="configuration">The Kernel configuration.</param>
     /// <param name="grainFactory"><see cref="IGrainFactory"/> for getting grains.</param>
     /// <param name="logger"><see cref="ILogger"/> for logging.</param>
     public Observers(
+        KernelConfiguration configuration,
         IGrainFactory grainFactory,
         ILogger<Observers> logger)
     {
+        _configuration = configuration;
         _grainFactory = grainFactory;
         _logger = logger;
     }
@@ -50,11 +55,19 @@ public class Observers : Controller
         [FromBody] IEnumerable<ClientObserverRegistration> registrations)
     {
         _logger.RegisterObservers();
-
-        _ = Task.Run(() =>
+        _ = Task.Run(async () =>
         {
+            var stopwatch = Stopwatch.StartNew();
+
+            var connectedClients = _grainFactory.GetGrain<IConnectedClients>(microserviceId);
+            var client = await connectedClients.GetConnectedClient(connectionId);
+            var tenants = client.IsMultiTenanted ? _configuration.Tenants.GetTenantIds() : new TenantId[] { TenantId.NotSet };
+
             var observers = _grainFactory.GetGrain<IClientObservers>(microserviceId);
-            return observers.Register(connectionId, registrations);
+            await observers.Register(connectionId, registrations, tenants);
+
+            stopwatch.Stop();
+            _logger.ObserversRegistered(stopwatch.Elapsed);
         });
 
         return Task.CompletedTask;
@@ -75,6 +88,25 @@ public class Observers : Controller
     {
         var observer = _grainFactory.GetGrain<IObserverSupervisor>(observerId, new ObserverKey(microserviceId, tenantId, EventSequenceId.Log));
         await observer.Rewind();
+    }
+
+    /// <summary>
+    /// Retry a specific partition for a microservice and tenant.
+    /// </summary>
+    /// <param name="microserviceId"><see cref="MicroserviceId"/> the observer is for.</param>
+    /// <param name="tenantId"><see cref="TenantId"/> the observer is for.</param>
+    /// <param name="observerId"><see cref="ObserverId"/> to rewind.</param>
+    /// <param name="partitionId"><see cref="EventSourceId">Partition</see> to retry.</param>
+    /// <returns>Awaitable task.</returns>
+    [HttpPost("{observerId}/failed-partitions/{tenantId}/retry/{partitionId}")]
+    public async Task RetryPartition(
+        [FromRoute] MicroserviceId microserviceId,
+        [FromRoute] TenantId tenantId,
+        [FromRoute] ObserverId observerId,
+        [FromRoute] EventSourceId partitionId)
+    {
+        var observer = _grainFactory.GetGrain<IObserverSupervisor>(observerId, new ObserverKey(microserviceId, tenantId, EventSequenceId.Log));
+        await observer.TryResumePartition(partitionId);
     }
 
     /// <summary>

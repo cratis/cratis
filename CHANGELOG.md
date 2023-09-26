@@ -1,3 +1,232 @@
+# [v9.4.8] - 2023-9-26 [PR: #970](https://github.com/aksio-insurtech/Cratis/pull/970)
+
+### Fixed
+
+- Fixing so that primitives are directly by the sink before it considers whether or not it is an enumerable. We saw it outputting strings into MongoDB collections as an array of characters.
+- Making sure the single tenancy scenario is dealt with properly throughout config and startup. This will be improved even further in a future version of Cratis.
+
+
+# [v9.4.7] - 2023-9-25 [PR: #0]()
+
+### Fixed
+
+- Setting the default storage config for unspecified microservice and tenant scenarios.
+
+# [v9.4.6] - 2023-9-25 [PR: #0]()
+
+### Fixed
+
+- Adding unspecified microservice config for when microservice is unspecified.
+
+
+# [v9.4.5] - 2023-9-25 [PR: #0]()
+
+### Fixed
+
+- Adding unspecified tenant config for single tenant scenarios.
+
+# [v9.4.4] - 2023-9-25 [PR: #0]()
+
+### Fixed
+
+- Fixing so that the `PIIMetadataProvider` get registered correctly with the IoC by the `ClientBuilder`.
+
+# [v9.4.2] - 2023-9-18 [PR: #964](https://github.com/aksio-insurtech/Cratis/pull/964)
+
+### Fixed
+
+- The resolution of identity for things like caused by looks for a match on subject first and if no subject is registered with that it will try to resolve using the username claim. If already have multiple registred users with subject set to null or empty string, then this would fail on startup. This version fixes this problem.
+
+
+# [v9.4.0] - 2023-9-5 [PR: #957](https://github.com/aksio-insurtech/Cratis/pull/957)
+
+### Added
+
+- Introducing benchmarks for the most common operations; appending and observing events. This is the baseline and we'll be expanding on it.
+- Started the foundation of custom defined keys and indexing for observers.
+- New type of observer called **Reducer**. Its a cross between an imperative client observer and a declarative projection. The result of a reduction is dealt with by the kernel and leveraging the same sink mechanism as declarative projections. An example below:
+
+```csharp
+[Reducer("ff449077-0adb-4c5c-90e6-15631cd9e2b1")]
+public class CartReducer : IReducerFor<Cart>
+{
+    public Task<Cart> ItemAdded(ItemAddedToCart @event, Cart? initial, EventContext context)
+    {
+        initial ??= new Cart(context.EventSourceId, Array.Empty<CartItem>());
+        return Task.FromResult(initial with
+        {
+            Items = initial.Items?.Append(new CartItem(@event.MaterialId, @event.Quantity)) ??
+                new[] { new CartItem(@event.MaterialId, @event.Quantity) }
+        });
+    }
+}
+```
+
+### Fixed
+
+- Reorganizing internally for clarity, improved structure.
+- Renaming `ProjectionSink` to `Sink` internally, giving it a wider usecase.
+- Fixing WebSockets setup in Kernel for the Workbench by configuring it in the right order. ASP.NET Core is sensitive to ordering of its middlewares.
+
+
+
+
+# [v9.3.7] - 2023-9-1 [PR: #956](https://github.com/aksio-insurtech/Cratis/pull/956)
+
+### Fixed
+
+- Replay now calls the replay completed method rather than the catchup completed method when it is done.
+- Making sure the subscription information is kept in memory when reading state, so that it is not lost.
+- Ignoring replay if there are no events to replay.
+
+
+
+# [v9.3.6] - 2023-9-1 [PR: #0]()
+
+No release notes
+
+# [v9.3.5] - 2023-8-31 [PR: #0]()
+
+No release notes
+
+# [v9.3.3] - 2023-8-31 [PR: #0]()
+
+### Fixed
+
+- Fixing NuGet package setup for logo, it was missing the logo file as content.
+
+# [v9.3.2] - 2023-8-31 [PR: #0]()
+
+### Fixed
+
+- Client Observer registrations seems to fail under some circumstances and not necessarily for all. This could be linked to an attempt of an optimization of doing a `Task.Run()` for calling the `ClientObservers` grain for registering and returning to the client as soon as possible. This seems to fail sometimes. Taking it out and it seems to be consistent.
+
+# [v9.3.1] - 2023-8-28 [PR: #938](https://github.com/aksio-insurtech/Cratis/pull/938)
+
+### Fixed
+
+- Making `Causation` and `CausedBy` on the server side optional and automatically injected if not there based on context in the server. This is for backwards compability with any 9.x clients
+
+
+# [v9.3.0] - 2023-8-27 [PR: #937](https://github.com/aksio-insurtech/Cratis/pull/937)
+
+### Changed
+
+- Internal change: Moving redactions from happening on the command handler to be a reaction to events.
+
+### Added
+
+- Introducing a system event sequence.
+- Added a way to see system events in the workbench.
+- Adding a way to get a specific event sequence in the client.
+- Adding a boolean to tell if the client is multi-tenanted or not.
+- Adding the ability to specify specific event sequence to observe.
+
+### Fixed
+
+- Fixing identity store to store in the correct database; the cluster database.
+- Consistency of Kernel as its own Microservice. It was accidently using different identifiers, which caused confusion in the code.
+- FIxing order of initialization on the Kernel, letting the HTTP server be ready before initiating boot procedures for Kernel
+
+
+# [v9.2.1] - 2023-8-25 [PR: #936](https://github.com/aksio-insurtech/Cratis/pull/936)
+
+### Fixed
+
+- Dead lock situation when starting kernel with observers needing to replay. Solved this by explicitly priming the event sequence caches at startup, rather than lazily through the streaming infrastructure.
+- Moving the decision of what time an event operation occurred to the owning systems (e.g. EventSequence grain), rather than letting the persistence layer do this.
+- Fixing underlying problem with observer state with regards to current subscriptions, causing replays to only work once and sometimes never.
+- Making redaction work in the workbench again by making causation and caused optional and setting these on server side if not set. The endpoints got a 409 with validation error messages before this change.
+
+# [v9.2.1] - 2023-8-25 [PR: #935](https://github.com/aksio-insurtech/Cratis/pull/935)
+
+### Fixed
+
+- Dead lock situation when starting kernel with observers needing to replay. Solved this by explicitly priming the event sequence caches at startup, rather than lazily through the streaming infrastructure.
+- Moving the decision of what time an event operation occurred to the owning systems (e.g. EventSequence grain), rather than letting the persistence layer do this.
+- Fixing underlying problem with observer state with regards to current subscriptions, causing replays to only work once and sometimes never.
+- Making redaction work in the workbench again by making causation and caused optional and setting these on server side if not set. The endpoints got a 409 with validation error messages before this change.
+
+# [v9.2.0] - 2023-8-23 [PR: #933](https://github.com/aksio-insurtech/Cratis/pull/933)
+
+### Added
+
+- Adding capturing of what causes an event. (#277)
+- Adding cause type for ASP.NET requests and automatically capturing information around this.
+- Adding cause type for observers.
+- Adding cause type for integration adapters (Import Operation).
+- Adding a specific root cause type that captures software version, process, commit and details. (#858)
+- Introducing a client API for configuring software version with commit details. (#858)
+- Adding capturing of caused by with the introduction of an identity store (#278).
+- Adding ASP.NET identity provider for capturing caused by, leveraging the HttpContext and the current user.
+
+
+# [v9.1.0] - 2023-8-16 [PR: #912](https://github.com/aksio-insurtech/Cratis/pull/912)
+
+### Added
+
+- Adding support for appending many events at a time.
+- Centralized all projections and registering all; integration adapters, immediate projections and rule based.
+- Added persistence for all types of projections.
+- Introducing the concept of active vs non active projections. Active projections will automatically observe an event sequence, while an inactive (passive) will not. Immediate projections, rules or adapters fall into the category of passive projections.
+- Making it possible to use any projections for immediate projection by specifying the projection identifier you want to use.
+
+### Fixed
+
+- Added missing logging for when an observer invocation fails on the client.
+- Adding service registration for `ITenantConfiguration` to the client builder.
+- Fixing so that `ValidFrom` information is included on the Kernel receiver side when appending.
+- Optimizing performance for `Importer` by using the new `AppendMany` API.
+- A bug in the Kernel causing failed partition information not to be written to the event store immediately.
+- Projection sinks are now only created once per projection and sink type.
+- The engine representation of a Projection and its Pipeline is now managed by a manager and created only once per node.
+- Changed internal implementation of how we keep projections and pipeline definitions in sync across multiple silos when changed. Leveraging Broadcast channels.
+
+
+
+# [v9.0.2] - 2023-7-25 [PR: #908](https://github.com/aksio-insurtech/Cratis/pull/908)
+
+### Fixed
+
+- The `ClientOptions` type was in the wrong namespace, fixed to be in `Aksio.Cratis.Configuration` as expected.
+
+# [v9.0.1] - 2023-7-25 [PR: #0]()
+
+- Fixing `ClientBuilder` to use the `SingleKernelOptions` as a fallback only if none of the other options are set.
+- Removing current subscription information from the Observer state being stored, as this has only an in-memory value.
+
+# [v9.0.0] - 2023-7-19
+
+## Summary
+
+This is a new major release of Cratis. Primarily this release is about structure and making Cratis much more focused.
+After version 9 the Cratis repository only contains the Cratis Kernel, the Workbench and clients for working with Cratis.
+
+For this to be possible, we had to split the repository into 4 parts. That resulted in taking out a lot of non Cratis related
+code and put it into the following repositories:
+
+https://github.com/aksio-insurtech/Fundamentals
+https://github.com/aksio-insurtech/ApplicationModel
+https://github.com/aksio-insurtech/MongoDB
+
+From a Cratis usage perspective only the startup and configuration has changed.
+Usage is just as it was before. The REST API surface of the Kernel is also the same, meaning that
+pre 9 clients can connect to version 9 of the kernel and also clients with version 9 can connect to a version 8.
+Keep in mind though that new features are planned for 9 that will break this compatibility in a future version.
+
+### Added
+
+- Possibility to configure Cratis client from `appsettings.json` or by programatically configure the `IOptions<ClientOptions>`.
+- Upgraded Kernel to .NET 7
+- Upgraded Microsoft Orleans to version 7
+- It is now possible to use a minimal API approach for setting up the client. Look at the **Basic** sample for more details and also getting started guides.
+
+### Changed
+
+- `.UseCratis()` for the `HostBuilder` or `IServiceCollection` is now relying on a fluent interface for configuring the different parts to it, so you no longer pass it anything but the optional delegate for configuring the client.
+- If you're using a `Startup` class for your ASP.NET Core setup, you now need to call `.UseCratis()` extension method on the `IApplicationBuilder`. This will connect the client.
+- MongoDB is now optional from a client perspective, a new package called `Aksio.Cratis.MongoDB` can be added. To use its functionality of automatically hooking up multi-tenanted `IMongoCollection<>` bindings you simply add a `.AddMongoDBReadModels()` when you configure your `IServiceCollection`.
+
 # [v8.15.0] - 2023-4-25 [PR: #857](https://github.com/aksio-insurtech/Cratis/pull/857)
 
 ### Added
@@ -9,9 +238,9 @@
 
 ## Summary
 
-Adds IComparable to ConceptAs<>. 
+Adds IComparable to ConceptAs<>.
 
-> **Important note**: This release is marked as a patch but the release notes indicate a change. The implementation of `IComparable` for a `ConceptAs<>` is viewed by us as an oversight. Concepts should be encapsulating primitives and primitives are comparable. However, if you have been using it for other things than primitives you should consider changing these, they might just need to regular records. If you sill feel the type should be a concept, you will have to implement `IComparable`. 
+> **Important note**: This release is marked as a patch but the release notes indicate a change. The implementation of `IComparable` for a `ConceptAs<>` is viewed by us as an oversight. Concepts should be encapsulating primitives and primitives are comparable. However, if you have been using it for other things than primitives you should consider changing these, they might just need to regular records. If you sill feel the type should be a concept, you will have to implement `IComparable`.
 
 ### Changed
 
@@ -205,7 +434,7 @@ Usage:
 
 ### Fixed
 
-- Added missing API endpoint for getting tail sequence number for a specific observer. 
+- Added missing API endpoint for getting tail sequence number for a specific observer.
 
 
 # [v8.10.2] - 2023-3-27 [PR: #810](https://github.com/aksio-insurtech/Cratis/pull/810)
@@ -404,7 +633,7 @@ Usage:
 
 ### Fixed
 
-- Fixing projections check for if it has changes to return true if it has changes and not the opposite as it was. 
+- Fixing projections check for if it has changes to return true if it has changes and not the opposite as it was.
 
 
 # [v8.5.0] - 2023-2-20 [PR: #754](https://github.com/aksio-insurtech/Cratis/pull/754)

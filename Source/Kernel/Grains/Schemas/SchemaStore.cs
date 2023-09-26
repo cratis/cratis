@@ -1,11 +1,10 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.DependencyInversion;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.Schemas;
+using Aksio.DependencyInversion;
 using NJsonSchema;
-using Orleans;
 
 namespace Aksio.Cratis.Kernel.Grains.Schemas;
 
@@ -14,13 +13,13 @@ namespace Aksio.Cratis.Kernel.Grains.Schemas;
 /// </summary>
 public class SchemaStore : Grain, ISchemaStore
 {
-    readonly ProviderFor<Cratis.Schemas.ISchemaStore> _underlyingSchemaStore;
+    readonly ProviderFor<Kernel.Schemas.ISchemaStore> _underlyingSchemaStore;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SchemaStore"/> class.
     /// </summary>
-    /// <param name="underlyingSchemaStore"><see cref="Cratis.Schemas.ISchemaStore"/> underlying schema store.</param>
-    public SchemaStore(ProviderFor<Cratis.Schemas.ISchemaStore> underlyingSchemaStore)
+    /// <param name="underlyingSchemaStore"><see cref="Kernel.Schemas.ISchemaStore"/> underlying schema store.</param>
+    public SchemaStore(ProviderFor<Kernel.Schemas.ISchemaStore> underlyingSchemaStore)
     {
         _underlyingSchemaStore = underlyingSchemaStore;
     }

@@ -2,10 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Aksio.Cratis.EventSequences;
-using Aksio.Cratis.Execution;
-using Aksio.Cratis.Extensions.MongoDB;
 using Aksio.Cratis.Kernel.Configuration;
 using Aksio.Cratis.Kernel.Grains.Observation;
+using Aksio.MongoDB;
 using MongoDB.Driver;
 
 namespace Aksio.Cratis.Kernel.MongoDB;
@@ -16,10 +15,6 @@ namespace Aksio.Cratis.Kernel.MongoDB;
 [SingletonPerMicroserviceAndTenant]
 public class EventStoreDatabase : IEventStoreDatabase
 {
-    const string EventLogCollectionName = "event-log";
-    const string OutboxCollectionName = "outbox";
-    const string InboxCollectionName = "inbox";
-
     readonly IMongoDatabase _database;
 
     /// <summary>
@@ -48,16 +43,20 @@ public class EventStoreDatabase : IEventStoreDatabase
     /// <inheritdoc/>
     public IMongoCollection<Event> GetEventSequenceCollectionFor(EventSequenceId eventSequenceId)
     {
-        var collectionName = EventLogCollectionName;
+        var collectionName = CollectionNames.EventLog;
         if (!eventSequenceId.IsEventLog)
         {
-            if (eventSequenceId.IsOutbox)
+            if (eventSequenceId == EventSequenceId.SystemId)
             {
-                collectionName = OutboxCollectionName;
+                collectionName = CollectionNames.System;
+            }
+            else if (eventSequenceId.IsOutbox)
+            {
+                collectionName = CollectionNames.Outbox;
             }
             else
             {
-                collectionName = InboxCollectionName;
+                collectionName = CollectionNames.Inbox;
             }
         }
 

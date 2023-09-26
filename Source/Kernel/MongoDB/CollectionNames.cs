@@ -3,7 +3,6 @@
 
 using Aksio.Cratis.Kernel.Grains.Configuration.Tenants;
 using Aksio.Cratis.Kernel.Grains.Observation;
-using Orleans;
 
 namespace Aksio.Cratis.Kernel.MongoDB;
 
@@ -12,6 +11,26 @@ namespace Aksio.Cratis.Kernel.MongoDB;
 /// </summary>
 public static class CollectionNames
 {
+    /// <summary>
+    /// The collection that holds <see cref="Event"/>.
+    /// </summary>
+    public const string EventLog = "event-log";
+
+    /// <summary>
+    /// The collection that holds <see cref="Event"/> for the outbox.
+    /// </summary>
+    public const string Outbox = "outbox";
+
+    /// <summary>
+    /// The collection that holds <see cref="Event"/> for the inbox.
+    /// </summary>
+    public const string Inbox = "inbox";
+
+    /// <summary>
+    /// The collection that holds <see cref="Event"/> for the system.
+    /// </summary>
+    public const string System = "system";
+
     /// <summary>
     /// The collection that holds <see cref="ObserverState"/>.
     /// </summary>
@@ -46,4 +65,9 @@ public static class CollectionNames
     /// The collection that holds schemas.
     /// </summary>
     public const string FailedPartitions = "failed-partitions";
+
+    /// <summary>
+    /// The collection that holds identities.
+    /// </summary>
+    public const string Identities = "identities";
 }

@@ -1,12 +1,10 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.Reflection;
 using System.Text.Json;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.Models;
 using Aksio.Cratis.Projections.Definitions;
-using Aksio.Cratis.Reflection;
 using Aksio.Cratis.Schemas;
 
 namespace Aksio.Cratis.Projections;
@@ -26,27 +24,20 @@ public class ProjectionBuilderFor<TModel> : ProjectionBuilder<TModel, IProjectio
     /// Initializes a new instance of the <see cref="ProjectionBuilderFor{TModel}"/> class.
     /// </summary>
     /// <param name="identifier">The unique identifier for the projection.</param>
-    /// <param name="modelNameConvention">The <see cref="IModelNameConvention"/> to use for naming the models.</param>
+    /// <param name="modelNameResolver">The <see cref="IModelNameResolver"/> to use for naming the models.</param>
     /// <param name="eventTypes"><see cref="IEventTypes"/> for providing event type information.</param>
     /// <param name="schemaGenerator"><see cref="IJsonSchemaGenerator"/> for generating JSON schemas.</param>
     /// <param name="jsonSerializerOptions">The <see cref="JsonSerializerOptions"/> to use for any JSON serialization.</param>
     public ProjectionBuilderFor(
         ProjectionId identifier,
-        IModelNameConvention modelNameConvention,
+        IModelNameResolver modelNameResolver,
         IEventTypes eventTypes,
         IJsonSchemaGenerator schemaGenerator,
         JsonSerializerOptions jsonSerializerOptions)
         : base(eventTypes, schemaGenerator, jsonSerializerOptions)
     {
         _identifier = identifier;
-        if (typeof(TModel).HasAttribute<ModelNameAttribute>())
-        {
-            _modelName = typeof(TModel).GetCustomAttribute<ModelNameAttribute>(false)!.Name;
-        }
-        else
-        {
-            _modelName = modelNameConvention.GetNameFor(typeof(TModel));
-        }
+        _modelName = modelNameResolver.GetNameFor(typeof(TModel));
     }
 
     /// <inheritdoc/>
@@ -85,6 +76,7 @@ public class ProjectionBuilderFor<TModel> : ProjectionBuilder<TModel, IProjectio
             _name ?? modelType.FullName ?? "[N/A]",
             new ModelDefinition(_modelName, modelSchema.ToJson()),
             _isRewindable,
+            true,
             _initialValues,
             _fromDefinitions,
             _joinDefinitions,

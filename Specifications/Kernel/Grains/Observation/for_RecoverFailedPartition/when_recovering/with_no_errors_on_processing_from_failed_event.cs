@@ -2,7 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Dynamic;
-using Aksio.Cratis.Execution;
+using Aksio.Cratis.Auditing;
+using Aksio.Cratis.Identities;
+using Orleans.Runtime;
 
 namespace Aksio.Cratis.Kernel.Grains.Observation.for_RecoverFailedPartition.when_recovering;
 
@@ -21,7 +23,7 @@ public class with_no_errors_on_processing_from_failed_event : given.a_recover_fa
     {
         var @event = new AppendedEvent(
             new(current, event_type),
-            new(eventSourceId, current, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow, partitioned_observer_key.TenantId, CorrelationId.New(), CausationId.System, CausedBy.System),
+            new(eventSourceId, current, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow, partitioned_observer_key.TenantId, CorrelationId.New(), Enumerable.Empty<Causation>(), Identity.System),
             new ExpandoObject());
         current++;
         return @event;
@@ -43,13 +45,13 @@ public class with_no_errors_on_processing_from_failed_event : given.a_recover_fa
         };
     }
 
-    Task Because() => (grain as RecoverFailedPartition).Recover(observer_key, string.Empty, initial_error, Enumerable.Empty<EventType>(), Enumerable.Empty<string>(), string.Empty);
+    Task Because() => (grain as RecoverFailedPartition).Recover(observer_key, string.Empty, initial_error, Enumerable.Empty<EventType>(), Enumerable.Empty<string>(), string.Empty, DateTimeOffset.UtcNow);
 
     [Fact]
     void should_call_the_subscriber_for_each_event()
     {
         foreach (var @event in appended_events)
-            subscriber.Verify(_ => _.OnNext(@event, IsAny<ObserverSubscriberContext>()), Once);
+            subscriber.Verify(_ => _.OnNext(Is<IEnumerable<AppendedEvent>>(m => m.First() == @event), IsAny<ObserverSubscriberContext>()), Once);
     }
 
     [Fact] void should_persist_the_state_on_activation_and_after_each_event_is_processed() => written_states.Count.ShouldEqual(6);
@@ -60,7 +62,7 @@ public class with_no_errors_on_processing_from_failed_event : given.a_recover_fa
 
     [Fact] void should_retrieve_the_events_to_process_from_the_event_sequence_storage_provider() => event_sequence_storage_provider.Verify(_ => _.GetFromSequenceNumber(partitioned_observer_key.EventSequenceId, initial_error, partitioned_observer_key.EventSourceId, IsAny<IEnumerable<EventType>>()), Once);
 
-    [Fact] void should_not_schedule_any_more_timers() => timer_registry.Verify(_ => _.RegisterTimer(grain, IsAny<Func<object, Task>>(), IsAny<object>(), IsAny<TimeSpan>(), IsAny<TimeSpan>()), Once);
+    [Fact] void should_not_schedule_any_more_timers() => timer_registry.Verify(_ => _.RegisterTimer(IsAny<IGrainContext>(), IsAny<Func<object, Task>>(), IsAny<object>(), IsAny<TimeSpan>(), IsAny<TimeSpan>()), Once);
 
     [Fact] void should_have_scheduled_the_immediate_timer_to_start_recovery() => timers[0].Wait.ShouldEqual(TimeSpan.Zero);
 }

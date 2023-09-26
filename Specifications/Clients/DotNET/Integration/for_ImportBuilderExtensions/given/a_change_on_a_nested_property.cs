@@ -15,7 +15,7 @@ public class a_change_on_a_nested_property : Specification
     protected EventsToAppend events_to_append;
     protected ComplexModel original_model;
     protected ComplexModel modified_model;
-    protected Mock<IObjectsComparer> objects_comparer;
+    protected Mock<IObjectComparer> objects_comparer;
 
     void Establish()
     {
@@ -39,7 +39,7 @@ public class a_change_on_a_nested_property : Specification
         changeset.Add(new PropertiesChanged<ComplexModel>(modified_model, new[]
         {
                 new PropertyDifference(new($"{nameof(ComplexModel.Child)}.{nameof(Model.SomeInteger)}"), 43, 44)
-            }));
+        }));
 
         events_to_append = new();
     }

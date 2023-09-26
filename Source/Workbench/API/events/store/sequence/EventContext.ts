@@ -2,8 +2,10 @@
  *  **DO NOT EDIT** - This file is an automatically generated file.
  *--------------------------------------------------------------------------------------------*/
 
-import { field } from '@aksio/cratis-fundamentals';
+import { field } from '@aksio/fundamentals';
 
+import { Causation } from './Causation';
+import { Identity } from './Identity';
 import { EventObservationState } from './EventObservationState';
 
 export class EventContext {
@@ -26,11 +28,11 @@ export class EventContext {
     @field(String)
     correlationId!: string;
 
-    @field(String)
-    causationId!: string;
+    @field(Causation, true)
+    causation!: Causation[];
 
-    @field(String)
-    causedBy!: string;
+    @field(Identity)
+    causedBy!: Identity;
 
     @field(Number)
     observationState!: EventObservationState;

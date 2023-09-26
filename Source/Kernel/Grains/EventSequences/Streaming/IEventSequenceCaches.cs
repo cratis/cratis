@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Aksio.Cratis.EventSequences;
-using Aksio.Cratis.Execution;
 
 namespace Aksio.Cratis.Kernel.Grains.EventSequences.Streaming;
 
@@ -19,6 +18,12 @@ public interface IEventSequenceCaches
     /// <param name="eventSequenceId">EventSequenceId to get for.</param>
     /// <returns>The <see cref="IEventSequenceCache"/> associated.</returns>
     IEventSequenceCache GetFor(MicroserviceId microserviceId, TenantId tenantId, EventSequenceId eventSequenceId);
+
+    /// <summary>
+    /// Prime all caches.
+    /// </summary>
+    /// <returns>Awaitable task.</returns>
+    Task PrimeAll();
 
     /// <summary>
     /// Check if any of the caches are under pressure.

@@ -1,12 +1,12 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.Collections.Concurrent;
-using Aksio.Cratis.DependencyInversion;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
-using Aksio.Cratis.Execution;
+using Aksio.Cratis.Identities;
 using Aksio.Cratis.Kernel.EventSequences;
+using Aksio.DependencyInversion;
+using Orleans.Runtime;
 using Orleans.Streams;
 
 namespace Aksio.Cratis.Kernel.Grains.EventSequences.Streaming;
@@ -16,10 +16,30 @@ namespace Aksio.Cratis.Kernel.Grains.EventSequences.Streaming;
 /// </summary>
 public class EventSequenceQueueAdapter : IQueueAdapter
 {
-    readonly ConcurrentDictionary<QueueId, EventSequenceQueueAdapterReceiver> _receivers = new();
+    readonly Dictionary<QueueId, EventSequenceQueueAdapterReceiver> _receivers = new();
 
     readonly IStreamQueueMapper _mapper;
     readonly ProviderFor<IEventSequenceStorage> _eventSequenceStorageProvider;
+    readonly ProviderFor<IIdentityStore> _identityStoreProvider;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EventSequenceQueueAdapter"/> class.
+    /// </summary>
+    /// <param name="name">Name of stream.</param>
+    /// <param name="mapper"><see cref="IStreamQueueMapper"/> for getting queue identifiers.</param>
+    /// <param name="eventSequenceStorageProvider">Provider for <see cref="IEventSequenceStorage"/>.</param>
+    /// <param name="identityStoreProvider">Provider for <see cref="IIdentityStore"/>.</param>
+    public EventSequenceQueueAdapter(
+        string name,
+        IStreamQueueMapper mapper,
+        ProviderFor<IEventSequenceStorage> eventSequenceStorageProvider,
+        ProviderFor<IIdentityStore> identityStoreProvider)
+    {
+        Name = name;
+        _mapper = mapper;
+        _eventSequenceStorageProvider = eventSequenceStorageProvider;
+        _identityStoreProvider = identityStoreProvider;
+    }
 
     /// <inheritdoc/>
     public string Name { get; }
@@ -30,32 +50,17 @@ public class EventSequenceQueueAdapter : IQueueAdapter
     /// <inheritdoc/>
     public StreamProviderDirection Direction => StreamProviderDirection.ReadWrite;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EventSequenceQueueAdapter"/> class.
-    /// </summary>
-    /// <param name="name">Name of stream.</param>
-    /// <param name="mapper"><see cref="IStreamQueueMapper"/> for getting queue identifiers.</param>
-    /// <param name="eventSequenceStorageProvider">Provider for <see cref="IEventSequenceStorage"/>.</param>
-    public EventSequenceQueueAdapter(
-        string name,
-        IStreamQueueMapper mapper,
-        ProviderFor<IEventSequenceStorage> eventSequenceStorageProvider)
-    {
-        Name = name;
-        _mapper = mapper;
-        _eventSequenceStorageProvider = eventSequenceStorageProvider;
-    }
-
     /// <inheritdoc/>
     public IQueueAdapterReceiver CreateReceiver(QueueId queueId) => CreateReceiverIfNotExists(queueId);
 
     /// <inheritdoc/>
-    public async Task QueueMessageBatchAsync<T>(Guid streamGuid, string streamNamespace, IEnumerable<T> events, StreamSequenceToken token, Dictionary<string, object> requestContext)
+    public async Task QueueMessageBatchAsync<T>(StreamId streamId, IEnumerable<T> events, StreamSequenceToken token, Dictionary<string, object> requestContext)
     {
-        var queueId = _mapper.GetQueueForStream(streamGuid, streamNamespace);
+        var queueId = _mapper.GetQueueForStream(streamId);
         CreateReceiverIfNotExists(queueId);
         if (!token.IsWarmUp())
         {
+            events = events.ToArray();
             var appendedEvents = new List<AppendedEvent>();
             foreach (var @event in events)
             {
@@ -63,10 +68,13 @@ public class EventSequenceQueueAdapter : IQueueAdapter
                 try
                 {
                     await _eventSequenceStorageProvider().Append(
-                        streamGuid,
+                        streamId.GetKeyAsString(),
                         appendedEvent.Metadata.SequenceNumber,
                         appendedEvent.Context.EventSourceId,
                         appendedEvent.Metadata.Type,
+                        appendedEvent.Context.Causation,
+                        await _identityStoreProvider().GetFor(appendedEvent.Context.CausedBy),
+                        DateTimeOffset.UtcNow,
                         appendedEvent.Context.ValidFrom,
                         appendedEvent.Content);
 
@@ -75,11 +83,11 @@ public class EventSequenceQueueAdapter : IQueueAdapter
                 catch (Exception ex)
                 {
                     // Make sure we put all successful events on the stream for any subscribers to get.
-                    _receivers[queueId].AddAppendedEvent(streamGuid, streamNamespace, appendedEvents, requestContext);
-                    var microserviceAndTenant = MicroserviceAndTenant.Parse(streamNamespace);
+                    _receivers[queueId].AddAppendedEvent(streamId, appendedEvents, requestContext);
+                    var microserviceAndTenant = MicroserviceAndTenant.Parse(streamId.GetNamespace()!);
 
                     throw new UnableToAppendToEventSequence(
-                        streamGuid,
+                        streamId.GetKeyAsString(),
                         microserviceAndTenant.MicroserviceId,
                         microserviceAndTenant.TenantId,
                         appendedEvent.Metadata.SequenceNumber,
@@ -89,14 +97,14 @@ public class EventSequenceQueueAdapter : IQueueAdapter
             }
         }
 
-        _receivers[queueId].AddAppendedEvent(streamGuid, streamNamespace, events.Cast<AppendedEvent>().ToArray(), requestContext);
+        _receivers[queueId].AddAppendedEvent(streamId, events.Cast<AppendedEvent>().ToArray(), requestContext);
     }
 
     IQueueAdapterReceiver CreateReceiverIfNotExists(QueueId queueId)
     {
-        if (_receivers.ContainsKey(queueId)) return _receivers[queueId];
+        if (_receivers.TryGetValue(queueId, out var receiver)) return receiver;
 
-        var receiver = new EventSequenceQueueAdapterReceiver();
+        receiver = new EventSequenceQueueAdapterReceiver();
         _receivers[queueId] = receiver;
         return receiver;
     }

@@ -1,9 +1,6 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.Collections.ObjectModel;
-using Aksio.Cratis.Execution;
-
 namespace Aksio.Cratis.Kernel.Configuration;
 
 /// <summary>
@@ -14,7 +11,7 @@ public class Inbox
     /// <summary>
     /// Gets the other microservices outboxes to observe.
     /// </summary>
-    public Collection<Outbox> FromOutboxes { get; init; } = new();
+    public IList<Outbox> FromOutboxes { get; init; } = new List<Outbox>();
 
     /// <summary>
     /// Get all <see cref="MicroserviceId">microservice ids</see> configured.

@@ -1,7 +1,7 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Configuration;
+using Aksio.Configuration;
 using Aksio.Cratis.Kernel.Orleans.Configuration;
 
 namespace Aksio.Cratis.Kernel.Configuration;
@@ -40,6 +40,8 @@ public class KernelConfiguration : IPerformPostBindOperations
     /// <inheritdoc/>
     public void Perform()
     {
+        Tenants[TenantId.NotSet.ToString()] = new();
+        Microservices[MicroserviceId.Unspecified.ToString()] = new();
         Storage.ConfigureKernelMicroservice(Tenants.Select(_ => _.Key));
     }
 }

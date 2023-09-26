@@ -2,16 +2,14 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Aksio.Cratis.Events;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Aksio.Cratis.Observation;
 
 /// <summary>
-/// Represents a controller for receiving events from the kernel.
+/// Represents an implementation of <see cref="IClientObservers"/>.
 /// </summary>
-[Route("/.cratis/observers")]
-public class ClientObservers : Controller
+public class ClientObservers : IClientObservers
 {
     readonly IObserversRegistrar _observers;
     readonly ILogger<ClientObservers> _logger;
@@ -29,26 +27,28 @@ public class ClientObservers : Controller
         _logger = logger;
     }
 
-    /// <summary>
-    /// Action that is called for events to be handled.
-    /// </summary>
-    /// <param name="observerId">The <see cref="ObserverId"/> of the observer it is for.</param>
-    /// <param name="event">The <see cref="AppendedEvent"/>.</param>
-    /// <returns>Awaitable task.</returns>
-    [HttpPost("{observerId}")]
-    public async Task OnNext(
-        [FromRoute] ObserverId observerId,
-        [FromBody] AppendedEvent @event)
+    /// <inheritdoc/>
+    public async Task<EventSequenceNumber> OnNext(
+        ObserverId observerId,
+        IEnumerable<AppendedEvent> events)
     {
-        _logger.EventReceived(@event.Metadata.Type.Id, observerId);
-        var handler = _observers.GetById(observerId);
-        if (handler is not null)
+        var lastSuccessfullyObservedEvent = EventSequenceNumber.Unavailable;
+
+        foreach (var @event in events)
         {
-            await handler.OnNext(@event);
+            _logger.EventReceived(@event.Metadata.Type.Id, observerId);
+            var handler = _observers.GetById(observerId);
+            if (handler is not null)
+            {
+                await handler.OnNext(@event);
+                lastSuccessfullyObservedEvent = @event.Metadata.SequenceNumber;
+            }
+            else
+            {
+                _logger.UnknownObserver(observerId);
+            }
         }
-        else
-        {
-            _logger.UnknownObserver(observerId);
-        }
+
+        return lastSuccessfullyObservedEvent;
     }
 }

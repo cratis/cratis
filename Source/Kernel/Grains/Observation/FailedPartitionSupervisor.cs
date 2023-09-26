@@ -4,7 +4,6 @@
 using Aksio.Cratis.Events;
 using Aksio.Cratis.Kernel.Observation;
 using Aksio.Cratis.Observation;
-using Orleans;
 
 namespace Aksio.Cratis.Kernel.Grains.Observation;
 
@@ -19,11 +18,6 @@ public class FailedPartitionSupervisor : IChildStateProvider<FailedPartitionsSta
     readonly IEnumerable<EventType> _eventTypes;
     readonly IGrainFactory _grainFactory;
     readonly List<FailedPartition> _failedPartitions;
-
-    /// <summary>
-    /// Indicates whether or not the supervisor is currently supervising any failed partitions.
-    /// </summary>
-    public bool HasFailedPartitions => _failedPartitions.Count != 0;
 
     /// <summary>
     /// Instantiates an instance of <see cref="FailedPartitionSupervisor"/>.
@@ -51,6 +45,11 @@ public class FailedPartitionSupervisor : IChildStateProvider<FailedPartitionsSta
         _grainFactory = grainFactory;
     }
 
+    /// <summary>
+    /// Indicates whether or not the supervisor is currently supervising any failed partitions.
+    /// </summary>
+    public bool HasFailedPartitions => _failedPartitions.Count != 0;
+
     /// <inheritdoc/>
     public FailedPartitionsState GetState() => new() { FailedPartitions = _failedPartitions.ToArray() };
 
@@ -75,7 +74,7 @@ public class FailedPartitionSupervisor : IChildStateProvider<FailedPartitionsSta
             return;
         }
 
-        if (_failedPartitions.Any(_ => _.Partition == partitionId))
+        if (_failedPartitions.Exists(_ => _.Partition == partitionId))
             return;
         await StartRecovery(partitionId, sequenceNumber, exceptionMessages, exceptionStackTrace, occurred);
     }
@@ -140,13 +139,7 @@ public class FailedPartitionSupervisor : IChildStateProvider<FailedPartitionsSta
         if (failedPartition is null) return;
 
         await GetRecoveryGrain(failedPartition.Partition)
-            .Recover(
-                _observerKey,
-                _observerName,
-                failedPartition.RecoveredTo ?? failedPartition.Tail,
-                _eventTypes,
-                failedPartition.Messages,
-                failedPartition.StackTrace);
+            .ResumeRecovery();
     }
 
     /// <summary>
@@ -177,7 +170,8 @@ public class FailedPartitionSupervisor : IChildStateProvider<FailedPartitionsSta
                 sequenceNumber,
                 _eventTypes,
                 messages,
-                stackTrace);
+                stackTrace,
+                occurred);
     }
 
     IRecoverFailedPartition GetRecoveryGrain(EventSourceId partitionId) => _grainFactory.GetGrain<IRecoverFailedPartition>(_observerId, PartitionedObserverKey.FromObserverKey(_observerKey, partitionId));

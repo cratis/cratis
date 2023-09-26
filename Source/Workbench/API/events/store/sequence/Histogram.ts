@@ -2,8 +2,8 @@
  *  **DO NOT EDIT** - This file is an automatically generated file.
  *--------------------------------------------------------------------------------------------*/
 
-import { QueryFor, QueryResultWithState, useQuery, PerformQuery } from '@aksio/cratis-applications-frontend/queries';
-import { EventHistogramEntry } from '../sequence/EventHistogramEntry';
+import { QueryFor, QueryResultWithState, useQuery, PerformQuery } from '@aksio/applications/queries';
+import { EventHistogramEntry } from './EventHistogramEntry';
 import Handlebars from 'handlebars';
 
 const routeTemplate = Handlebars.compile('/api/events/store/{microserviceId}/{tenantId}/sequence/{eventSequenceId}/histogram');

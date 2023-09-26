@@ -1,13 +1,11 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Applications.Queries;
-using Aksio.Cratis.DependencyInversion;
-using Aksio.Cratis.Execution;
+using Aksio.Applications.Queries;
 using Aksio.Cratis.Kernel.Grains.Observation;
 using Aksio.Cratis.Kernel.Observation;
+using Aksio.DependencyInversion;
 using Microsoft.AspNetCore.Mvc;
-using Orleans;
 
 namespace Aksio.Cratis.Kernel.Read.Observation;
 
@@ -48,7 +46,7 @@ public class Observers : Controller
         [FromRoute] MicroserviceId microserviceId,
         [FromRoute] TenantId tenantId)
     {
-        _executionContextManager.Establish(tenantId, CorrelationId.New(), microserviceId);
+        _executionContextManager.Establish(tenantId, _executionContextManager.Current.CorrelationId, microserviceId);
 
         return _observerStorageProvider().GetAllObservers();
     }
@@ -64,7 +62,7 @@ public class Observers : Controller
         [FromRoute] MicroserviceId microserviceId,
         [FromRoute] TenantId tenantId)
     {
-        _executionContextManager.Establish(tenantId, CorrelationId.New(), microserviceId);
+        _executionContextManager.Establish(tenantId, _executionContextManager.Current.CorrelationId, microserviceId);
 
         var clientObservable = new ClientObservable<IEnumerable<ObserverState>>();
         var observable = _observersStateProvider().All;

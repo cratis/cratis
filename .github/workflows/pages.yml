@@ -28,27 +28,10 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v1
 
-      - uses: actions/cache@v3
-        id: yarn-cache
-        with:
-          path: |
-            **/node_modules
-            **/.eslintcache
-            ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Setup node v16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-          registry-url: "https://registry.npmjs.org"
-
       - name: Setup .Net
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.400'
+          dotnet-version: "7.0.305"
 
       - name: Restore tooling
         working-directory: ./DocFX
@@ -57,7 +40,7 @@ jobs:
       - name: Build DocFX site
         working-directory: ./DocFX
         run: |
-          yarn build
+          dotnet msbuild -t:docfx
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1

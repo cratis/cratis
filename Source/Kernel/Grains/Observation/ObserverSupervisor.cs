@@ -1,15 +1,13 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.DependencyInversion;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
-using Aksio.Cratis.Execution;
 using Aksio.Cratis.Kernel.EventSequences;
 using Aksio.Cratis.Kernel.Observation;
 using Aksio.Cratis.Observation;
+using Aksio.DependencyInversion;
 using Microsoft.Extensions.Logging;
-using Orleans;
 using Orleans.Runtime;
 using Orleans.Streams;
 
@@ -73,7 +71,7 @@ public partial class ObserverSupervisor : ObserverWorker, IObserverSupervisor
     protected override TenantId? SourceTenantId => _observerKey!.SourceTenantId;
 
     /// <inheritdoc/>
-    public override async Task OnActivateAsync()
+    public override async Task OnActivateAsync(CancellationToken cancellationToken)
     {
         await ReadStateAsync();
 
@@ -94,15 +92,16 @@ public partial class ObserverSupervisor : ObserverWorker, IObserverSupervisor
 
         _executionContextManager.Establish(_tenantId, CorrelationId.New(), _microserviceId);
 
-        var streamProvider = GetStreamProvider(WellKnownProviders.EventSequenceStreamProvider);
+        var streamProvider = this.GetStreamProvider(WellKnownProviders.EventSequenceStreamProvider);
         var microserviceAndTenant = new MicroserviceAndTenant(_sourceMicroserviceId, _sourceTenantId);
-        _stream = streamProvider.GetStream<AppendedEvent>(_eventSequenceId, microserviceAndTenant);
+        var streamId = StreamId.Create(microserviceAndTenant, _eventSequenceId);
+        _stream = streamProvider.GetStream<AppendedEvent>(streamId);
 
-        await base.OnActivateAsync();
+        await base.OnActivateAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
-    public override async Task OnDeactivateAsync()
+    public override async Task OnDeactivateAsync(DeactivationReason reason, CancellationToken cancellationToken)
     {
         _logger.Deactivating(_observerId, _eventSequenceId, _microserviceId, _tenantId, _sourceMicroserviceId, _sourceTenantId);
 
@@ -111,6 +110,9 @@ public partial class ObserverSupervisor : ObserverWorker, IObserverSupervisor
         State.RunningState = ObserverRunningState.Disconnected;
         await WriteStateAsync();
     }
+
+    /// <inheritdoc/>
+    public Task<IEnumerable<EventType>> GetEventTypes() => Task.FromResult(State.EventTypes);
 
     /// <inheritdoc/>
     public async Task SetNameAndType(ObserverName name, ObserverType type)
@@ -124,7 +126,11 @@ public partial class ObserverSupervisor : ObserverWorker, IObserverSupervisor
 #pragma warning disable CA1721 // Property names should not match get methods
     /// <inheritdoc/>
     public Task<ObserverSubscription> GetCurrentSubscription() => Task.FromResult(CurrentSubscription);
+
 #pragma warning restore CA1721 // Property names should not match get methods
+
+    /// <inheritdoc/>
+    public Task<ObserverState> GetCurrentState() => Task.FromResult(State);
 
     /// <inheritdoc/>
     public async Task NotifyCatchUpComplete(IEnumerable<FailedPartition> failedPartitions)
@@ -132,6 +138,7 @@ public partial class ObserverSupervisor : ObserverWorker, IObserverSupervisor
         await ReadStateAsync();
 
         State.RunningState = ObserverRunningState.Active;
+        await UnsubscribeStream();
         await WriteStateAsync();
 
         await SubscribeStream(HandleEventForPartitionedObserverWhenSubscribing);
@@ -158,6 +165,7 @@ public partial class ObserverSupervisor : ObserverWorker, IObserverSupervisor
         State.RunningState = ObserverRunningState.Active;
         await WriteStateAsync();
 
+        await UnsubscribeStream();
         await SubscribeStream(HandleEventForPartitionedObserverWhenSubscribing);
 
         if (_failedPartitionSupervisor is not null)
@@ -214,7 +222,7 @@ public partial class ObserverSupervisor : ObserverWorker, IObserverSupervisor
             },
             null,
             TimeSpan.Zero,
-            TimeSpan.MaxValue);
+            TimeSpan.FromHours(1));
     }
 
     Task StartCatchup() => GrainFactory.GetGrain<ICatchUp>(_observerId, keyExtension: _observerKey).Start(CurrentSubscription);
@@ -230,24 +238,30 @@ public partial class ObserverSupervisor : ObserverWorker, IObserverSupervisor
         }
     }
 
+#pragma warning disable CA1851 // Possible multiple enumerations of IEnumerable
     bool HasDefinitionChanged(IEnumerable<EventType> eventTypes) =>
         State.RunningState != ObserverRunningState.New &&
-        !State.EventTypes.OrderBy(_ => _.Id.Value).SequenceEqual(eventTypes.OrderBy(_ => _.Id.Value));
+        (State.EventTypes.Count() != eventTypes.Count() ||
+        !eventTypes.OrderBy(_ => _.Id.Value).SequenceEqual(State.EventTypes.OrderBy(_ => _.Id.Value)));
+#pragma warning restore CA1851 // Possible multiple enumerations of IEnumerable
 
     async Task SubscribeStream(Func<AppendedEvent, Task> handler)
     {
-        _logger.SubscribingToStream(_observerId, _eventSequenceId, _microserviceId, _tenantId, _stream!.Guid, _stream!.Namespace);
+        _logger.SubscribingToStream(_observerId, _eventSequenceId, _microserviceId, _tenantId, (EventSequenceId)_stream!.StreamId.GetKeyAsString(), _stream!.StreamId.GetNamespace()!);
 
         // Get the next event sequence number for our event types and use as the next event sequence number
         _streamSubscription = await _stream!.SubscribeAsync(
             (@event, _) =>
             {
-                _logger.EventReceived(@event.Metadata.Type.Id, _observerId, _eventSequenceId, _microserviceId, _tenantId);
-                return handler(@event);
+                if (State.EventTypes.Any(et => et == @event.Metadata.Type))
+                {
+                    _logger.EventReceived(@event.Metadata.Type.Id, _observerId, _eventSequenceId, _microserviceId, _tenantId);
+                    return handler(@event);
+                }
+
+                return Task.CompletedTask;
             },
-            new EventSequenceNumberToken(State.NextEventSequenceNumber),
-            ObserverFilters.EventTypesFilter,
-            State.EventTypes.ToArray());
+            new EventSequenceNumberToken(State.NextEventSequenceNumber));
 
         // Note: Warm up the stream. The internals of Orleans will only do the producer / consumer handshake after an event has gone through the
         // stream. Since our observers can perform replays & catch ups at startup, we can't wait till the first event appears.

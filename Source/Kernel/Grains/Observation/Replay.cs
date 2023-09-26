@@ -1,14 +1,12 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.DependencyInversion;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
-using Aksio.Cratis.Execution;
 using Aksio.Cratis.Kernel.Observation;
 using Aksio.Cratis.Observation;
+using Aksio.DependencyInversion;
 using Microsoft.Extensions.Logging;
-using Orleans;
 using Orleans.Runtime;
 
 namespace Aksio.Cratis.Kernel.Grains.Observation;
@@ -20,6 +18,7 @@ public class Replay : ObserverWorker, IReplay
 {
     readonly ILogger<Replay> _logger;
     readonly List<FailedPartition> _failedPartitions = new();
+
     ObserverKey? _observerKey;
     IDisposable? _timer;
     bool _isRunning;
@@ -56,7 +55,7 @@ public class Replay : ObserverWorker, IReplay
     protected override TenantId? SourceTenantId => _observerKey!.SourceTenantId;
 
     /// <inheritdoc/>
-    public override Task OnActivateAsync()
+    public override Task OnActivateAsync(CancellationToken cancellationToken)
     {
         _ = this.GetPrimaryKey(out var keyAsString);
         _observerKey = ObserverKey.Parse(keyAsString);
@@ -72,12 +71,11 @@ public class Replay : ObserverWorker, IReplay
             return;
         }
 
-        await ReadStateAsync();
-
         _logger.Starting(ObserverId, MicroserviceId, TenantId, EventSequenceId, SourceMicroserviceId, SourceTenantId);
         CurrentSubscription = subscription;
+        await ReadStateAsync();
         _isRunning = true;
-        _timer = RegisterTimer(PerformReplay, null, TimeSpan.Zero, TimeSpan.MaxValue);
+        _timer = RegisterTimer(PerformReplay, null, TimeSpan.Zero, TimeSpan.FromHours(1));
     }
 
     /// <inheritdoc/>
@@ -99,6 +97,7 @@ public class Replay : ObserverWorker, IReplay
     async Task PerformReplay(object arg)
     {
         _timer?.Dispose();
+
         try
         {
             var provider = EventSequenceStorageProvider;
@@ -141,7 +140,7 @@ public class Replay : ObserverWorker, IReplay
 
             _isRunning = false;
             _logger.Replayed(ObserverId, MicroserviceId, TenantId, EventSequenceId, SourceMicroserviceId, SourceTenantId);
-            await Supervisor.NotifyCatchUpComplete(_failedPartitions.ToArray());
+            await Supervisor.NotifyReplayComplete(_failedPartitions.ToArray());
             _failedPartitions.Clear();
         }
         catch (Exception ex)

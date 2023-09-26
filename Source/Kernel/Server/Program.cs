@@ -2,10 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Globalization;
-using Aksio.Cratis.Execution;
-using Aksio.Cratis.Kernel.Orleans.Serialization;
-using Orleans;
-using Orleans.Hosting;
+using Aksio.Applications.Autofac;
 using Serilog;
 
 #pragma warning disable SA1600
@@ -16,6 +13,9 @@ public static class Program
     public static Task Main(string[] args)
     {
         AppDomain.CurrentDomain.UnhandledException += UnhandledExceptions;
+        SelfBindingRegistrationSource.AddNamespaceStartsWithToExclude(
+            "Microsoft",
+            "Orleans");
 
         // Force invariant culture for the Kernel
         CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
@@ -23,20 +23,18 @@ public static class Program
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 
-        Types.Types.AddAssemblyPrefixesToExclude("OpenTelemetry");
-
         return CreateHostBuilder(args).RunConsoleAsync();
     }
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
          Host.CreateDefaultBuilder(args)
-            .UseAksio(
-                _ => _.InKernel(),
-                microserviceId: MicroserviceId.Kernel,
-                microserviceName: "Cratis Kernel")
+            .UseMongoDB()
+            .UseAksio()
+            .UseCratis(_ => _.InKernel())
             .UseOrleans(_ => _
                 .UseCluster()
                 .UseStreamCaching()
+                .AddBroadcastChannel(WellKnownBroadcastChannelNames.ProjectionChanged, _ => _.FireAndForgetDelivery = true)
                 .ConfigureSerialization()
                 .UseTelemetry()
                 .UseDashboard(options =>

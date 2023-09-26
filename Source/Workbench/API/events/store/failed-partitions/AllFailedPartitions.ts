@@ -2,8 +2,8 @@
  *  **DO NOT EDIT** - This file is an automatically generated file.
  *--------------------------------------------------------------------------------------------*/
 
-import { ObservableQueryFor, QueryResultWithState, useObservableQuery } from '@aksio/cratis-applications-frontend/queries';
-import { RecoverFailedPartitionState } from '../failed-partitions/RecoverFailedPartitionState';
+import { ObservableQueryFor, QueryResultWithState, useObservableQuery } from '@aksio/applications/queries';
+import { RecoverFailedPartitionState } from './RecoverFailedPartitionState';
 import Handlebars from 'handlebars';
 
 const routeTemplate = Handlebars.compile('/api/events/store/{{microserviceId}}/{{tenantId}}/failed-partitions');

@@ -2,8 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Dynamic;
+using Aksio.Cratis.Auditing;
 using Aksio.Cratis.Changes;
-using Aksio.Cratis.EventSequences;
+using Aksio.Cratis.Identities;
 using Aksio.Cratis.Properties;
 
 namespace Aksio.Cratis.Kernel.Engines.Projections.for_Projection;
@@ -18,18 +19,20 @@ public class when_next_event_is_a_public_event : given.a_projection
     void Establish()
     {
         changeset = new();
-        projection.SetEventTypesWithKeyResolvers(new EventTypeWithKeyResolver[]
-        {
-                new EventTypeWithKeyResolver(public_event_type, KeyResolvers.FromEventSourceId)
-        }, new[] {public_event_type });
+        projection.SetEventTypesWithKeyResolvers(
+            new EventTypeWithKeyResolver[]
+            {
+                    new EventTypeWithKeyResolver(public_event_type, KeyResolvers.FromEventSourceId)
+            },
+            new[] { public_event_type });
 
         public_event = new(
             new(0, public_event_type),
-            new("2f005aaf-2f4e-4a47-92ea-63687ef74bd4", 0, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow, "123b8935-a1a4-410d-aace-e340d48f0aa0", "41f18595-4748-4b01-88f7-4c0d0907aa90", "50308963-d8b5-4b6e-97c7-e2486e8237e1", "bfb7fd4a-1822-4937-a6d1-52464a173f84"),
+            new("2f005aaf-2f4e-4a47-92ea-63687ef74bd4", 0, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow, "123b8935-a1a4-410d-aace-e340d48f0aa0", "41f18595-4748-4b01-88f7-4c0d0907aa90", Enumerable.Empty<Causation>(), Identity.System),
             new ExpandoObject());
 
         observed_events = new();
-        projection.Event.Subscribe(_ => observed_events.Add(_));
+        projection.Event.Subscribe(observed_events.Add);
     }
 
     void Because() => projection.OnNext(new(new(public_event.Context.EventSourceId, ArrayIndexers.NoIndexers), public_event, changeset.Object));

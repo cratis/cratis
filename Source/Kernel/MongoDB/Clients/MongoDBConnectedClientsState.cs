@@ -2,11 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Reactive.Subjects;
-using Aksio.Cratis.Clients;
-using Aksio.Cratis.DependencyInversion;
-using Aksio.Cratis.Execution;
+using Aksio.Cratis.Connections;
 using Aksio.Cratis.Kernel.Grains.Clients;
 using Aksio.Cratis.MongoDB;
+using Aksio.DependencyInversion;
 using MongoDB.Driver;
 
 namespace Aksio.Cratis.Kernel.MongoDB.Clients;
@@ -18,8 +17,6 @@ public class MongoDBConnectedClientsState : IConnectedClientsState
 {
     readonly ProviderFor<ISharedDatabase> _sharedDatabaseProvider;
 
-    IMongoCollection<MongoDBConnectedClientsForMicroserviceState> Collection => _sharedDatabaseProvider().GetCollection<MongoDBConnectedClientsForMicroserviceState>(CollectionNames.ConnectedClients);
-
     /// <summary>
     /// Initializes a new instance of the <see cref="MongoDBConnectedClientsState"/> class.
     /// </summary>
@@ -28,6 +25,8 @@ public class MongoDBConnectedClientsState : IConnectedClientsState
     {
         _sharedDatabaseProvider = sharedDatabaseProvider;
     }
+
+    IMongoCollection<MongoDBConnectedClientsForMicroserviceState> Collection => _sharedDatabaseProvider().GetCollection<MongoDBConnectedClientsForMicroserviceState>(CollectionNames.ConnectedClients);
 
     /// <inheritdoc/>
     public IObservable<IEnumerable<ConnectedClient>> GetAllForMicroservice(MicroserviceId microserviceId)

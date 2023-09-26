@@ -3,13 +3,11 @@
 ## Packages / Deployables
 
 [![Nuget](https://img.shields.io/nuget/v/Aksio.Cratis?logo=nuget)](http://nuget.org/packages/aksio.cratis)
-[![NPM](https://img.shields.io/npm/v/@aksio/cratis-applications-frontend?label=@aksio/cratis-applications-frontend&logo=npm)](https://www.npmjs.com/package/@aksio/cratis-applications-frontend)
 [![Docker](https://img.shields.io/docker/v/aksioinsurtech/cratis?label=Cratis%20Kernel&logo=docker&sort=semver)](https://hub.docker.com/r/aksioinsurtech/cratis)
 
 ## Builds
 
 [![C# Build](https://github.com/aksio-insurtech/Cratis/actions/workflows/dotnet-build.yml/badge.svg)](https://github.com/aksio-insurtech/Cratis/actions/workflows/dotnet-build.yml)
-[![Node Build](https://github.com/aksio-insurtech/Cratis/actions/workflows/node-build.yml/badge.svg)](https://github.com/aksio-insurtech/Cratis/actions/workflows/node-build.yml)
 [![Publish](https://github.com/aksio-insurtech/Cratis/actions/workflows/publish.yml/badge.svg)](https://github.com/aksio-insurtech/Cratis/actions/workflows/publish.yml)
 [![Documentation Site](https://github.com/aksio-insurtech/Cratis/actions/workflows/pages.yml/badge.svg)](https://github.com/aksio-insurtech/Cratis/actions/workflows/pages.yml)
 
@@ -19,10 +17,9 @@
 
 ## Introduction
 
-Cratis is an Event Sourcing platform built with ease of use, productivity, compliance and maintainability in mind.
-It provides the core platform, referred to as the **Kernel** with client SDK (.NET only for the time being) and tooling
-built into it. In addition Cratis offers an application model aimed towards productivity and bringing in concepts
-such as CQRS; opinionated and completely optional.
+Cratis is an Event Sourcing database built with ease of use, productivity, compliance and maintainability in mind.
+It provides the core server, referred to as the **Kernel** with a client SDK to access it (.NET only for the time being) and tooling
+built into it.
 
 Read the documentation on our site [https://cratis.io](https://cratis.io) for all the details.
 For general guidance on the core values and principles we @ Aksio use, read more [here](https://github.com/aksio-insurtech/Home/blob/main/profile/README.md).
@@ -38,8 +35,7 @@ If you prefer to browse the code in VSCode, you can do so by clicking [here](htt
 Make sure you have the following installed:
 
 - [Docker](https://www.docker.com/products/docker-desktop)
-- [.NET Core 6](https://dotnet.microsoft.com/download/dotnet/6.0)
-- [Node JS version 16](https://nodejs.org/)
+- [.NET Core 7](https://dotnet.microsoft.com/download/dotnet/7.0)
 
 The sample consists of a backend and a frontend.
 Navigate to the [Bank Sample](./Samples/Banking/Bank) folder.
@@ -56,6 +52,7 @@ This will bring up the Cratis Kernel and expose the following ports:
 | ---- | ----------- |
 | 27017 | MongoDB - used for events and projection results |
 | 8080 | Workbench and API for kernel |
+| 8081 | Orleans Dashboard |
 | 11111 | Clustering port |
 | 30000 | Client to Kernel connectivity |
 

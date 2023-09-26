@@ -2,7 +2,7 @@
  *  **DO NOT EDIT** - This file is an automatically generated file.
  *--------------------------------------------------------------------------------------------*/
 
-import { field } from '@aksio/cratis-fundamentals';
+import { field } from '@aksio/fundamentals';
 
 
 export class ConnectedClient {
@@ -21,4 +21,7 @@ export class ConnectedClient {
 
     @field(Boolean)
     isRunningWithDebugger!: boolean;
+
+    @field(Boolean)
+    isMultiTenanted!: boolean;
 }

@@ -1,7 +1,7 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Applications.Queries;
+using Aksio.Applications.Queries;
 using Microsoft.AspNetCore.Mvc;
 using OpenTelemetry.Metrics;
 
@@ -13,6 +13,9 @@ namespace Aksio.Cratis.Kernel.Read.Metrics;
 [Route("/api/metrics")]
 public class Metrics : Controller
 {
+    /// <summary>
+    /// Gets the internal collection of metrics.
+    /// </summary>
     internal static MetricCollection _metrics = new();
 
     /// <summary>
@@ -24,10 +27,10 @@ public class Metrics : Controller
     {
         var metricsObservable = new ClientObservable<IEnumerable<MetricMeasurement>>();
 
-        MetricCollectionContentChanged contentChanged = () =>
+        void contentChanged()
         {
             metricsObservable.OnNext(_metrics.Measurements.OrderBy(_ => _.Name));
-        };
+        }
 
         _metrics.ContentChanged += contentChanged;
         metricsObservable.ClientDisconnected += () => _metrics.ContentChanged -= contentChanged;

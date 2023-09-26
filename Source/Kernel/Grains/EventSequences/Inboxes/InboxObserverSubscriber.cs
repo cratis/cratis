@@ -1,16 +1,15 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.DependencyInversion;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
-using Aksio.Cratis.Execution;
 using Aksio.Cratis.Json;
 using Aksio.Cratis.Kernel.Grains.Observation;
+using Aksio.Cratis.Kernel.Schemas;
 using Aksio.Cratis.Observation;
 using Aksio.Cratis.Schemas;
+using Aksio.DependencyInversion;
 using Microsoft.Extensions.Logging;
-using Orleans;
 
 namespace Aksio.Cratis.Kernel.Grains.EventSequences.Inbox;
 
@@ -49,7 +48,7 @@ public class InboxObserverSubscriber : Grain, IInboxObserverSubscriber
     }
 
     /// <inheritdoc/>
-    public override Task OnActivateAsync()
+    public override Task OnActivateAsync(CancellationToken cancellationToken)
     {
         _microserviceId = this.GetPrimaryKey(out var keyAsString);
         _key = ObserverSubscriberKey.Parse(keyAsString);
@@ -68,34 +67,53 @@ public class InboxObserverSubscriber : Grain, IInboxObserverSubscriber
     }
 
     /// <inheritdoc/>
-    public async Task<ObserverSubscriberResult> OnNext(AppendedEvent @event, ObserverSubscriberContext context)
+    public async Task<ObserverSubscriberResult> OnNext(IEnumerable<AppendedEvent> events, ObserverSubscriberContext context)
     {
+        var currentEvent = events.First();
+        AppendedEvent? lastSuccessfullyObservedEvent = default;
+
         try
         {
-            _executionContextManager.Establish(_key!.TenantId, @event.Context.CorrelationId, _microserviceId);
-
-            EventSchema eventSchema;
-
-            if (!await _schemaStore!.HasFor(@event.Metadata.Type.Id, @event.Metadata.Type.Generation))
+            foreach (var @event in events)
             {
-                eventSchema = await _sourceSchemaStore!.GetFor(@event.Metadata.Type.Id, @event.Metadata.Type.Generation);
-                await _schemaStore.Register(eventSchema.Type, eventSchema.Schema.GetDisplayName(), eventSchema.Schema);
-            }
-            else
-            {
-                eventSchema = await _schemaStore!.GetFor(@event.Metadata.Type.Id, @event.Metadata.Type.Generation);
+                currentEvent = @event;
+                _executionContextManager.Establish(_key!.TenantId, @event.Context.CorrelationId, _microserviceId);
+
+                EventSchema eventSchema;
+
+                if (!await _schemaStore!.HasFor(@event.Metadata.Type.Id, @event.Metadata.Type.Generation))
+                {
+                    eventSchema = await _sourceSchemaStore!.GetFor(@event.Metadata.Type.Id, @event.Metadata.Type.Generation);
+                    await _schemaStore.Register(eventSchema.Type, eventSchema.Schema.GetDisplayName(), eventSchema.Schema);
+                }
+                else
+                {
+                    eventSchema = await _schemaStore!.GetFor(@event.Metadata.Type.Id, @event.Metadata.Type.Generation);
+                }
+
+                _logger.ForwardingEvent(_key!.TenantId, _microserviceId!, @event.Metadata.Type.Id, eventSchema.Schema.GetDisplayName(), @event.Metadata.SequenceNumber);
+
+                var content = _expandoObjectConverter.ToJsonObject(@event.Content, eventSchema.Schema);
+                await _inboxEventSequence!.Append(@event.Context.EventSourceId, @event.Metadata.Type, content!, @event.Context.Causation, @event.Context.CausedBy);
+                lastSuccessfullyObservedEvent = @event;
             }
 
-            _logger.ForwardingEvent(_key!.TenantId, _microserviceId!, @event.Metadata.Type.Id, eventSchema.Schema.GetDisplayName(), @event.Metadata.SequenceNumber);
-
-            var content = _expandoObjectConverter.ToJsonObject(@event.Content, eventSchema.Schema);
-            await _inboxEventSequence!.Append(@event.Context.EventSourceId, @event.Metadata.Type, content!);
             return ObserverSubscriberResult.Ok;
         }
         catch (Exception ex)
         {
-            _logger.FailedForwardingEvent(_key!.TenantId, _microserviceId!, @event.Metadata.Type.Id, @event.Metadata.SequenceNumber, ex);
-            return new(ObserverSubscriberState.Failed, ex.GetAllMessages(), ex.StackTrace ?? string.Empty);
+            _logger.FailedForwardingEvent(
+                _key!.TenantId,
+                _microserviceId!,
+                currentEvent.Metadata.Type.Id,
+                currentEvent.Metadata.SequenceNumber,
+                ex);
+
+            return new(
+                ObserverSubscriberState.Failed,
+                lastSuccessfullyObservedEvent?.Metadata.SequenceNumber ?? EventSequenceNumber.Unavailable,
+                ex.GetAllMessages(),
+                ex.StackTrace ?? string.Empty);
         }
     }
 }

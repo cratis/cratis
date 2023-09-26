@@ -2,8 +2,8 @@
  *  **DO NOT EDIT** - This file is an automatically generated file.
  *--------------------------------------------------------------------------------------------*/
 
-import { ObservableQueryFor, QueryResultWithState, useObservableQuery } from '@aksio/cratis-applications-frontend/queries';
-import { ObserverState } from '../observers/ObserverState';
+import { ObservableQueryFor, QueryResultWithState, useObservableQuery } from '@aksio/applications/queries';
+import { ObserverState } from './ObserverState';
 import Handlebars from 'handlebars';
 
 const routeTemplate = Handlebars.compile('/api/events/store/{{microserviceId}}/{{tenantId}}/observers/observe');

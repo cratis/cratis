@@ -1,8 +1,8 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using Aksio.Configuration;
 using Aksio.Cratis.Configuration;
-using Aksio.Cratis.Execution;
 
 namespace Aksio.Cratis.Kernel.Configuration;
 
@@ -36,6 +36,26 @@ public class Storage
             },
             Tenants = new()
         };
+
+        // We add unspecified for supporting single tenant scenarios
+        Microservices[MicroserviceId.Unspecified] = new()
+        {
+            Shared = new StorageTypes
+            {
+                ["readModels"] = Cluster,
+                ["eventStore"] = Cluster,
+            },
+            Tenants = new()
+        };
+
+        foreach (var microservice in Microservices)
+        {
+            microservice.Value.Tenants[TenantId.NotSet.ToString()] = new StorageTypes
+            {
+                ["readModels"] = Cluster,
+                ["eventStore"] = Cluster
+            };
+        }
 
         foreach (var tenant in tenants)
         {

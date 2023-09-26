@@ -59,6 +59,7 @@
         "Brotli",
         "Bson",
         "camelcase",
+        "causations",
         "changesets",
         "Cratis",
         "datetime",
@@ -67,6 +68,7 @@
         "discoverability",
         "downcaster",
         "echarts",
+        "ecommerce",
         "encryptor",
         "enumerables",
         "Expando",
@@ -86,6 +88,7 @@
         "propertymapper",
         "Proto",
         "protobuf",
+        "Referer",
         "Remindable",
         "Swashbuckle",
         "tinycolor",
@@ -93,6 +96,8 @@
         "Unmap",
         "upcaster",
         "upserted",
+        "Upserting",
         "Xunit"
-    ]
+    ],
+    "dotnet.defaultSolution": "cratis.sln"
 }

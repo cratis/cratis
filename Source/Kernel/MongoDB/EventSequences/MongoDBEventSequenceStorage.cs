@@ -3,12 +3,14 @@
 
 using System.Dynamic;
 using System.Text.Json;
-using Aksio.Cratis.DependencyInversion;
+using Aksio.Cratis.Auditing;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
-using Aksio.Cratis.Execution;
-using Aksio.Cratis.Json;
-using Aksio.Cratis.Schemas;
+using Aksio.Cratis.Identities;
+using Aksio.Cratis.Kernel.EventSequences;
+using Aksio.Cratis.Kernel.Grains.EventSequences;
+using Aksio.Cratis.Kernel.Schemas;
+using Aksio.DependencyInversion;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -26,7 +28,7 @@ public class MongoDBEventSequenceStorage : IEventSequenceStorage
     readonly ProviderFor<IEventConverter> _converterProvider;
     readonly ProviderFor<IEventStoreDatabase> _eventStoreDatabaseProvider;
     readonly ProviderFor<ISchemaStore> _schemaStoreProvider;
-    readonly IExpandoObjectConverter _expandoObjectConverter;
+    readonly Json.IExpandoObjectConverter _expandoObjectConverter;
     readonly JsonSerializerOptions _jsonSerializerOptions;
     readonly ILogger<MongoDBEventSequenceStorage> _logger;
 
@@ -45,7 +47,7 @@ public class MongoDBEventSequenceStorage : IEventSequenceStorage
         ProviderFor<IEventConverter> converterProvider,
         ProviderFor<IEventStoreDatabase> eventStoreDatabaseProvider,
         ProviderFor<ISchemaStore> schemaStoreProvider,
-        IExpandoObjectConverter expandoObjectConverter,
+        Json.IExpandoObjectConverter expandoObjectConverter,
         JsonSerializerOptions jsonSerializerOptions,
         ILogger<MongoDBEventSequenceStorage> logger)
     {
@@ -59,10 +61,10 @@ public class MongoDBEventSequenceStorage : IEventSequenceStorage
     }
 
     /// <inheritdoc/>
-    public Task<long> GetCount(EventSequenceId eventSequenceId)
+    public async Task<long> GetCount(EventSequenceId eventSequenceId)
     {
         var collection = GetCollectionFor(eventSequenceId);
-        return collection.CountDocumentsAsync(FilterDefinition<Event>.Empty);
+        return await collection.CountDocumentsAsync(FilterDefinition<Event>.Empty).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
@@ -71,6 +73,9 @@ public class MongoDBEventSequenceStorage : IEventSequenceStorage
         EventSequenceNumber sequenceNumber,
         EventSourceId eventSourceId,
         EventType eventType,
+        IEnumerable<Causation> causation,
+        IEnumerable<IdentityId> causedByChain,
+        DateTimeOffset occurred,
         DateTimeOffset validFrom,
         ExpandoObject content)
     {
@@ -87,10 +92,10 @@ public class MongoDBEventSequenceStorage : IEventSequenceStorage
             var @event = new Event(
                 sequenceNumber,
                 _executionContextManager.Current.CorrelationId,
-                _executionContextManager.Current.CausationId,
-                _executionContextManager.Current.CausedBy,
+                causation,
+                causedByChain,
                 eventType.Id,
-                DateTimeOffset.UtcNow,
+                occurred,
                 validFrom,
                 eventSourceId,
                 new Dictionary<string, BsonDocument>
@@ -99,7 +104,7 @@ public class MongoDBEventSequenceStorage : IEventSequenceStorage
                 },
                 Array.Empty<EventCompensation>());
             var collection = GetCollectionFor(eventSequenceId);
-            await collection.InsertOneAsync(@event);
+            await collection.InsertOneAsync(@event).ConfigureAwait(false);
         }
         catch (MongoWriteException writeException) when (writeException.WriteError.Category == ServerErrorCategory.DuplicateKey)
         {
@@ -108,6 +113,8 @@ public class MongoDBEventSequenceStorage : IEventSequenceStorage
                 eventSequenceId,
                 _executionContextManager.Current.MicroserviceId,
                 _executionContextManager.Current.TenantId);
+
+            throw new DuplicateEventSequenceNumber(sequenceNumber, eventSequenceId);
         }
         catch (Exception ex)
         {
@@ -126,11 +133,20 @@ public class MongoDBEventSequenceStorage : IEventSequenceStorage
         EventSequenceId eventSequenceId,
         EventSequenceNumber sequenceNumber,
         EventType eventType,
+        IEnumerable<Causation> causation,
+        IEnumerable<IdentityId> causedByChain,
+        DateTimeOffset occurred,
         DateTimeOffset validFrom,
         ExpandoObject content) => throw new NotImplementedException();
 
     /// <inheritdoc/>
-    public async Task<AppendedEvent> Redact(EventSequenceId eventSequenceId, EventSequenceNumber sequenceNumber, RedactionReason reason)
+    public async Task<AppendedEvent> Redact(
+        EventSequenceId eventSequenceId,
+        EventSequenceNumber sequenceNumber,
+        RedactionReason reason,
+        IEnumerable<Causation> causation,
+        IEnumerable<IdentityId> causedByChain,
+        DateTimeOffset occurred)
     {
         _logger.Redacting(eventSequenceId, sequenceNumber);
         var collection = GetCollectionFor(eventSequenceId);
@@ -142,8 +158,8 @@ public class MongoDBEventSequenceStorage : IEventSequenceStorage
             return @event;
         }
 
-        var updateModel = CreateRedactionUpdateModelFor(@event, reason);
-        collection.UpdateOne(updateModel.Filter, updateModel.Update);
+        var updateModel = CreateRedactionUpdateModelFor(@event, reason, causation, causedByChain, occurred);
+        await collection.UpdateOneAsync(updateModel.Filter, updateModel.Update).ConfigureAwait(false);
 
         return @event;
     }
@@ -153,14 +169,17 @@ public class MongoDBEventSequenceStorage : IEventSequenceStorage
         EventSequenceId eventSequenceId,
         EventSourceId eventSourceId,
         RedactionReason reason,
-        IEnumerable<EventType>? eventTypes)
+        IEnumerable<EventType>? eventTypes,
+        IEnumerable<Causation> causation,
+        IEnumerable<IdentityId> causedByChain,
+        DateTimeOffset occurred)
     {
         _logger.RedactingMultiple(eventSequenceId, eventSourceId, eventTypes ?? Enumerable.Empty<EventType>());
         var collection = GetCollectionFor(eventSequenceId);
         var updates = new List<UpdateOneModel<Event>>();
         var affectedEventTypes = new HashSet<EventType>();
 
-        var cursor = await GetFromSequenceNumber(eventSequenceId, EventSequenceNumber.First, eventSourceId, eventTypes);
+        using var cursor = await GetFromSequenceNumber(eventSequenceId, EventSequenceNumber.First, eventSourceId, eventTypes);
         while (await cursor.MoveNext())
         {
             foreach (var @event in cursor.Current)
@@ -171,7 +190,7 @@ public class MongoDBEventSequenceStorage : IEventSequenceStorage
                     continue;
                 }
 
-                updates.Add(CreateRedactionUpdateModelFor(@event, reason));
+                updates.Add(CreateRedactionUpdateModelFor(@event, reason, causation, causedByChain, occurred));
                 affectedEventTypes.Add(@event.Metadata.Type);
             }
 
@@ -298,7 +317,10 @@ public class MongoDBEventSequenceStorage : IEventSequenceStorage
             Builders<Event>.Filter.Eq(_ => _.EventSourceId, eventSourceId));
 
         var collection = GetCollectionFor(eventSequenceId);
-        var @event = collection.Find(filter).SortByDescending(_ => _.SequenceNumber).Limit(1).Single();
+        var @event = collection
+            .Find(filter)
+            .SortByDescending(_ => _.SequenceNumber).Limit(1).SingleOrDefault()
+            ?? throw new MissingEvent(eventSequenceId, eventTypeId, eventSourceId);
         return await _converterProvider().ToAppendedEvent(@event);
     }
 
@@ -385,16 +407,21 @@ public class MongoDBEventSequenceStorage : IEventSequenceStorage
 
     IMongoCollection<Event> GetCollectionFor(EventSequenceId eventSequenceId) => _eventStoreDatabaseProvider().GetEventSequenceCollectionFor(eventSequenceId);
 
-    UpdateOneModel<Event> CreateRedactionUpdateModelFor(AppendedEvent @event, RedactionReason reason)
+    UpdateOneModel<Event> CreateRedactionUpdateModelFor(
+        AppendedEvent @event,
+        RedactionReason reason,
+        IEnumerable<Causation> causation,
+        IEnumerable<IdentityId> causedById,
+        DateTimeOffset occurred)
     {
         var executionContext = _executionContextManager.Current;
         var content = new RedactionEventContent(
             reason,
             @event.Metadata.Type.Id,
-            DateTimeOffset.UtcNow,
-            executionContext.CausationId,
+            occurred,
             executionContext.CorrelationId,
-            executionContext.CausedBy);
+            causation,
+            causedById);
 
         var document = BsonDocument.Parse(JsonSerializer.Serialize(content, _jsonSerializerOptions));
         var generationalContent = new Dictionary<string, BsonDocument>

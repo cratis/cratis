@@ -2,8 +2,8 @@
  *  **DO NOT EDIT** - This file is an automatically generated file.
  *--------------------------------------------------------------------------------------------*/
 
-import { Command, CommandValidator, CommandPropertyValidators, useCommand, SetCommandValues, ClearCommandValues } from '@aksio/cratis-applications-frontend/commands';
-import { Validator } from '@aksio/cratis-applications-frontend/validation';
+import { Command, CommandValidator, CommandPropertyValidators, useCommand, SetCommandValues, ClearCommandValues } from '@aksio/applications/commands';
+import { Validator } from '@aksio/applications/validation';
 import { ImmediateProjectionResult } from './ImmediateProjectionResult';
 import Handlebars from 'handlebars';
 
@@ -15,7 +15,6 @@ export interface IImmediate {
     projectionId?: string;
     eventSequenceId?: string;
     modelKey?: string;
-    projection?: any;
 }
 
 export class ImmediateValidator extends CommandValidator {
@@ -25,7 +24,6 @@ export class ImmediateValidator extends CommandValidator {
         projectionId: new Validator(),
         eventSequenceId: new Validator(),
         modelKey: new Validator(),
-        projection: new Validator(),
     };
 }
 
@@ -39,7 +37,6 @@ export class Immediate extends Command<IImmediate, ImmediateProjectionResult> im
     private _projectionId!: string;
     private _eventSequenceId!: string;
     private _modelKey!: string;
-    private _projection!: any;
 
     constructor() {
         super(ImmediateProjectionResult, false);
@@ -59,7 +56,6 @@ export class Immediate extends Command<IImmediate, ImmediateProjectionResult> im
             'projectionId',
             'eventSequenceId',
             'modelKey',
-            'projection',
         ];
     }
 
@@ -102,14 +98,6 @@ export class Immediate extends Command<IImmediate, ImmediateProjectionResult> im
     set modelKey(value: string) {
         this._modelKey = value;
         this.propertyChanged('modelKey');
-    }
-    get projection(): any {
-        return this._projection;
-    }
-
-    set projection(value: any) {
-        this._projection = value;
-        this.propertyChanged('projection');
     }
 
     static use(initialValues?: IImmediate): [Immediate, SetCommandValues<IImmediate>, ClearCommandValues] {

@@ -1,13 +1,11 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.DependencyInversion;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
-using Aksio.Cratis.Execution;
 using Aksio.Cratis.Observation;
+using Aksio.DependencyInversion;
 using Microsoft.Extensions.Logging;
-using Orleans;
 using Orleans.Runtime;
 
 namespace Aksio.Cratis.Kernel.Grains.Observation;
@@ -17,20 +15,45 @@ namespace Aksio.Cratis.Kernel.Grains.Observation;
 /// </summary>
 public abstract class ObserverWorker : Grain
 {
-#pragma warning disable CA1051, SA1600
-    // TODO: We will have to handle the rewinding as a worker grain.
-    protected bool _rewindingPartition;
-#pragma warning restore // CA1051
     readonly ILogger<ObserverWorker> _logger;
     readonly ProviderFor<IEventSequenceStorage> _eventSequenceStorageProviderProvider;
     readonly IExecutionContextManager _executionContextManager;
     readonly IPersistentState<ObserverState> _observerState;
+    ObserverSubscription _currentSubscription = ObserverSubscription.Unsubscribed;
     IObserverSupervisor? _supervisor;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ObserverWorker"/> class.
+    /// </summary>
+    /// <param name="executionContextManager">The <see cref="IExecutionContextManager"/>.</param>
+    /// <param name="eventSequenceStorageProviderProvider"><see creF="IEventSequenceStorage"/> for working with the underlying event sequence.</param>
+    /// <param name="observerState"><see cref="IPersistentState{T}"/> for the <see cref="ObserverState"/>.</param>
+    /// <param name="logger"><see cref="ILogger"/> for logging.</param>
+    protected ObserverWorker(
+        IExecutionContextManager executionContextManager,
+        ProviderFor<IEventSequenceStorage> eventSequenceStorageProviderProvider,
+        IPersistentState<ObserverState> observerState,
+        ILogger<ObserverWorker> logger)
+    {
+        _eventSequenceStorageProviderProvider = eventSequenceStorageProviderProvider;
+        _executionContextManager = executionContextManager;
+        _observerState = observerState;
+        _logger = logger;
+    }
 
     /// <summary>
     /// Gets or sets the subscriber type.
     /// </summary>
-    protected ObserverSubscription CurrentSubscription { get; set; } = ObserverSubscription.Unsubscribed;
+    protected ObserverSubscription CurrentSubscription
+    {
+        get => _currentSubscription;
+        set
+        {
+            _currentSubscription = value;
+            State.CurrentSubscriptionType = _currentSubscription.SubscriberType.AssemblyQualifiedName;
+            State.CurrentSubscriptionArguments = _currentSubscription.Arguments;
+        }
+    }
 
     /// <summary>
     /// Gets the <see cref="ObserverState"/>.
@@ -103,25 +126,6 @@ public abstract class ObserverWorker : Grain
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ObserverWorker"/> class.
-    /// </summary>
-    /// <param name="executionContextManager">The <see cref="IExecutionContextManager"/>.</param>
-    /// <param name="eventSequenceStorageProviderProvider"><see creF="IEventSequenceStorage"/> for working with the underlying event sequence.</param>
-    /// <param name="observerState"><see cref="IPersistentState{T}"/> for the <see cref="ObserverState"/>.</param>
-    /// <param name="logger"><see cref="ILogger"/> for logging.</param>
-    protected ObserverWorker(
-        IExecutionContextManager executionContextManager,
-        ProviderFor<IEventSequenceStorage> eventSequenceStorageProviderProvider,
-        IPersistentState<ObserverState> observerState,
-        ILogger<ObserverWorker> logger)
-    {
-        _eventSequenceStorageProviderProvider = eventSequenceStorageProviderProvider;
-        _executionContextManager = executionContextManager;
-        _observerState = observerState;
-        _logger = logger;
-    }
-
-    /// <summary>
     /// Notify that the partition has failed.
     /// </summary>
     /// <param name="partition">The partition that failed.</param>
@@ -139,8 +143,9 @@ public abstract class ObserverWorker : Grain
     /// Handle an <see cref="AppendedEvent"/>.
     /// </summary>
     /// <param name="event">The <see cref="AppendedEvent"/> to handle.</param>
+    /// <param name="ignoreSequenceNumber">Optionally set whether or not to ignore sequence number and force a handle. If set to true, it will not update sequence number either. Defaults to false.</param>
     /// <returns>Awaitable task.</returns>
-    public async Task Handle(AppendedEvent @event)
+    public async Task Handle(AppendedEvent @event, bool ignoreSequenceNumber = false)
     {
         var failed = false;
         var exceptionMessages = Enumerable.Empty<string>();
@@ -152,8 +157,7 @@ public abstract class ObserverWorker : Grain
                 return;
             }
 
-            // TODO: We will have to handle the rewinding as a worker grain.
-            if (@event.Metadata.SequenceNumber >= State.NextEventSequenceNumber || _rewindingPartition)
+            if (@event.Metadata.SequenceNumber >= State.NextEventSequenceNumber || ignoreSequenceNumber)
             {
                 if (!State.IsPartitionFailed(@event.Context.EventSourceId))
                 {
@@ -169,10 +173,14 @@ public abstract class ObserverWorker : Grain
                         return;
                     }
                 }
-                State.NextEventSequenceNumber = @event.Metadata.SequenceNumber.Next();
-                if (State.LastHandled < @event.Metadata.SequenceNumber)
+
+                if (!ignoreSequenceNumber)
                 {
-                    State.LastHandled = @event.Metadata.SequenceNumber;
+                    State.NextEventSequenceNumber = @event.Metadata.SequenceNumber.Next();
+                    if (State.LastHandled < @event.Metadata.SequenceNumber)
+                    {
+                        State.LastHandled = @event.Metadata.SequenceNumber;
+                    }
                 }
             }
         }
@@ -222,7 +230,7 @@ public abstract class ObserverWorker : Grain
             SourceTenantId);
 
         var subscriber = (GrainFactory.GetGrain(CurrentSubscription.SubscriberType, ObserverId, key) as IObserverSubscriber)!;
-        return subscriber.OnNext(@event, new(CurrentSubscription.Arguments));
+        return subscriber.OnNext(new[] { @event }, new(@event.Context.ObservationState, CurrentSubscription.Arguments));
     }
 
     /// <summary>
@@ -231,8 +239,10 @@ public abstract class ObserverWorker : Grain
     /// <returns>Awaitable task.</returns>
     protected async Task ReadStateAsync()
     {
+        var subscriptionType = State.CurrentSubscriptionType;
+        var subscriptionArguments = State.CurrentSubscriptionArguments;
         await _observerState.ReadStateAsync();
-        if (string.IsNullOrEmpty(State.CurrentSubscriptionType))
+        if (string.IsNullOrEmpty(subscriptionType))
         {
             CurrentSubscription = ObserverSubscription.Unsubscribed;
         }
@@ -243,8 +253,8 @@ public abstract class ObserverWorker : Grain
                 ObserverId,
                 new(MicroserviceId, TenantId, EventSequenceId, SourceMicroserviceId, SourceTenantId),
                 State.EventTypes,
-                Type.GetType(State.CurrentSubscriptionType)!,
-                State.CurrentSubscriptionArguments!);
+                Type.GetType(subscriptionType)!,
+                subscriptionArguments!);
         }
     }
 
@@ -252,10 +262,5 @@ public abstract class ObserverWorker : Grain
     /// Write the observer state.
     /// </summary>
     /// <returns>Awaitable task.</returns>
-    protected Task WriteStateAsync()
-    {
-        State.CurrentSubscriptionType = CurrentSubscription.SubscriberType.AssemblyQualifiedName;
-        State.CurrentSubscriptionArguments = CurrentSubscription.Arguments;
-        return _observerState.WriteStateAsync();
-    }
+    protected Task WriteStateAsync() => _observerState.WriteStateAsync();
 }

@@ -30,16 +30,17 @@ public record EventSequenceId(Guid Value) : ConceptAs<Guid>(Value)
     public static readonly EventSequenceId Inbox = Guid.Parse("2b608a79-77d2-4ccf-af43-4c37dee46592");
 
     /// <summary>
-    /// Implicitly convert from a string representation of a <see cref="Guid"/> to <see cref="EventSequenceId"/>.
+    /// The name of the sequence representing the system sequence.
     /// </summary>
-    /// <param name="id"><see cref="Guid"/> to convert from.</param>
-    public static implicit operator EventSequenceId(string id) => new(Guid.Parse(id));
+    /// <remarks>
+    /// This is represented as a string name, as part of the transition away from GUIDs representing sequences to strings: https://github.com/aksio-insurtech/Cratis/issues/921.
+    /// </remarks>
+    public const string System = "system";
 
     /// <summary>
-    /// Implicitly convert from <see cref="Guid"/> to <see cref="EventSequenceId"/>.
+    /// The <see cref="EventSequenceId"/> representing the default inbox.
     /// </summary>
-    /// <param name="id"><see cref="Guid"/> to convert from.</param>
-    public static implicit operator EventSequenceId(Guid id) => new(id);
+    public static readonly EventSequenceId SystemId = Guid.Parse("cf3612a4-48fe-462a-af3e-2bd9ad6f6825");
 
     /// <summary>
     /// Get whether or not this is the default log event sequence.
@@ -55,4 +56,27 @@ public record EventSequenceId(Guid Value) : ConceptAs<Guid>(Value)
     /// Get whether or not this is the default outbox event sequence.
     /// </summary>
     public bool IsInbox => this == Inbox;
+
+    /// <summary>
+    /// Implicitly convert from a string representation of a <see cref="Guid"/> to <see cref="EventSequenceId"/>.
+    /// </summary>
+    /// <param name="id"><see cref="Guid"/> to convert from.</param>
+    public static implicit operator EventSequenceId(string id)
+    {
+        // TODO: We're doing this explicit check for well-known type "system" until we have completed the transition from GUIDs to strings: https://github.com/aksio-insurtech/Cratis/issues/921
+        if (id == System) return SystemId;
+        return new(Guid.Parse(id));
+    }
+
+    /// <summary>
+    /// Implicitly convert from <see cref="Guid"/> to <see cref="EventSequenceId"/>.
+    /// </summary>
+    /// <param name="id"><see cref="Guid"/> to convert from.</param>
+    public static implicit operator EventSequenceId(Guid id) => new(id);
+
+    /// <summary>
+    /// Implicitly convert from bytes representing a <see cref="Guid"/> to <see cref="EventSequenceId"/>.
+    /// </summary>
+    /// <param name="bytes">Bytes to convert from.</param>
+    public static implicit operator EventSequenceId(ReadOnlyMemory<byte> bytes) => new(new Guid(bytes.Span));
 }

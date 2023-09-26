@@ -2,13 +2,12 @@
  *  **DO NOT EDIT** - This file is an automatically generated file.
  *--------------------------------------------------------------------------------------------*/
 
-import { field } from '@aksio/cratis-fundamentals';
+import { field } from '@aksio/fundamentals';
 
 import { EventType } from './EventType';
 import { ObserverType } from './ObserverType';
 import { ObserverRunningState } from './ObserverRunningState';
 import { FailedPartition } from './FailedPartition';
-import { Object } from './Object';
 
 export class ObserverState {
 
@@ -52,5 +51,5 @@ export class ObserverState {
     currentSubscriptionType!: string;
 
     @field(Object)
-    currentSubscriptionArguments?: Object;
+    currentSubscriptionArguments?: any;
 }

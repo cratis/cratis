@@ -1,9 +1,6 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Execution;
-using Orleans;
-
 namespace Aksio.Cratis.Kernel.Orleans.Execution;
 
 /// <summary>
@@ -37,8 +34,6 @@ public class ExecutionContextOutgoingCallFilter : IOutgoingGrainCallFilter
             _requestContextManager.Set(RequestContextKeys.MicroserviceId, executionContext.MicroserviceId);
             _requestContextManager.Set(RequestContextKeys.TenantId, executionContext.TenantId);
             _requestContextManager.Set(RequestContextKeys.CorrelationId, executionContext.CorrelationId);
-            _requestContextManager.Set(RequestContextKeys.CausationId, executionContext.CausationId);
-            _requestContextManager.Set(RequestContextKeys.CausedBy, executionContext.CausedBy);
         }
         else
         {

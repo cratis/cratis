@@ -1,10 +1,6 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.Reflection;
-using Aksio.Cratis.Reflection;
-using Aksio.Cratis.Types;
-
 namespace Aksio.Cratis.Events;
 
 /// <summary>
@@ -14,21 +10,31 @@ public class EventTypes : IEventTypes
 {
     readonly IDictionary<EventType, Type> _typesByEventType;
 
-    /// <inheritdoc/>
-    public IEnumerable<EventType> All { get; }
-
     /// <summary>
     /// /// Initializes a new instance of <see cref="EventTypes"/>.
     /// </summary>
-    /// <param name="types"><see cref="ITypes"/> for type discovery.</param>
-    public EventTypes(ITypes types)
+    /// <param name="clientArtifacts">Optional <see cref="IClientArtifactsProvider"/> for the client artifacts.</param>
+    public EventTypes(IClientArtifactsProvider clientArtifacts)
     {
-        _typesByEventType = types.All
-                        .Where(_ => _.HasAttribute<EventTypeAttribute>())
-                        .ToDictionary(_ => _.GetCustomAttribute<EventTypeAttribute>()!.Type!, _ => _);
+        var eventTypes = clientArtifacts.EventTypes.Select(_ => new
+        {
+            ClrType = _,
+            EventType = _.GetEventType()
+        }).ToArray();
 
-        All = _typesByEventType.Keys.ToArray();
+        var duplicateEventTypes = eventTypes.GroupBy(_ => _.EventType.Id).Where(_ => _.Count() > 1).ToArray();
+        if (duplicateEventTypes.Length > 0)
+        {
+            var clrTypes = duplicateEventTypes.SelectMany(_ => _).Select(_ => _.ClrType).ToArray();
+            throw new MultipleEventTypesWithSameIdFound(clrTypes);
+        }
+
+        _typesByEventType = eventTypes.ToDictionary(_ => _.EventType, _ => _.ClrType);
+        All = eventTypes.Select(_ => _.EventType).ToArray();
     }
+
+    /// <inheritdoc/>
+    public IEnumerable<EventType> All { get; }
 
     /// <inheritdoc/>
     public bool HasFor(EventTypeId eventTypeId) => _typesByEventType.Any(_ => _.Key.Id == eventTypeId);

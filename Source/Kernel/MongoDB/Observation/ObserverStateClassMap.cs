@@ -3,8 +3,8 @@
 
 #nullable disable
 
-using Aksio.Cratis.Extensions.MongoDB;
 using Aksio.Cratis.Kernel.Grains.Observation;
+using Aksio.MongoDB;
 using MongoDB.Bson.Serialization;
 
 namespace Aksio.Cratis.Kernel.MongoDB.Observation;
@@ -20,5 +20,7 @@ public class ObserverStateClassMap : IBsonClassMapFor<ObserverState>
         classMap.AutoMap();
         classMap.MapIdProperty(_ => _.Id);
         classMap.UnmapProperty(_ => _.FailedPartitions);
+        classMap.UnmapProperty(_ => _.CurrentSubscriptionType);
+        classMap.UnmapProperty(_ => _.CurrentSubscriptionArguments);
     }
 }

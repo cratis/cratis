@@ -32,11 +32,9 @@ public partial class ObserverSupervisor
         IEnumerable<EventType> eventTypes,
         object? subscriberArgs = default)
     {
-        await ReadStateAsync();
-
-        _failedPartitionSupervisor = new(_observerId, _observerKey, State.Name, eventTypes, State.FailedPartitions, GrainFactory);
-
         _logger.Subscribing(_observerId, subscriberType, _microserviceId, _eventSequenceId, _tenantId);
+        _failedPartitionSupervisor = new(_observerId, _observerKey, State.Name, eventTypes, State.FailedPartitions, GrainFactory);
+        await ReadStateAsync();
         CurrentSubscription = new(_observerId, _observerKey, eventTypes, subscriberType, subscriberArgs!);
 
         if (State.RunningState == ObserverRunningState.Rewinding)
@@ -55,7 +53,8 @@ public partial class ObserverSupervisor
 
         await UnsubscribeStream();
 
-        if (HasDefinitionChanged(eventTypes))
+        var lastSequenceNumber = await EventSequenceStorageProvider.GetTailSequenceNumber(State.EventSequenceId, eventTypes);
+        if (HasDefinitionChanged(eventTypes) && lastSequenceNumber != EventSequenceNumber.Unavailable)
         {
             State.EventTypes = eventTypes;
             await WriteStateAsync();
@@ -67,7 +66,6 @@ public partial class ObserverSupervisor
         State.EventTypes = eventTypes;
 
         var tailSequenceNumber = await EventSequenceStorageProvider.GetTailSequenceNumber(State.EventSequenceId);
-        var lastSequenceNumber = await EventSequenceStorageProvider.GetTailSequenceNumber(State.EventSequenceId, State.EventTypes);
         var nextSequenceNumber = lastSequenceNumber.Next();
 
         if (lastSequenceNumber != EventSequenceNumber.Unavailable &&

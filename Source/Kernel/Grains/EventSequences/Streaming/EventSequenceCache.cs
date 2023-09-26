@@ -1,10 +1,9 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.DependencyInversion;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
-using Aksio.Cratis.Execution;
+using Aksio.DependencyInversion;
 using Microsoft.Extensions.Logging;
 
 namespace Aksio.Cratis.Kernel.Grains.EventSequences.Streaming;
@@ -48,15 +47,6 @@ public class EventSequenceCache : IEventSequenceCache
     readonly ProviderFor<IEventSequenceStorage> _eventSequenceStorageProvider;
     readonly ILogger<EventSequenceCache> _logger;
 
-    /// <inheritdoc/>
-    public int Count => _eventsBySequenceNumber.Count;
-
-    /// <inheritdoc/>
-    public EventSequenceNumber Head => _head?.Event.Metadata.SequenceNumber ?? EventSequenceNumber.Unavailable;
-
-    /// <inheritdoc/>
-    public EventSequenceNumber Tail => _tail?.Event.Metadata.SequenceNumber ?? EventSequenceNumber.Unavailable;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="EventSequenceCache"/> class.
     /// </summary>
@@ -81,9 +71,16 @@ public class EventSequenceCache : IEventSequenceCache
         _executionContextManager = executionContextManager;
         _eventSequenceStorageProvider = eventSequenceStorageProvider;
         _logger = logger;
-
-        PreFillWithTailWindow();
     }
+
+    /// <inheritdoc/>
+    public int Count => _eventsBySequenceNumber.Count;
+
+    /// <inheritdoc/>
+    public EventSequenceNumber Head => _head?.Event.Metadata.SequenceNumber ?? EventSequenceNumber.Unavailable;
+
+    /// <inheritdoc/>
+    public EventSequenceNumber Tail => _tail?.Event.Metadata.SequenceNumber ?? EventSequenceNumber.Unavailable;
 
     /// <inheritdoc/>
     public void Dispose()
@@ -156,6 +153,16 @@ public class EventSequenceCache : IEventSequenceCache
         }
     }
 
+    /// <inheritdoc/>
+    public async Task PrimeWithTailWindow()
+    {
+        _executionContextManager.Establish(_tenantId, CorrelationId.New(), _microserviceId);
+        var tail = await _eventSequenceStorageProvider().GetTailSequenceNumber(_eventSequenceId);
+        tail -= NumberOfEventsToFetch;
+        if ((long)tail.Value < 0) tail = 0;
+        Prime(tail);
+    }
+
     void AddImplementation(AppendedEvent @event)
     {
         if (_eventsBySequenceNumber.ContainsKey(@event.Metadata.SequenceNumber))
@@ -192,14 +199,5 @@ public class EventSequenceCache : IEventSequenceCache
                 _head = _head.Next;
             }
         }
-    }
-
-    void PreFillWithTailWindow()
-    {
-        _executionContextManager.Establish(_tenantId, CorrelationId.New(), _microserviceId);
-        var tail = _eventSequenceStorageProvider().GetTailSequenceNumber(_eventSequenceId).GetAwaiter().GetResult();
-        tail -= NumberOfEventsToFetch;
-        if ((long)tail.Value < 0) tail = 0;
-        Prime(tail);
     }
 }

@@ -1,13 +1,11 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Clients;
-using Aksio.Cratis.Execution;
+using Aksio.Cratis.Connections;
 using Aksio.Cratis.Kernel.Grains.Clients;
 using Aksio.Cratis.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Orleans;
 
 namespace Aksio.Cratis.Kernel.Domain.Clients;
 
@@ -19,18 +17,22 @@ public class ConnectedClients : Controller
 {
     readonly ILogger<ConnectedClients> _logger;
     readonly IGrainFactory _grainFactory;
+    readonly IExecutionContextManager _executionContextManager;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ConnectedClients"/> class.
     /// </summary>
     /// <param name="grainFactory"><see cref="IGrainFactory"/> for working with Orleans grains.</param>
+    /// <param name="executionContextManager"><see cref="IExecutionContextManager"/>.</param>
     /// <param name="logger"><see cref="ILogger"/> for logging.</param>
     public ConnectedClients(
         IGrainFactory grainFactory,
+        IExecutionContextManager executionContextManager,
         ILogger<ConnectedClients> logger)
     {
         _logger = logger;
         _grainFactory = grainFactory;
+        _executionContextManager = executionContextManager;
     }
 
     /// <summary>
@@ -45,6 +47,7 @@ public class ConnectedClients : Controller
         [FromRoute] MicroserviceId microserviceId,
         [FromRoute] ConnectionId connectionId)
     {
+        _executionContextManager.Establish(microserviceId);
         var connectedClients = _grainFactory.GetGrain<IConnectedClients>(microserviceId);
         if (!await connectedClients.OnClientPing(connectionId))
         {
@@ -65,6 +68,7 @@ public class ConnectedClients : Controller
         [FromRoute] ConnectionId connectionId,
         [FromBody] ClientInformation clientInformation)
     {
+        _executionContextManager.Establish(microserviceId);
         var uri = new Uri(clientInformation.AdvertisedUri);
 
         if (microserviceId != MicroserviceId.Kernel)
@@ -78,7 +82,8 @@ public class ConnectedClients : Controller
             connectionId,
             uri,
             clientInformation.ClientVersion,
-            clientInformation.IsRunningWithDebugger);
+            clientInformation.IsRunningWithDebugger,
+            clientInformation.isMultiTenanted);
     }
 
     /// <summary>
@@ -92,6 +97,7 @@ public class ConnectedClients : Controller
         [FromRoute] MicroserviceId microserviceId,
         [FromRoute] ConnectionId connectionId)
     {
+        _executionContextManager.Establish(microserviceId);
         _logger.ClientDisconnected(microserviceId, connectionId);
         var connectedClients = _grainFactory.GetGrain<IConnectedClients>(microserviceId);
         await connectedClients.OnClientDisconnected(

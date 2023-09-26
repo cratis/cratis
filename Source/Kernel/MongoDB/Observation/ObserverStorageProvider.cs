@@ -1,14 +1,12 @@
 // Copyright (c) Aksio Insurtech. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.DependencyInversion;
 using Aksio.Cratis.Events;
-using Aksio.Cratis.Execution;
 using Aksio.Cratis.Kernel.Grains.Observation;
 using Aksio.Cratis.Kernel.Observation;
 using Aksio.Cratis.Observation;
+using Aksio.DependencyInversion;
 using MongoDB.Driver;
-using Orleans;
 using Orleans.Runtime;
 using Orleans.Storage;
 
@@ -20,6 +18,19 @@ namespace Aksio.Cratis.Kernel.MongoDB.Observation;
 public class ObserverStorageProvider : IGrainStorage
 {
     readonly ProviderFor<IEventStoreDatabase> _eventStoreDatabaseProvider;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ObserverStorageProvider"/> class.
+    /// </summary>
+    /// <param name="executionContextManager"><see cref="IExecutionContextManager"/> for working with the execution context.</param>
+    /// <param name="eventStoreDatabaseProvider">Provider for <see cref="IEventStoreDatabase"/>.</param>
+    public ObserverStorageProvider(
+        IExecutionContextManager executionContextManager,
+        ProviderFor<IEventStoreDatabase> eventStoreDatabaseProvider)
+    {
+        ExecutionContextManager = executionContextManager;
+        _eventStoreDatabaseProvider = eventStoreDatabaseProvider;
+    }
 
     /// <summary>
     /// Gets the <see cref="IExecutionContextManager"/> for working with the execution context.
@@ -36,32 +47,20 @@ public class ObserverStorageProvider : IGrainStorage
     /// </summary>
     protected IMongoCollection<RecoverFailedPartitionState> RecoverFailedPartitionCollection => _eventStoreDatabaseProvider().GetCollection<RecoverFailedPartitionState>(CollectionNames.FailedPartitions);
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ObserverStorageProvider"/> class.
-    /// </summary>
-    /// <param name="executionContextManager"><see cref="IExecutionContextManager"/> for working with the execution context.</param>
-    /// <param name="eventStoreDatabaseProvider">Provider for <see cref="IEventStoreDatabase"/>.</param>
-    public ObserverStorageProvider(
-        IExecutionContextManager executionContextManager,
-        ProviderFor<IEventStoreDatabase> eventStoreDatabaseProvider)
-    {
-        ExecutionContextManager = executionContextManager;
-        _eventStoreDatabaseProvider = eventStoreDatabaseProvider;
-    }
+    /// <inheritdoc/>
+    public Task ClearStateAsync<T>(string stateName, GrainId grainId, IGrainState<T> grainState) => Task.CompletedTask;
 
     /// <inheritdoc/>
-    public Task ClearStateAsync(string grainType, GrainReference grainReference, IGrainState grainState) => Task.CompletedTask;
-
-    /// <inheritdoc/>
-    public async Task ReadStateAsync(string grainType, GrainReference grainReference, IGrainState grainState)
+    public async Task ReadStateAsync<T>(string stateName, GrainId grainId, IGrainState<T> grainState)
     {
-        var observerId = (ObserverId)grainReference.GetPrimaryKey(out var observerKeyAsString);
-        var observerKey = ObserverKey.Parse(observerKeyAsString);
+        var actualGrainState = (grainState as IGrainState<ObserverState>)!;
+        var observerId = (ObserverId)grainId.GetGuidKey(out var observerKeyAsString);
+        var observerKey = ObserverKey.Parse(observerKeyAsString!);
         var eventSequenceId = observerKey.EventSequenceId;
 
         ExecutionContextManager.Establish(observerKey.TenantId, CorrelationId.New(), observerKey.MicroserviceId);
 
-        var failedPartitionsCursor = await RecoverFailedPartitionCollection.FindAsync(_ => _.ObserverId == observerId);
+        var failedPartitionsCursor = await RecoverFailedPartitionCollection.FindAsync(_ => _.ObserverId == observerId).ConfigureAwait(false);
         var failedPartitions = failedPartitionsCursor.ToList().Select(_ => new FailedPartition(
             _.Partition,
             _.CurrentError,
@@ -70,8 +69,8 @@ public class ObserverStorageProvider : IGrainStorage
             _.InitialPartitionFailedOn)).ToArray();
 
         var key = GetKeyFrom(observerKey, observerId);
-        var cursor = await Collection.FindAsync(_ => _.Id == key);
-        var state = await cursor.FirstOrDefaultAsync() ?? new ObserverState
+        var cursor = await Collection.FindAsync(_ => _.Id == key).ConfigureAwait(false);
+        var state = await cursor.FirstOrDefaultAsync().ConfigureAwait(false) ?? new ObserverState
         {
             Id = key,
             EventSequenceId = eventSequenceId,
@@ -81,14 +80,16 @@ public class ObserverStorageProvider : IGrainStorage
             RunningState = ObserverRunningState.New
         };
         state.FailedPartitions = failedPartitions;
-        grainState.State = state;
+        state.CurrentSubscriptionType = actualGrainState.State?.CurrentSubscriptionType;
+        state.CurrentSubscriptionArguments = actualGrainState.State?.CurrentSubscriptionArguments;
+        actualGrainState.State = state;
     }
 
     /// <inheritdoc/>
-    public virtual async Task WriteStateAsync(string grainType, GrainReference grainReference, IGrainState grainState)
+    public virtual async Task WriteStateAsync<T>(string stateName, GrainId grainId, IGrainState<T> grainState)
     {
-        var observerId = grainReference.GetPrimaryKey(out var observerKeyAsString);
-        var observerKey = ObserverKey.Parse(observerKeyAsString);
+        var observerId = grainId.GetGuidKey(out var observerKeyAsString);
+        var observerKey = ObserverKey.Parse(observerKeyAsString!);
         var eventSequenceId = observerKey.EventSequenceId;
         ExecutionContextManager.Establish(observerKey.TenantId, CorrelationId.New(), observerKey.MicroserviceId);
 
@@ -98,7 +99,7 @@ public class ObserverStorageProvider : IGrainStorage
         await Collection.ReplaceOneAsync(
             _ => _.Id == key,
             observerState!,
-            new ReplaceOptions { IsUpsert = true });
+            new ReplaceOptions { IsUpsert = true }).ConfigureAwait(false);
     }
 
     /// <summary>

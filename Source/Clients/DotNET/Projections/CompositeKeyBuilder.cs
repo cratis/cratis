@@ -3,8 +3,8 @@
 
 using System.Linq.Expressions;
 using System.Text;
-using Aksio.Cratis.Concepts;
 using Aksio.Cratis.Reflection;
+using Aksio.Reflection;
 
 namespace Aksio.Cratis.Projections;
 
@@ -29,7 +29,7 @@ public class CompositeKeyBuilder<TKeyType, TEvent> : ICompositeKeyBuilder<TKeyTy
     }
 
     /// <inheritdoc/>
-    public string Build()
+    public PropertyExpression Build()
     {
         var expressionBuilder = new StringBuilder();
         expressionBuilder

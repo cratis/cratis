@@ -289,3 +289,19 @@ dist
 
 wwwroot
 out
+
+**/yarn.lock
+
+.pnp.*
+**/.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+.DS_Store
+
+# Benachmark .NET
+BenchmarkDotNet.Artifacts/
+Benchmarks/results

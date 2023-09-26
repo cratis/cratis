@@ -2,16 +2,15 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Text.Json.Nodes;
-using Aksio.Cratis.Execution;
-using Aksio.Cratis.Extensions.MongoDB;
 using Aksio.Cratis.Kernel.Engines.Projections.Definitions;
 using Aksio.Cratis.MongoDB;
 using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Projections.Json;
+using Aksio.MongoDB;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace Aksio.Cratis.Projections.MongoDB;
+namespace Aksio.Cratis.Kernel.MongoDB.Projections;
 
 /// <summary>
 /// Represents a <see cref="IProjectionDefinitionsStorage"/> for projection definitions in MongoDB.
@@ -21,7 +20,6 @@ public class MongoDBProjectionDefinitionsStorage : IProjectionDefinitionsStorage
 {
     readonly ISharedDatabase _sharedDatabase;
     readonly IJsonProjectionSerializer _projectionSerializer;
-    IMongoCollection<BsonDocument> Collection => _sharedDatabase.GetCollection<BsonDocument>("projection-definitions");
 
     /// <summary>
     /// Initializes a new instance of <see cref="IMongoDBClientFactory"/>.
@@ -33,6 +31,8 @@ public class MongoDBProjectionDefinitionsStorage : IProjectionDefinitionsStorage
         _sharedDatabase = sharedDatabase;
         _projectionSerializer = projectionSerializer;
     }
+
+    IMongoCollection<BsonDocument> Collection => _sharedDatabase.GetCollection<BsonDocument>("projection-definitions");
 
     /// <inheritdoc/>
     public async Task<IEnumerable<ProjectionDefinition>> GetAll()

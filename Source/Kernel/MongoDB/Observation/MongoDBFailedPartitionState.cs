@@ -2,9 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Reactive.Subjects;
-using Aksio.Cratis.DependencyInversion;
 using Aksio.Cratis.Kernel.Grains.Observation;
 using Aksio.Cratis.Kernel.Observation;
+using Aksio.DependencyInversion;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
@@ -17,6 +17,19 @@ public class MongoDBFailedPartitionState : IFailedPartitionsState
 {
     readonly ProviderFor<IEventStoreDatabase> _eventStoreDatabaseProvider;
     readonly ILogger<MongoDBObserversState> _logger;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MongoDBObserversState"/> class.
+    /// </summary>
+    /// <param name="eventStoreDatabaseProvider">Provider for <see cref="IEventStoreDatabase"/>.</param>
+    /// <param name="logger">Logger for logging.</param>
+    public MongoDBFailedPartitionState(
+        ProviderFor<IEventStoreDatabase> eventStoreDatabaseProvider,
+        ILogger<MongoDBObserversState> logger)
+    {
+        _eventStoreDatabaseProvider = eventStoreDatabaseProvider;
+        _logger = logger;
+    }
 
     /// <inheritdoc/>
     public IObservable<IEnumerable<RecoverFailedPartitionState>> All
@@ -58,17 +71,4 @@ public class MongoDBFailedPartitionState : IFailedPartitionsState
     }
 
     IMongoCollection<RecoverFailedPartitionState> Collection => _eventStoreDatabaseProvider().GetCollection<RecoverFailedPartitionState>(CollectionNames.FailedPartitions);
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="MongoDBObserversState"/> class.
-    /// </summary>
-    /// <param name="eventStoreDatabaseProvider">Provider for <see cref="IEventStoreDatabase"/>.</param>
-    /// <param name="logger">Logger for logging.</param>
-    public MongoDBFailedPartitionState(
-        ProviderFor<IEventStoreDatabase> eventStoreDatabaseProvider,
-        ILogger<MongoDBObserversState> logger)
-    {
-        _eventStoreDatabaseProvider = eventStoreDatabaseProvider;
-        _logger = logger;
-    }
 }

@@ -2,11 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Aksio.Cratis.EventSequences;
-using Aksio.Cratis.Execution;
 using Aksio.Cratis.Kernel.Observation;
 using Aksio.Cratis.Specifications;
 using Microsoft.Extensions.Logging;
-using Orleans;
+using Orleans.Runtime;
 
 namespace Aksio.Cratis.Kernel.Grains.Observation.for_RecoverFailedPartition.given;
 
@@ -28,7 +27,7 @@ public class a_recover_failed_partition_worker : GrainSpecification<RecoverFaile
     protected ObserverKey ObserverKey { get; } = new(MicroserviceId, TenantId, EventSequenceId);
 
     protected PartitionedObserverKey PartitionedObserverKey { get; } = new(MicroserviceId, TenantId, EventSequenceId, EventSourceId);
-    protected ObserverSubscriberKey SubscriberKey = new(MicroserviceId, TenantId, EventSequenceId, EventSourceId);
+    protected ObserverSubscriberKey subscriber_key = new(MicroserviceId, TenantId, EventSequenceId, EventSourceId);
     protected override string GrainKeyExtension => PartitionedObserverKey;
 
     protected virtual IEnumerable<AppendedEvent> events => Enumerable.Empty<AppendedEvent>();
@@ -38,7 +37,7 @@ public class a_recover_failed_partition_worker : GrainSpecification<RecoverFaile
         ObserverId = ObserverId
     };
 
-    protected virtual Task<ObserverSubscriberResult> ProcessEvent(AppendedEvent evt) => Task.FromResult(ObserverSubscriberResult.Ok);
+    protected virtual Task<ObserverSubscriberResult> ProcessEvents(IEnumerable<AppendedEvent> events) => Task.FromResult(ObserverSubscriberResult.Ok);
 
     protected virtual Task<IEventCursor> FetchEvents(EventSequenceNumber sequenceNumber) => Task.FromResult<IEventCursor>(new EventCursorForSpecifications(events));
 
@@ -50,7 +49,9 @@ public class a_recover_failed_partition_worker : GrainSpecification<RecoverFaile
         event_sequence_storage_provider = new();
 
         subscriber = new();
-        subscriber.Setup(_ => _.OnNext(IsAny<AppendedEvent>(), IsAny<ObserverSubscriberContext>())).Returns((AppendedEvent evt, ObserverSubscriberContext _) => ProcessEvent(evt));
+        subscriber
+            .Setup(_ => _.OnNext(IsAny<IEnumerable<AppendedEvent>>(), IsAny<ObserverSubscriberContext>()))
+            .Returns((IEnumerable<AppendedEvent> events, ObserverSubscriberContext _) => ProcessEvents(events));
 
         return new RecoverFailedPartition(
             Mock.Of<IExecutionContextManager>(),
@@ -64,15 +65,13 @@ public class a_recover_failed_partition_worker : GrainSpecification<RecoverFaile
         grain_factory.Setup(_ => _.GetGrain<IObserverSupervisor>(IsAny<Guid>(), IsAny<string>(), IsAny<string>())).Returns(supervisor.Object);
 
         event_sequence_storage_provider
-            .Setup(_ => _.GetFromSequenceNumber(IsAny<EventSequenceId>(), IsAny<EventSequenceNumber>(),
-                IsAny<EventSourceId>(), IsAny<IEnumerable<EventType>>()))
+            .Setup(_ => _.GetFromSequenceNumber(IsAny<EventSequenceId>(), IsAny<EventSequenceNumber>(), IsAny<EventSourceId>(), IsAny<IEnumerable<EventType>>()))
             .Returns((EventSequenceId _, EventSequenceNumber sequenceNumber, EventSourceId? __, IEnumerable<EventType>? ___) =>
-                FetchEvents(sequenceNumber)
-            );
+                FetchEvents(sequenceNumber));
 
         timer_registry
-            .Setup(_ => _.RegisterTimer(grain, IsAny<Func<object, Task>>(), IsAny<object>(), IsAny<TimeSpan>(), IsAny<TimeSpan>()))
-            .Returns((Grain _, Func<object, Task> callback, object state, TimeSpan wait, TimeSpan repeat) =>
+            .Setup(_ => _.RegisterTimer(IsAny<IGrainContext>(), IsAny<Func<object, Task>>(), IsAny<object>(), IsAny<TimeSpan>(), IsAny<TimeSpan>()))
+            .Returns((IGrainContext _, Func<object, Task> callback, object state, TimeSpan wait, TimeSpan repeat) =>
             {
                 timers.Add(new(wait, repeat));
                 callback(state);

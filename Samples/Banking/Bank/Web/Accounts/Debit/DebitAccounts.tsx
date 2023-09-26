@@ -2,9 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 import { useMemo, useState, ReactElement, useEffect } from 'react';
-import { useDialog, DialogResult } from '@aksio/cratis-applications-frontend/dialogs';
+import { useDialog, DialogResult } from '@aksio/applications/dialogs';
 import { CreateAccountDialog, CreateAccountDialogResult } from './CreateAccountDialog';
-import { Guid } from '@aksio/cratis-fundamentals';
+import { Guid } from '@aksio/fundamentals';
 
 import {
     CommandBar,
@@ -25,13 +25,15 @@ import { AllAccounts } from 'API/accounts/debit/AllAccounts';
 import { StartingWith } from 'API/accounts/debit/StartingWith';
 import { LatestTransactions } from 'API/accounts/debit/LatestTransactions';
 import { DebitAccount } from 'API/accounts/debit/DebitAccount';
-import { CommandScope, CommandScopeContext, useCommandScope } from '@aksio/cratis-applications-frontend/commands';
+import { CommandScope, CommandScopeContext, useCommandScope } from '@aksio/applications/commands';
 import { DebitAccountsList } from './DebitAccountsList';
 import 'reflect-metadata';
 import { AllAccountHoldersWithAccounts } from 'API/accountholders/AllAccountHoldersWithAccounts';
+import { useNavigate } from 'react-router-dom';
 
 
 export const DebitAccounts = () => {
+    const navigate = useNavigate();
     const [accounts] = AllAccounts.use();
     const [openDebitAccount, setOpenDebitAccountValues] = OpenDebitAccount.use();
     const [holdersWithAccounts] = AllAccountHoldersWithAccounts.use();
@@ -75,6 +77,10 @@ export const DebitAccounts = () => {
             await command.execute();
         }
     });
+
+    const navigateToLedger = () => {
+        navigate(`/accounts/debit/${selectedItem.id}/ledger`);
+    }
 
     const searchFor = (filter: string) => {
         if (filter && filter !== '') {
@@ -126,6 +132,16 @@ export const DebitAccounts = () => {
                 onClick: () => showWithdrawAmountDialog({ okTitle: 'Withdraw' })
             }
         );
+
+        commandBarItems.push(
+            {
+                key: 'ledger',
+                name: 'Ledger',
+                iconProps: { iconName: 'Money' },
+                onClick: navigateToLedger
+            }
+        );
+
     }
 
     const selection = useMemo(
