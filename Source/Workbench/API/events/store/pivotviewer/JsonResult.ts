@@ -2,17 +2,16 @@
  *  **DO NOT EDIT** - This file is an automatically generated file.
  *--------------------------------------------------------------------------------------------*/
 
-import { field } from '@aksio/cratis-fundamentals';
+import { field } from '@aksio/fundamentals';
 
-import { Object } from './Object';
 
 export class JsonResult {
 
     @field(Object)
-    value?: Object;
+    value?: any;
 
     @field(Object)
-    serializerSettings?: Object;
+    serializerSettings?: any;
 
     @field(String)
     contentType?: string;

@@ -2,19 +2,19 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Text.Json;
-using Aksio.Cratis.Applications;
-using Aksio.Cratis.DependencyInversion;
+using Aksio.Applications;
 using Aksio.Cratis.Dynamic;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
-using Aksio.Cratis.Execution;
+using Aksio.Cratis.Kernel.Schemas;
 using Aksio.Cratis.Schemas;
+using Aksio.DependencyInversion;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aksio.Cratis.Kernel.Read.EventSequences.PivotViewer;
 
 [Route("/api/events/store/pivotviewer")]
-[SkipEnvelope]
+[AspNetResult]
 public class PivotViewerController : Controller
 {
     readonly ProviderFor<IEventSequenceStorage> _eventSequenceStorage;
@@ -54,7 +54,7 @@ public class PivotViewerController : Controller
         };
         pivotViewer.Items.ImgBase = "/images";
 
-        _executionContextManager.Establish("9c6efc52-5d53-41ae-86d2-de9fe9fc58c5", CorrelationId.New(), "85dc950d-1900-4407-a484-ec1e83da16c6");
+        _executionContextManager.Establish("3352d47d-c154-4457-b3fb-8a2efb725113", CorrelationId.New(), "85dc950d-1900-4407-a484-ec1e83da16c6");
 
         var events = new List<AppendedEvent>();
         var cursor = await _eventSequenceStorage().GetRange(EventSequenceId.Log, EventSequenceNumber.First, 2000);
