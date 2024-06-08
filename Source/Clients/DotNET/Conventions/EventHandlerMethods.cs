@@ -3,8 +3,9 @@
 
 using System.Reflection;
 using Aksio.Cratis.Events;
+using Cratis.Chronicle.Events;
 
-namespace Aksio.Cratis.Conventions;
+namespace Cratis.Chronicle.Conventions;
 
 /// <summary>
 /// Extension methods for working with event handler methods.

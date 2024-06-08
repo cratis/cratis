@@ -5,8 +5,9 @@ using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Observation;
 using Aksio.Cratis.Observation.Reducers;
+using Cratis.Chronicle.Events;
 
-namespace Aksio.Cratis.Reducers;
+namespace Cratis.Chronicle.Reducers;
 
 /// <summary>
 /// Represents an implementation of <see cref="IReducerHandler"/>.

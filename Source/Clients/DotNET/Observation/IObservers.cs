@@ -3,7 +3,7 @@
 
 using Aksio.Cratis.Kernel.Observation;
 
-namespace Aksio.Cratis.Observation;
+namespace Cratis.Chronicle.Observation;
 
 /// <summary>
 /// Defines a system for working with observers registered in the Kernel.

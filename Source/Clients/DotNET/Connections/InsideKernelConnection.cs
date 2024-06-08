@@ -3,16 +3,17 @@
 
 using System.Text.Json;
 using Aksio.Commands;
-using Aksio.Cratis.Configuration;
+using Aksio.Cratis.Connections;
 using Aksio.Cratis.Net;
 using Aksio.Tasks;
 using Aksio.Timers;
+using Cratis.Chronicle.Configuration;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Aksio.Cratis.Connections;
+namespace Cratis.Chronicle.Connections;
 
 /// <summary>
 /// Represents an implementation of <see cref="IConnection"/> for usage inside a silo.

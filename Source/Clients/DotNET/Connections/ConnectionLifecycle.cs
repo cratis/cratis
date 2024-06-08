@@ -1,10 +1,11 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using Aksio.Cratis.Connections;
 using Aksio.Types;
 using Microsoft.Extensions.Logging;
 
-namespace Aksio.Cratis.Connections;
+namespace Cratis.Chronicle.Connections;
 
 /// <summary>
 /// Represents an implementation of <see cref="IConnectionLifecycle"/>.

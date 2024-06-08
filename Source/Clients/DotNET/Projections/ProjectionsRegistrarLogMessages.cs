@@ -3,7 +3,7 @@
 
 using Microsoft.Extensions.Logging;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 internal static partial class ProjectionsRegistrarLogMessages
 {

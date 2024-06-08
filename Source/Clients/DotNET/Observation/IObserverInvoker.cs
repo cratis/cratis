@@ -4,7 +4,7 @@
 using System.Collections.Immutable;
 using Aksio.Cratis.Events;
 
-namespace Aksio.Cratis.Observation;
+namespace Cratis.Chronicle.Observation;
 
 /// <summary>
 /// Defines the invoker for an <see cref="ObserverHandler"/>.

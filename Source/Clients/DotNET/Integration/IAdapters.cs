@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using Aksio.Cratis.Projections.Definitions;
 using AutoMapper;
 
-namespace Aksio.Cratis.Integration;
+namespace Cratis.Chronicle.Integration;
 
 /// <summary>
 /// Defines the system for working with <see cref="AdapterFor{TModel, TExternalModel}"/>.

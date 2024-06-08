@@ -9,7 +9,7 @@ using Aksio.Cratis.Properties;
 using Aksio.Cratis.Reflection;
 using AutoMapper;
 
-namespace Aksio.Cratis.Integration;
+namespace Cratis.Chronicle.Integration;
 
 /// <summary>
 /// Extension methods for building on the <see cref="IImportBuilderFor{TModel, TExternalModel}"/>.

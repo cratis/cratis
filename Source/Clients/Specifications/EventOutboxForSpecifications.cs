@@ -4,12 +4,12 @@
 using System.Collections.Immutable;
 using Aksio.Cratis.Compliance;
 using Aksio.Cratis.Events;
-using Aksio.Cratis.EventSequences;
+using Cratis.Chronicle.EventSequences;
 using Aksio.Cratis.Json;
 using Aksio.Cratis.Schemas;
 using Aksio.Types;
 
-namespace Aksio.Cratis.Specifications;
+namespace Cratis.Chronicle.Specifications;
 
 /// <summary>
 /// Represents an implementation of <see cref="IEventLog"/> for specifications.

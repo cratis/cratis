@@ -5,7 +5,7 @@ using System.Text.Json.Nodes;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.Observation.Reducers;
 
-namespace Aksio.Cratis.Reducers;
+namespace Cratis.Chronicle.Reducers;
 
 /// <summary>
 /// Defines the endpoint called for receiving events from the kernel.

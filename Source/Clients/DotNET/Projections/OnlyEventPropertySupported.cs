@@ -3,7 +3,7 @@
 
 using Aksio.Cratis.Properties;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 /// <summary>
 /// Exception that gets thrown when a target property only supports being mapped to a property on the event.

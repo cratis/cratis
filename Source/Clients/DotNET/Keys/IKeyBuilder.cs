@@ -3,9 +3,9 @@
 
 using System.Linq.Expressions;
 using Aksio.Cratis.Events;
-using Aksio.Cratis.Projections;
+using Cratis.Chronicle.Projections;
 
-namespace Aksio.Cratis.Keys;
+namespace Cratis.Chronicle.Keys;
 
 /// <summary>
 /// Defines a key builder for a specific event.

@@ -2,19 +2,19 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Text.Json;
-using Aksio.Cratis.Connections;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Models;
-using Aksio.Cratis.Projections;
 using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Projections.Json;
 using Aksio.Cratis.Projections.Outbox;
 using Aksio.Cratis.Schemas;
 using Aksio.Cratis.Sinks;
+using Cratis.Chronicle.Connections;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Projections;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Aksio.Cratis.EventSequences.Outbox;
+namespace Cratis.Chronicle.EventSequences.Outbox;
 
 /// <summary>
 /// Represents an implementation of <see cref="IParticipateInConnectionLifecycle"/> for handling registrations of outbox projections with the Kernel.

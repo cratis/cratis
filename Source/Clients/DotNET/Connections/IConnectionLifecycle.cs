@@ -1,7 +1,9 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-namespace Aksio.Cratis.Connections;
+using Aksio.Cratis.Connections;
+
+namespace Cratis.Chronicle.Connections;
 
 /// <summary>
 /// Defines a system for the lifecycle of the client.

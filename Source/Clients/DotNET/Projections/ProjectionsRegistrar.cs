@@ -2,13 +2,13 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Text.Json;
-using Aksio.Cratis.Connections;
 using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Projections.Json;
 using Aksio.Cratis.Sinks;
+using Cratis.Chronicle.Connections;
 using Microsoft.Extensions.Logging;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 /// <summary>
 /// Represents an implementation of <see cref="IParticipateInConnectionLifecycle"/> for handling registrations of projections with the Kernel.

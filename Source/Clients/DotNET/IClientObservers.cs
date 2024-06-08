@@ -2,8 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Aksio.Cratis.Events;
+using Aksio.Cratis.Observation;
 
-namespace Aksio.Cratis.Observation;
+namespace Cratis.Chronicle.Observation;
 
 /// <summary>
 /// Defines the endpoint called for receiving events from the kernel.

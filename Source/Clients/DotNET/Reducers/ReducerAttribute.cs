@@ -4,7 +4,7 @@
 using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Observation.Reducers;
 
-namespace Aksio.Cratis.Reducers;
+namespace Cratis.Chronicle.Reducers;
 
 /// <summary>
 /// Attribute used to adorn classes to identify a reducer uniquely. The reducer also needs to implement <see cref="IReducerFor{TReadModel}"/>.

@@ -8,7 +8,7 @@ using Aksio.Cratis.Events;
 using Aksio.Cratis.Identities;
 using Aksio.Cratis.Kernel.Storage.EventSequences;
 
-namespace Aksio.Cratis.Specifications;
+namespace Cratis.Chronicle.Specifications;
 
 /// <summary>
 /// Represents an in-memory implementation of <see cref="IEventSequenceStorage"/>.

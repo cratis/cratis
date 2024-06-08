@@ -3,7 +3,7 @@
 
 using Aksio.Cratis.Projections;
 
-namespace Aksio.Cratis.Rules;
+namespace Cratis.Chronicle.Rules;
 
 /// <summary>
 /// Represents the unique identifier of a projection.

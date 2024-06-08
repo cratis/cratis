@@ -2,13 +2,14 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Text.Json;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.EventTypes;
 using Aksio.Cratis.Models;
+using Aksio.Cratis.Projections;
 using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Schemas;
+using Cratis.Chronicle.Events;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 /// <summary>
 /// /// Represents an implementation of <see cref="IProjectionBuilderFor{TModel}"/>.

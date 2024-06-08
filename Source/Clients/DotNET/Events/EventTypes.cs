@@ -2,8 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Immutable;
+using Aksio.Cratis.Events;
 
-namespace Aksio.Cratis.Events;
+namespace Cratis.Chronicle.Events;
 
 /// <summary>
 /// Represents an implementation of <see cref="IEventTypes"/>.

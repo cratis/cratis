@@ -1,13 +1,14 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Connections;
-using Aksio.Cratis.Events;
-using Aksio.Cratis.Identities;
-using Aksio.Cratis.Observation;
+using Aksio.Cratis.EventSequences;
+using Cratis.Chronicle.Auditing;
+using Cratis.Chronicle.Connections;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Identities;
+using Cratis.Chronicle.Observation;
 
-namespace Aksio.Cratis.EventSequences;
+namespace Cratis.Chronicle.EventSequences;
 
 /// <summary>
 /// Represents an implementation of <see cref="IEventOutbox"/>.

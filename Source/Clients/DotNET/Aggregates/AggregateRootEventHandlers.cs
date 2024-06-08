@@ -3,10 +3,11 @@
 
 using System.Collections.Immutable;
 using System.Reflection;
-using Aksio.Cratis.Conventions;
 using Aksio.Cratis.Events;
+using Cratis.Chronicle.Conventions;
+using Cratis.Chronicle.Events;
 
-namespace Aksio.Cratis.Aggregates;
+namespace Cratis.Chronicle.Aggregates;
 
 /// <summary>
 /// Represents an implementation of <see cref="IAggregateRootEventHandlers"/>.

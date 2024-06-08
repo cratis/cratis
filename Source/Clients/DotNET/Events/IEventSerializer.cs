@@ -3,8 +3,9 @@
 
 using System.Dynamic;
 using System.Text.Json.Nodes;
+using Aksio.Cratis.Events;
 
-namespace Aksio.Cratis.Events;
+namespace Cratis.Chronicle.Events;
 
 /// <summary>
 /// Defines a serializer of events.

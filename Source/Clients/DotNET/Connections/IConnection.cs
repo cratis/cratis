@@ -2,8 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Aksio.Commands;
+using Aksio.Cratis.Connections;
 
-namespace Aksio.Cratis.Connections;
+namespace Cratis.Chronicle.Connections;
 
 /// <summary>
 /// Represents a connection.

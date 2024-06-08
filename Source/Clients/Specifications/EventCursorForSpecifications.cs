@@ -4,7 +4,7 @@
 using Aksio.Cratis.Events;
 using Aksio.Cratis.Kernel.Storage.EventSequences;
 
-namespace Aksio.Cratis.Specifications;
+namespace Cratis.Chronicle.Specifications;
 
 /// <summary>
 /// Represents an <see cref="IEventCursor"/> for specifications.

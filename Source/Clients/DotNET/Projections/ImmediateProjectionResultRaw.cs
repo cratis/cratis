@@ -4,7 +4,7 @@
 using System.Text.Json.Nodes;
 using Aksio.Cratis.Properties;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 /// <summary>
 /// Represents the result of an immediate projection.

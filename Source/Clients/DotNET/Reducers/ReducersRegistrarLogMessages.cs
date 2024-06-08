@@ -6,7 +6,7 @@ using Aksio.Cratis.Observation;
 using Aksio.Cratis.Observation.Reducers;
 using Microsoft.Extensions.Logging;
 
-namespace Aksio.Cratis.Reducers;
+namespace Cratis.Chronicle.Reducers;
 
 internal static partial class ReducersRegistrarLogMessages
 {

@@ -4,7 +4,7 @@
 using Aksio.Cratis.Observation.Reducers;
 using Microsoft.Extensions.Logging;
 
-namespace Aksio.Cratis.Reducers;
+namespace Cratis.Chronicle.Reducers;
 
 /// <summary>
 /// Log messages for <see cref="ClientReducers"/>.

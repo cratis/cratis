@@ -5,8 +5,12 @@ using Aksio.Cratis.Auditing;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Identities;
+using Aksio.Cratis.Observation;
+using Cratis.Chronicle.Auditing;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Identities;
 
-namespace Aksio.Cratis.Observation;
+namespace Cratis.Chronicle.Observation;
 
 /// <summary>
 /// Represents a handler of observers.

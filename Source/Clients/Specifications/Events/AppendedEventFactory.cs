@@ -4,7 +4,7 @@
 using Aksio.Cratis.Dynamic;
 using Aksio.Cratis.Events;
 
-namespace Aksio.Cratis.Specifications.Events;
+namespace Cratis.Chronicle.Specifications.Events;
 
 /// <summary>
 /// Represents a factory for creating <see cref="AppendedEvent"/> instances.

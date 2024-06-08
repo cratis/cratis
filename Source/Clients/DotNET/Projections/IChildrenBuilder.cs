@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Properties;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 /// <summary>
 /// Defines the builder for building out a child relationship on a model.

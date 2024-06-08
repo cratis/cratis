@@ -5,12 +5,13 @@ using System.Linq.Expressions;
 using System.Text.Json;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.Projections.Definitions;
-using Aksio.Cratis.Projections.Expressions;
 using Aksio.Cratis.Properties;
 using Aksio.Cratis.Reflection;
 using Aksio.Cratis.Schemas;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Projections.Expressions;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 /// <summary>
 /// Represents an implementation of <see cref="IChildrenBuilder{TModel, TChildModel}"/>.

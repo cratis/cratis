@@ -1,7 +1,9 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-namespace Aksio.Cratis.Observation;
+using Aksio.Cratis.Observation;
+
+namespace Cratis.Chronicle.Observation;
 
 /// <summary>
 /// Defines a system for working with observers.

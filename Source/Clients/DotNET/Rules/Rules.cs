@@ -5,8 +5,9 @@ using System.Reflection;
 using System.Text.Json;
 using Aksio.Cratis.Projections;
 using Aksio.Strings;
+using Cratis.Chronicle.Projections;
 
-namespace Aksio.Cratis.Rules;
+namespace Cratis.Chronicle.Rules;
 
 /// <summary>
 /// Represents an implementation of <see cref="IRules"/>.

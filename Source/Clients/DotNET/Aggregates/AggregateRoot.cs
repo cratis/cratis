@@ -5,8 +5,11 @@ using System.Collections.Immutable;
 using Aksio.Cratis.Auditing;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
+using Cratis.Chronicle.Auditing;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.EventSequences;
 
-namespace Aksio.Cratis.Aggregates;
+namespace Cratis.Chronicle.Aggregates;
 
 /// <summary>
 /// Represents an implementation of <see cref="IAggregateRoot"/>.

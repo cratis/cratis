@@ -4,7 +4,7 @@
 using System.Collections.Immutable;
 using Aksio.Cratis.Projections.Definitions;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 /// <summary>
 /// Defines a system that holds projection definitions.

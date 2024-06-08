@@ -3,7 +3,7 @@
 
 using Aksio.Cratis.EventSequences;
 
-namespace Aksio.Cratis.Aggregates;
+namespace Cratis.Chronicle.Aggregates;
 
 /// <summary>
 /// Defines an aggregate root.

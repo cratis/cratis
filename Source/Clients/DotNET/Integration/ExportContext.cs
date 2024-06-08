@@ -3,7 +3,7 @@
 
 using Aksio.Cratis.Changes;
 
-namespace Aksio.Cratis.Integration;
+namespace Cratis.Chronicle.Integration;
 
 /// <summary>
 /// Represents the context when translating output for an <see cref="AdapterFor{TModel, TExternalModel}"/>.

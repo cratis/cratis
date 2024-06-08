@@ -2,9 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Aksio.Cratis.Auditing;
+using Aksio.Cratis.Events;
 using Aksio.Cratis.Identities;
 
-namespace Aksio.Cratis.Events;
+namespace Cratis.Chronicle.Events;
 
 /// <summary>
 /// Command for redacting single event.

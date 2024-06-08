@@ -5,11 +5,12 @@ using System.Reactive.Subjects;
 using System.Reflection;
 using Aksio.Cratis.Auditing;
 using Aksio.Cratis.Changes;
-using Aksio.Cratis.Events;
-using Aksio.Cratis.EventSequences;
 using AutoMapper;
+using Cratis.Chronicle.Auditing;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.EventSequences;
 
-namespace Aksio.Cratis.Integration;
+namespace Cratis.Chronicle.Integration;
 
 /// <summary>
 /// Represents an implementation of <see cref="IImportOperations{TModel, TExternalModel}"/>.

@@ -2,9 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Aksio.Cratis.Events;
-using Aksio.Cratis.Reducers;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Reducers;
 
-namespace Aksio.Cratis.Aggregates;
+namespace Cratis.Chronicle.Aggregates;
 
 /// <summary>
 /// Represents an implementation of <see cref="IAggregateRootStateProvider"/> using a reducer.

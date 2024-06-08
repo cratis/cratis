@@ -4,7 +4,7 @@
 using System.Dynamic;
 using Aksio.Cratis.Events;
 
-namespace Aksio.Cratis.Specifications;
+namespace Cratis.Chronicle.Specifications;
 
 /// <summary>
 /// Represents a specialized version of <see cref="AppendedEvent"/> used in specifications.

@@ -6,7 +6,7 @@ using System.Reflection;
 using Aksio.Cratis.Projections.Definitions;
 using AutoMapper;
 
-namespace Aksio.Cratis.Integration;
+namespace Cratis.Chronicle.Integration;
 
 /// <summary>
 /// Represents an implementation of <see cref="IAdapters"/>.

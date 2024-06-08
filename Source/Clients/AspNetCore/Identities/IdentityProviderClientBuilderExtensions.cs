@@ -4,7 +4,7 @@
 using Aksio.Cratis.AspNetCore.Identities;
 using Aksio.Cratis.Identities;
 
-namespace Aksio.Cratis;
+namespace Cratis.Chronicle;
 
 /// <summary>
 /// Extension methods for <see cref="IClientBuilder"/> for configuring the caused by identity provider.

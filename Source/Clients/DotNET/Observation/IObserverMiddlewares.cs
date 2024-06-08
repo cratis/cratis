@@ -3,7 +3,7 @@
 
 using Aksio.Cratis.Events;
 
-namespace Aksio.Cratis.Observation;
+namespace Cratis.Chronicle.Observation;
 
 /// <summary>
 /// Defines a system for working with <see cref="IObserverMiddleware">middlewares</see> that can be called during the observing of events.

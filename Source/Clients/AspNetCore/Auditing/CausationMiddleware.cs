@@ -6,7 +6,7 @@ using Aksio.Cratis.Auditing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 
-namespace Aksio.Cratis.AspNetCore.Auditing;
+namespace Cratis.Chronicle.AspNetCore.Auditing;
 
 /// <summary>
 /// Represents a middleware for adding causation from ASP.NET requests.

@@ -2,19 +2,19 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Reflection;
-using Aksio.Cratis.Aggregates;
-using Aksio.Cratis.Connections;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Models;
-using Aksio.Cratis.Observation;
 using Aksio.Cratis.Observation.Reducers;
 using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Schemas;
 using Aksio.Cratis.Sinks;
 using Aksio.Reflection;
+using Cratis.Chronicle.Aggregates;
+using Cratis.Chronicle.Connections;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Observation;
 using Microsoft.Extensions.Logging;
 
-namespace Aksio.Cratis.Reducers;
+namespace Cratis.Chronicle.Reducers;
 
 /// <summary>
 /// Represents an implementation of <see cref="IReducersRegistrar"/>.

@@ -13,7 +13,7 @@ using Aksio.Cratis.Schemas;
 using Aksio.Execution;
 using Aksio.Json;
 
-namespace Aksio.Cratis.Specifications;
+namespace Cratis.Chronicle.Specifications;
 
 /// <summary>
 /// Represents an event sequence for working in-memory.

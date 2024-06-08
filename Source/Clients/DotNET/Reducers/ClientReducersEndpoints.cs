@@ -4,6 +4,7 @@
 using System.Net;
 using System.Text.Json;
 using Aksio.Commands;
+using Aksio.Cratis.Events;
 using Aksio.Cratis.Observation.Reducers;
 using Aksio.Json;
 using Microsoft.AspNetCore.Builder;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Aksio.Cratis.Reducers;
+namespace Cratis.Chronicle.Reducers;
 
 /// <summary>
 /// Represents the endpoints for the client reducers.
@@ -93,7 +94,7 @@ public static class ClientReducersEndpoints
                     ExceptionStackTrace = ex.StackTrace ?? string.Empty,
                     Response = new ReduceResult(
                         reduce.InitialState,
-                        Events.EventSequenceNumber.Unavailable,
+                        EventSequenceNumber.Unavailable,
                         ex.GetAllMessages(),
                         ex.StackTrace ?? string.Empty)
                 };

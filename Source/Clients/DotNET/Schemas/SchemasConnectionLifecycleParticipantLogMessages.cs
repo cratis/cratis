@@ -3,7 +3,7 @@
 
 using Microsoft.Extensions.Logging;
 
-namespace Aksio.Cratis.Schemas;
+namespace Cratis.Chronicle.Schemas;
 
 internal static partial class SchemasConnectionLifecycleParticipantLogMessages
 {

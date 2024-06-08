@@ -4,7 +4,7 @@
 using System.Text.Json.Nodes;
 using Aksio.Cratis.Projections.Definitions;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 /// <summary>
 /// Represents a single projection registration.

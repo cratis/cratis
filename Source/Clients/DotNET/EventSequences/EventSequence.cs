@@ -4,12 +4,16 @@
 using System.Collections.Immutable;
 using System.Text;
 using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Connections;
 using Aksio.Cratis.Events;
+using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Identities;
-using Aksio.Cratis.Observation;
+using Cratis.Chronicle.Auditing;
+using Cratis.Chronicle.Connections;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Identities;
+using Cratis.Chronicle.Observation;
 
-namespace Aksio.Cratis.EventSequences;
+namespace Cratis.Chronicle.EventSequences;
 
 /// <summary>
 /// Represents an implementation of <see cref="IEventSequence"/>.

@@ -4,7 +4,7 @@
 using Aksio.Cratis.Events;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Aksio.Cratis.Observation;
+namespace Cratis.Chronicle.Observation;
 
 /// <summary>
 /// Represents an implementation of <see cref="IObserverMiddlewares"/>.

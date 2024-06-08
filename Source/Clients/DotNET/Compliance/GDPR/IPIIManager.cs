@@ -1,7 +1,9 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-namespace Aksio.Cratis.Compliance.GDPR;
+using Aksio.Cratis.Compliance;
+
+namespace Cratis.Chronicle.Compliance.GDPR;
 
 /// <summary>
 /// Defines a manager of PII in the system.

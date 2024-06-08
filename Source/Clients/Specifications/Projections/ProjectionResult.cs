@@ -3,7 +3,7 @@
 
 using Aksio.Cratis.Properties;
 
-namespace Aksio.Cratis.Specifications.Integration;
+namespace Cratis.Chronicle.Specifications.Integration;
 
 /// <summary>
 /// Represents the result of an <see cref="ProjectionSpecificationContext{T}"/>.

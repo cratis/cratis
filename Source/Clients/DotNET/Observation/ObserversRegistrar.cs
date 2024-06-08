@@ -2,12 +2,13 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Reflection;
-using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Connections;
-using Aksio.Cratis.Events;
+using Aksio.Cratis.Observation;
+using Cratis.Chronicle.Auditing;
+using Cratis.Chronicle.Connections;
+using Cratis.Chronicle.Events;
 using Microsoft.Extensions.Logging;
 
-namespace Aksio.Cratis.Observation;
+namespace Cratis.Chronicle.Observation;
 
 /// <summary>
 /// Represents an implementation of <see cref="ObserversRegistrar"/>.

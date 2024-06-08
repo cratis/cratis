@@ -3,7 +3,7 @@
 
 using Aksio.Cratis.Events;
 
-namespace Aksio.Cratis.Aggregates;
+namespace Cratis.Chronicle.Aggregates;
 
 /// <summary>
 /// Defines a factory that can create instances of <see cref="IAggregateRoot"/>.

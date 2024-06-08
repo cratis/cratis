@@ -3,7 +3,7 @@
 
 using Microsoft.Extensions.Logging;
 
-namespace Aksio.Cratis.EventSequences.Outbox;
+namespace Cratis.Chronicle.EventSequences.Outbox;
 
 internal static partial class OutboxProjectionsRegistrarLogMessages
 {

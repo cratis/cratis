@@ -1,11 +1,11 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Connections;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Kernel.Observation;
+using Cratis.Chronicle.Connections;
+using Cratis.Chronicle.Events;
 
-namespace Aksio.Cratis.Observation;
+namespace Cratis.Chronicle.Observation;
 
 /// <summary>
 /// Represents an implementation of <see cref="IObservers"/>.

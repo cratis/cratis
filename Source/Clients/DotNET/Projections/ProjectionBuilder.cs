@@ -13,9 +13,10 @@ using Aksio.Cratis.Reflection;
 using Aksio.Cratis.Schemas;
 using Aksio.Reflection;
 using Aksio.Strings;
+using Cratis.Chronicle.Events;
 using Humanizer;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 /// <summary>
 /// Represents a base projection builder.

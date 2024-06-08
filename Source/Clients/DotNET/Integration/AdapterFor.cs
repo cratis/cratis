@@ -2,10 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Aksio.Cratis.Events;
-using Aksio.Cratis.Projections;
 using AutoMapper;
+using Cratis.Chronicle.Projections;
 
-namespace Aksio.Cratis.Integration;
+namespace Cratis.Chronicle.Integration;
 
 /// <summary>
 /// Represents an implementation of <see cref="IAdapterFor{TModel, TExternalModel}"/>.

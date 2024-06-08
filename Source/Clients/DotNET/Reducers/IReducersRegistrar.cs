@@ -3,7 +3,7 @@
 
 using Aksio.Cratis.Observation.Reducers;
 
-namespace Aksio.Cratis.Reducers;
+namespace Cratis.Chronicle.Reducers;
 
 /// <summary>
 /// Defines a system that can register reducers.

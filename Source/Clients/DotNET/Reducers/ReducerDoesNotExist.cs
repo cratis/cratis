@@ -3,7 +3,7 @@
 
 using Aksio.Cratis.Observation.Reducers;
 
-namespace Aksio.Cratis.Reducers;
+namespace Cratis.Chronicle.Reducers;
 
 /// <summary>
 /// Exception that gets thrown when an observer does not exist.

@@ -7,7 +7,7 @@ using Aksio.Cratis.Events;
 using Aksio.Cratis.Specifications.Auditing;
 using Aksio.Cratis.Specifications.Events;
 
-namespace Aksio.Cratis.Specifications.Aggregates;
+namespace Cratis.Chronicle.Specifications.Aggregates;
 
 /// <summary>
 /// Extension methods for testing with <see cref="AggregateRoot"/>.

@@ -4,7 +4,7 @@
 using System.Collections.Immutable;
 using Aksio.Cratis.Projections.Definitions;
 
-namespace Aksio.Cratis.Rules;
+namespace Cratis.Chronicle.Rules;
 
 /// <summary>
 /// Defines a system that knows about projections related to rules.

@@ -4,7 +4,7 @@
 using Aksio.Cratis.Events;
 using Aksio.Types;
 
-namespace Aksio.Cratis.Specifications;
+namespace Cratis.Chronicle.Specifications;
 
 /// <summary>
 /// Holds the global instances used for testing.

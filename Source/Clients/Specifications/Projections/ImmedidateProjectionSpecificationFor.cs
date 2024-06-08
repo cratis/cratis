@@ -4,7 +4,7 @@
 using Aksio.Cratis.Projections;
 using Aksio.Specifications;
 
-namespace Aksio.Cratis.Specifications.Integration;
+namespace Cratis.Chronicle.Specifications.Integration;
 
 /// <summary>
 /// Represents a specialized <see cref="Specification"/> for specifying behaviors of adapters.

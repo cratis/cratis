@@ -1,9 +1,9 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Connections;
+using Cratis.Chronicle.Connections;
 
-namespace Aksio.Cratis.Reducers;
+namespace Cratis.Chronicle.Reducers;
 
 /// <summary>
 /// Represents a <see cref="IParticipateInConnectionLifecycle"/> for handling <see cref="IReducersRegistrar"/>.

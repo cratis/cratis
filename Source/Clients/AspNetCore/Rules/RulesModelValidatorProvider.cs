@@ -5,7 +5,7 @@ using Aksio.Cratis.Rules;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Aksio.Cratis.AspNetCore.Rules;
+namespace Cratis.Chronicle.AspNetCore.Rules;
 
 /// <summary>
 /// Represents a <see cref="IModelValidatorProvider"/> for business rules.

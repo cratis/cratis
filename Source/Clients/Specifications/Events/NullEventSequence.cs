@@ -3,9 +3,9 @@
 
 using System.Collections.Immutable;
 using Aksio.Cratis.Events;
-using Aksio.Cratis.EventSequences;
+using Cratis.Chronicle.EventSequences;
 
-namespace Aksio.Cratis.Specifications.Events;
+namespace Cratis.Chronicle.Specifications.Events;
 
 /// <summary>
 /// Represents a null implementation of <see cref="IEventSequence"/>.

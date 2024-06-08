@@ -3,7 +3,7 @@
 
 using Aksio.Cratis.EventSequences;
 
-namespace Aksio.Cratis.Reducers;
+namespace Cratis.Chronicle.Reducers;
 
 /// <summary>
 /// Attribute to specify which event sequence to use.

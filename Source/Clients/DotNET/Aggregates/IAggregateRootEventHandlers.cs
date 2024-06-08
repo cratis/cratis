@@ -3,8 +3,9 @@
 
 using System.Collections.Immutable;
 using Aksio.Cratis.Events;
+using Cratis.Chronicle.Events;
 
-namespace Aksio.Cratis.Aggregates;
+namespace Cratis.Chronicle.Aggregates;
 
 /// <summary>
 /// Defines a system that can handle events for an <see cref="IAggregateRoot"/>.

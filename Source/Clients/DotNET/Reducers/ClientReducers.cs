@@ -7,7 +7,7 @@ using Aksio.Cratis.Events;
 using Aksio.Cratis.Observation.Reducers;
 using Microsoft.Extensions.Logging;
 
-namespace Aksio.Cratis.Reducers;
+namespace Cratis.Chronicle.Reducers;
 
 /// <summary>
 /// Represents the endpoint called for receiving events from the kernel.

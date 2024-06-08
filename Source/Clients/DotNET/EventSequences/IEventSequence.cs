@@ -4,7 +4,7 @@
 using System.Collections.Immutable;
 using Aksio.Cratis.Events;
 
-namespace Aksio.Cratis.EventSequences;
+namespace Cratis.Chronicle.EventSequences;
 
 /// <summary>
 /// Defines the client event sequence.

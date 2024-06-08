@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using Aksio.Cratis.Properties;
 using Aksio.Cratis.Reflection;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 /// <summary>
 /// Represents an implementation of <see cref="IAddBuilder{TModel, TEvent, TProperty, TParentBuilder}"/>.

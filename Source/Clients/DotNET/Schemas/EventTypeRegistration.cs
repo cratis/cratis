@@ -4,7 +4,7 @@
 using System.Text.Json.Nodes;
 using Aksio.Cratis.Events;
 
-namespace Aksio.Cratis.Schemas;
+namespace Cratis.Chronicle.Schemas;
 
 /// <summary>
 /// Representation of an event type registration.

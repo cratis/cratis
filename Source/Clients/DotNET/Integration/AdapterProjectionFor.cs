@@ -4,8 +4,9 @@
 using System.Text.Json;
 using Aksio.Cratis.Projections;
 using Aksio.Cratis.Projections.Definitions;
+using Cratis.Chronicle.Projections;
 
-namespace Aksio.Cratis.Integration;
+namespace Cratis.Chronicle.Integration;
 
 /// <summary>
 /// Represents an implementation of <see cref="IAdapterProjectionFor{TModel}"/>.

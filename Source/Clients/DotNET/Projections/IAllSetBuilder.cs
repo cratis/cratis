@@ -4,7 +4,7 @@
 using System.Linq.Expressions;
 using Aksio.Cratis.Events;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 /// <summary>
 /// Defines a builder for building set operations for properties that will be applied for all events the projection is projecting from - represented as expressions.

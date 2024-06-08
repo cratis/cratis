@@ -2,15 +2,15 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Text.Json;
-using Aksio.Cratis.Configuration;
 using Aksio.Cratis.Net;
 using Aksio.Tasks;
 using Aksio.Timers;
+using Cratis.Chronicle.Configuration;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Aksio.Cratis.Connections;
+namespace Cratis.Chronicle.Connections;
 
 /// <summary>
 /// Represents a <see cref="IConnection"/> for a clustered Kernel.

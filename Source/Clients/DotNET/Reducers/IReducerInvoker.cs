@@ -3,8 +3,9 @@
 
 using System.Collections.Immutable;
 using Aksio.Cratis.Events;
+using Cratis.Chronicle.Events;
 
-namespace Aksio.Cratis.Reducers;
+namespace Cratis.Chronicle.Reducers;
 
 /// <summary>
 /// Defines a system that can invoke reducers.

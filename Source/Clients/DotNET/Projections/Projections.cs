@@ -4,13 +4,13 @@
 using System.Collections.Immutable;
 using System.Reflection;
 using System.Text.Json;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Models;
 using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Schemas;
+using Cratis.Chronicle.Events;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 /// <summary>
 /// Represents an implementation of <see cref="IProjections"/>.

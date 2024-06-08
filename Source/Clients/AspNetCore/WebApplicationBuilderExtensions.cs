@@ -3,7 +3,7 @@
 
 using Aksio.Cratis;
 using Aksio.Cratis.AspNetCore;
-using Aksio.Cratis.Client;
+using Cratis.Chronicle.Client;
 using Aksio.Cratis.Observation;
 using Aksio.Cratis.Reducers;
 using Microsoft.Extensions.DependencyInjection;

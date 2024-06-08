@@ -9,8 +9,10 @@ using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Projections.Outbox;
 using Aksio.Cratis.Schemas;
 using Aksio.Guids;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Projections;
 
-namespace Aksio.Cratis.EventSequences.Outbox;
+namespace Cratis.Chronicle.EventSequences.Outbox;
 
 /// <summary>
 /// Represents an implementation of <see cref="IOutboxProjectionsBuilder"/>.

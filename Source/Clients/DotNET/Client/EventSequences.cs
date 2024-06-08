@@ -1,14 +1,15 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Connections;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
-using Aksio.Cratis.Identities;
-using Aksio.Cratis.Observation;
+using Cratis.Chronicle.Auditing;
+using Cratis.Chronicle.Connections;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.EventSequences;
+using Cratis.Chronicle.Identities;
+using Cratis.Chronicle.Observation;
 
-namespace Aksio.Cratis.Client;
+namespace Cratis.Chronicle.Client;
 
 /// <summary>
 /// Represents an implementation of <see cref="IEventSequences"/>.

@@ -5,7 +5,7 @@ using Aksio.Cratis.Integration;
 using Aksio.Cratis.Projections;
 using Aksio.Cratis.Projections.Definitions;
 
-namespace Aksio.Cratis.Specifications.Integration;
+namespace Cratis.Chronicle.Specifications.Integration;
 
 /// <summary>
 /// Represents a <see cref="IAdapterProjectionFor{T}"/> for in-memory purpose.

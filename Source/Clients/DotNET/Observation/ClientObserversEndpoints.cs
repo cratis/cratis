@@ -4,13 +4,14 @@
 using System.Net;
 using Aksio.Commands;
 using Aksio.Cratis.Events;
+using Aksio.Cratis.Observation;
 using Aksio.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Aksio.Cratis.Observation;
+namespace Cratis.Chronicle.Observation;
 
 /// <summary>
 /// Represents the endpoints for the client observers.

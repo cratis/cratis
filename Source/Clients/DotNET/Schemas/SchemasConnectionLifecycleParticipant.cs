@@ -2,11 +2,12 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Text.Json.Nodes;
-using Aksio.Cratis.Connections;
-using Aksio.Cratis.Events;
+using Aksio.Cratis.Schemas;
+using Cratis.Chronicle.Connections;
+using Cratis.Chronicle.Events;
 using Microsoft.Extensions.Logging;
 
-namespace Aksio.Cratis.Schemas;
+namespace Cratis.Chronicle.Schemas;
 
 /// <summary>
 /// Represents an implementation of <see cref="IParticipateInConnectionLifecycle"/> for registering event schemas.

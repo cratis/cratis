@@ -5,7 +5,7 @@ using Aksio.Cratis.Auditing;
 using Aksio.Cratis.Events;
 using Aksio.Cratis.Identities;
 
-namespace Aksio.Cratis.EventSequences;
+namespace Cratis.Chronicle.EventSequences;
 
 /// <summary>
 /// Represents the payload for appending many events.

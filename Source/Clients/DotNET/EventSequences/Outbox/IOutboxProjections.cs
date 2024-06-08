@@ -3,7 +3,7 @@
 
 using Aksio.Cratis.Projections;
 
-namespace Aksio.Cratis.EventSequences.Outbox;
+namespace Cratis.Chronicle.EventSequences.Outbox;
 
 /// <summary>
 /// Defines a system that is capable of defining projections from the event log to the event outbox.

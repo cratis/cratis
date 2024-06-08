@@ -3,9 +3,10 @@
 
 using System.Collections.Immutable;
 using System.Text.Json.Nodes;
+using Aksio.Cratis.Projections;
 using Aksio.Cratis.Projections.Definitions;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 /// <summary>
 /// Defines a system that works with <see cref="IImmediateProjectionFor{TModel}"/>.

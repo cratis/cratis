@@ -4,7 +4,7 @@
 using Aksio.Cratis.Projections;
 using Aksio.Cratis.Projections.Definitions;
 
-namespace Aksio.Cratis.Integration;
+namespace Cratis.Chronicle.Integration;
 
 /// <summary>
 /// Defines a projection for an adapter for a specific model.

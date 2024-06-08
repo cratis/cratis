@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using Aksio.Cratis.Projections;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Aksio.Cratis.Rules;
+namespace Cratis.Chronicle.Rules;
 
 /// <summary>
 /// Represents a single business rule.

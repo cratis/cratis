@@ -4,7 +4,7 @@
 using System.Text.Json.Nodes;
 using Aksio.Cratis.Events;
 
-namespace Aksio.Cratis.EventSequences;
+namespace Cratis.Chronicle.EventSequences;
 
 /// <summary>
 /// Represents the payload for appending an event.

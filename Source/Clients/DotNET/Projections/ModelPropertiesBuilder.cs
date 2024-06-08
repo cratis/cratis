@@ -3,12 +3,12 @@
 
 using System.Linq.Expressions;
 using Aksio.Cratis.Events;
-using Aksio.Cratis.Projections.Expressions;
 using Aksio.Cratis.Properties;
 using Aksio.Cratis.Reflection;
 using Aksio.Reflection;
+using Cratis.Chronicle.Projections.Expressions;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 /// <summary>
 /// Represents an implementation of <see cref="IModelPropertiesBuilder{TModel, TEvent, TBuilder}"/>.

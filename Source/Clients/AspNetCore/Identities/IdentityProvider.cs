@@ -4,7 +4,7 @@
 using Aksio.Cratis.Identities;
 using Microsoft.AspNetCore.Http;
 
-namespace Aksio.Cratis.AspNetCore.Identities;
+namespace Cratis.Chronicle.AspNetCore.Identities;
 
 /// <summary>
 /// Represents an implementation of <see cref="IIdentityProvider"/> for ASP.NET.

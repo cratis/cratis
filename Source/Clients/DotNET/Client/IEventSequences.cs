@@ -2,8 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Aksio.Cratis.EventSequences;
+using Cratis.Chronicle.EventSequences;
 
-namespace Aksio.Cratis.Client;
+namespace Cratis.Chronicle.Client;
 
 /// <summary>
 /// Defines the event sequences.

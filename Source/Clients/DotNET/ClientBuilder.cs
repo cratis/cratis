@@ -2,36 +2,37 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Aksio.Collections;
-using Aksio.Cratis.Aggregates;
-using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Client;
 using Aksio.Cratis.Compliance;
 using Aksio.Cratis.Compliance.GDPR;
-using Aksio.Cratis.Configuration;
-using Aksio.Cratis.Connections;
-using Aksio.Cratis.Events;
-using Aksio.Cratis.EventSequences.Outbox;
-using Aksio.Cratis.Identities;
-using Aksio.Cratis.Integration;
 using Aksio.Cratis.Models;
 using Aksio.Cratis.Net;
-using Aksio.Cratis.Observation;
-using Aksio.Cratis.Projections;
 using Aksio.Cratis.Projections.Json;
-using Aksio.Cratis.Reducers;
-using Aksio.Cratis.Rules;
 using Aksio.Cratis.Schemas;
-using Aksio.Cratis.Tenants;
 using Aksio.Json;
 using Aksio.Tasks;
 using Aksio.Timers;
 using Aksio.Types;
+using Cratis.Chronicle.Aggregates;
+using Cratis.Chronicle.Auditing;
+using Cratis.Chronicle.Client;
+using Cratis.Chronicle.Configuration;
+using Cratis.Chronicle.Connections;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.EventSequences.Outbox;
+using Cratis.Chronicle.Identities;
+using Cratis.Chronicle.Integration;
+using Cratis.Chronicle.Observation;
+using Cratis.Chronicle.Projections;
+using Cratis.Chronicle.Reducers;
+using Cratis.Chronicle.Rules;
+using Cratis.Chronicle.Schemas;
+using Cratis.Chronicle.Tenants;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TaskFactory = Aksio.Tasks.TaskFactory;
 
-namespace Aksio.Cratis;
+namespace Cratis.Chronicle;
 
 /// <summary>
 /// Represents an implementation of <see cref="IClientBuilder"/>.
@@ -190,7 +191,7 @@ public class ClientBuilder : IClientBuilder
             .AddSingleton<IEventTypes, Events.EventTypes>()
             .AddSingleton<IEventSerializer, EventSerializer>()
             .AddSingleton<IExecutionContextManager, ExecutionContextManager>()
-            .AddSingleton<ITypes>(Types.Types.Instance)
+            .AddSingleton<ITypes>(Types.Instance)
             .AddSingleton<ITaskFactory, TaskFactory>()
             .AddSingleton<ITimerFactory, TimerFactory>()
             .AddSingleton<OutboxProjectionsRegistrar>()

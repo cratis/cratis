@@ -3,8 +3,9 @@
 
 using System.Collections.Immutable;
 using Aksio.Cratis.Events;
+using Cratis.Chronicle.Events;
 
-namespace Aksio.Cratis.Aggregates;
+namespace Cratis.Chronicle.Aggregates;
 
 /// <summary>
 /// Represents a null implementation of <see cref="IAggregateRootEventHandlers"/>.
