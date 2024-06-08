@@ -3,8 +3,8 @@
 
 using System.Collections.Immutable;
 using Aksio.Collections;
-using Aksio.Cratis.Identities;
 using Aksio.Cratis.Kernel.Storage.Identities;
+using Cratis.Chronicle.Identities;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 

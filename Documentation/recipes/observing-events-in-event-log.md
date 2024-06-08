@@ -27,7 +27,7 @@ of a [Guid](https://docs.microsoft.com/en-us/dotnet/api/system.guid?view=net-6.0
 The following is a sample of an observer:
 
 ```csharp
-using Aksio.Cratis.EventSequences;
+using Cratis.Chronicle.EventSequences;
 using Aksio.Cratis.Observation;
 
 [Observer("b195adfb-e743-4457-b295-5637368436e4")]

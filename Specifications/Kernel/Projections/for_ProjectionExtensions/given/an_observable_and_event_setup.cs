@@ -3,10 +3,10 @@
 
 using System.Dynamic;
 using System.Reactive.Subjects;
-using Aksio.Cratis.Auditing;
 using Aksio.Cratis.Changes;
-using Aksio.Cratis.Identities;
 using Aksio.Cratis.Properties;
+using Cratis.Chronicle.Auditing;
+using Cratis.Chronicle.Identities;
 
 namespace Aksio.Cratis.Kernel.Projections.for_ProjectionExtensions.given;
 

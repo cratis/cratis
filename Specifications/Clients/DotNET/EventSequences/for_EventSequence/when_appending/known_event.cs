@@ -4,8 +4,8 @@
 
 using System.Collections.Immutable;
 using System.Text.Json.Nodes;
-using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Identities;
+using Cratis.Chronicle.Auditing;
+using Cratis.Chronicle.Identities;
 
 namespace Aksio.Cratis.EventSequences.for_EventSequence.when_appending;
 

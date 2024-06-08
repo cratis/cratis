@@ -14,7 +14,7 @@ Based on the public event as defined [here](./creating-a-public-event.md) we can
 create an observer for this:
 
 ```csharp
-using Aksio.Cratis.EventSequences;
+using Cratis.Chronicle.EventSequences;
 using Aksio.Cratis.Observation;
 
 [Observer("292a21dc-71de-4042-a313-4bcd45f6e0cb", inbox: true)]

@@ -5,13 +5,13 @@ using System.Collections.Immutable;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Identities;
 using Aksio.Cratis.Json;
 using Aksio.Cratis.Schemas;
 using Aksio.Execution;
 using Aksio.Json;
+using Cratis.Chronicle.Auditing;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Identities;
 
 namespace Cratis.Chronicle.Specifications;
 

@@ -3,9 +3,9 @@
 
 using System.Collections.Immutable;
 using System.Dynamic;
-using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Identities;
+using Cratis.Chronicle.Auditing;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Identities;
 using Orleans.Streams;
 
 namespace Aksio.Cratis.Kernel.EventSequences;

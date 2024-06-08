@@ -3,13 +3,13 @@
 
 using System.Diagnostics;
 using Aksio.Cratis.Connections;
-using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Kernel.Configuration;
 using Aksio.Cratis.Kernel.Grains.Clients;
 using Aksio.Cratis.Kernel.Grains.Observation;
 using Aksio.Cratis.Kernel.Keys;
 using Aksio.Cratis.Observation;
 using Aksio.Cratis.Properties;
+using Cratis.Chronicle.EventSequences;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using IClientObservers = Aksio.Cratis.Kernel.Grains.Observation.Clients.IClientObservers;

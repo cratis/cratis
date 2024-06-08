@@ -2,9 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Text.Json.Nodes;
-using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Identities;
+using Cratis.Chronicle.Auditing;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Identities;
 
 #pragma warning disable SA1600, IDE0060
 

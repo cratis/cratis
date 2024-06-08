@@ -3,7 +3,6 @@
 
 using System.Collections.Concurrent;
 using System.Text.Json;
-using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Kernel.Storage.Changes;
 using Aksio.Cratis.Kernel.Storage.EventSequences;
 using Aksio.Cratis.Kernel.Storage.EventTypes;
@@ -17,6 +16,7 @@ using Aksio.Cratis.Kernel.Storage.MongoDB.Projections;
 using Aksio.Cratis.Kernel.Storage.MongoDB.Recommendations;
 using Aksio.Cratis.Kernel.Storage.Observation;
 using Aksio.Cratis.Kernel.Storage.Recommendations;
+using Cratis.Chronicle.EventSequences;
 using Microsoft.Extensions.Logging;
 
 namespace Aksio.Cratis.Kernel.Storage.MongoDB;

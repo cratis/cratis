@@ -280,7 +280,7 @@ Your entire `Program.cs` should now look like the following:
 
 ```csharp
 using Aksio.Cratis.Compliance.GDPR;
-using Aksio.Cratis.EventSequences;
+using Cratis.Chronicle.EventSequences;
 using ECommerce;
 
 var builder = WebApplication.CreateBuilder(args);

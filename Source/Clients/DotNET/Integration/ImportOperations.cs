@@ -3,7 +3,6 @@
 
 using System.Reactive.Subjects;
 using System.Reflection;
-using Aksio.Cratis.Auditing;
 using Aksio.Cratis.Changes;
 using AutoMapper;
 using Cratis.Chronicle.Auditing;

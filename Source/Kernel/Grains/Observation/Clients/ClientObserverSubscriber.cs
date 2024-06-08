@@ -6,11 +6,11 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using Aksio.Commands;
 using Aksio.Cratis.Connections;
-using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Kernel.Grains.Clients;
 using Aksio.Cratis.Observation;
 using Aksio.Json;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.EventSequences;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Logging;
 

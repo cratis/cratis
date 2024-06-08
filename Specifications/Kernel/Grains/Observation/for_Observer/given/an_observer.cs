@@ -3,12 +3,12 @@
 
 using System.Reflection;
 using System.Text.Json;
-using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Kernel.Keys;
 using Aksio.Cratis.Kernel.Observation;
 using Aksio.Cratis.Kernel.Storage.EventSequences;
 using Aksio.Cratis.Kernel.Storage.Observation;
 using Aksio.Json;
+using Cratis.Chronicle.EventSequences;
 using Microsoft.Extensions.Logging;
 using Orleans.Core;
 using Orleans.Runtime;

@@ -3,10 +3,10 @@
 
 using System.Collections.Immutable;
 using System.Dynamic;
-using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Identities;
 using Aksio.Cratis.Kernel.Storage.EventSequences;
+using Cratis.Chronicle.Auditing;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Identities;
 
 namespace Cratis.Chronicle.Specifications;
 

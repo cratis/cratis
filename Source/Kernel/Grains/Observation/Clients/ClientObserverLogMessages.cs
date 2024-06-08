@@ -2,8 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Aksio.Cratis.Connections;
-using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Observation;
+using Cratis.Chronicle.EventSequences;
 using Microsoft.Extensions.Logging;
 
 namespace Aksio.Cratis.Kernel.Grains.Observation.Clients;

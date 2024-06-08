@@ -1,7 +1,6 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.EventTypes;
 using Aksio.Cratis.Json;
 using Aksio.Cratis.Kernel.Grains.Observation;
@@ -10,6 +9,7 @@ using Aksio.Cratis.Kernel.Storage.EventSequences;
 using Aksio.Cratis.Kernel.Storage.EventTypes;
 using Aksio.Cratis.Observation;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.EventSequences;
 using Microsoft.Extensions.Logging;
 
 namespace Aksio.Cratis.Kernel.Grains.EventSequences.Inbox;

@@ -2,12 +2,12 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Text.Json;
-using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Kernel.Storage;
 using Aksio.Cratis.Kernel.Storage.EventSequences;
 using Aksio.Cratis.Kernel.Storage.Observation;
 using Aksio.Cratis.Observation;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.EventSequences;
 using Microsoft.AspNetCore.Mvc;
 using IEventSequence = Aksio.Cratis.Kernel.Grains.EventSequences.IEventSequence;
 

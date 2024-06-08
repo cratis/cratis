@@ -3,7 +3,6 @@
 
 using Aksio.Cratis.Changes;
 using Aksio.Cratis.Compliance;
-using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Json;
 using Aksio.Cratis.Kernel.Projections;
 using Aksio.Cratis.Kernel.Projections.Expressions;
@@ -18,6 +17,7 @@ using Aksio.Cratis.Kernel.Storage.Sinks.InMemory;
 using Aksio.Cratis.Models;
 using Aksio.Cratis.Schemas;
 using Aksio.Json;
+using Cratis.Chronicle.EventSequences;
 using Microsoft.Extensions.Logging;
 
 namespace Aksio.Cratis.Events.Projections.for_ProjectionScenarios.given;

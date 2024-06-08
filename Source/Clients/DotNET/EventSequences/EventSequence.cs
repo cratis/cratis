@@ -3,9 +3,6 @@
 
 using System.Collections.Immutable;
 using System.Text;
-using Aksio.Cratis.Auditing;
-using Aksio.Cratis.EventSequences;
-using Aksio.Cratis.Identities;
 using Cratis.Chronicle.Auditing;
 using Cratis.Chronicle.Connections;
 using Cratis.Chronicle.Events;

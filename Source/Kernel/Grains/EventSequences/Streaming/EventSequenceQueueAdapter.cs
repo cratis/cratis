@@ -1,11 +1,11 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Kernel.EventSequences;
 using Aksio.Cratis.Kernel.Storage;
 using Aksio.Cratis.Kernel.Storage.EventSequences;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.EventSequences;
 using Orleans.Runtime;
 using Orleans.Streams;
 

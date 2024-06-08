@@ -4,7 +4,7 @@
 using System;
 using Aksio.Cratis.Connections;
 using Aksio.Execution;
-using Aksio.Cratis.EventSequences;
+using Cratis.Chronicle.EventSequences;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Basic;

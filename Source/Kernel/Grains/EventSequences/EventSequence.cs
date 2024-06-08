@@ -2,10 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Text.Json.Nodes;
-using Aksio.Cratis.Auditing;
-using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.EventTypes;
-using Aksio.Cratis.Identities;
 using Aksio.Cratis.Json;
 using Aksio.Cratis.Kernel.Compliance;
 using Aksio.Cratis.Kernel.EventSequences;
@@ -16,7 +13,10 @@ using Aksio.Cratis.Kernel.Storage.Identities;
 using Aksio.Cratis.Kernel.Storage.Observation;
 using Aksio.Cratis.Metrics;
 using Aksio.Cratis.Observation;
+using Cratis.Chronicle.Auditing;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.EventSequences;
+using Cratis.Chronicle.Identities;
 using Microsoft.Extensions.Logging;
 using Orleans.Providers;
 using Orleans.Runtime;

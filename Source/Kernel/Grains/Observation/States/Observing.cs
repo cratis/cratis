@@ -2,11 +2,11 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Immutable;
-using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Kernel.EventSequences;
 using Aksio.Cratis.Kernel.Storage.Observation;
 using Aksio.Cratis.Observation;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.EventSequences;
 using Microsoft.Extensions.Logging;
 using Orleans.Runtime;
 using Orleans.Streams;

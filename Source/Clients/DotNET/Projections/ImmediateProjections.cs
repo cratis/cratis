@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using System.Reflection;
 using System.Text.Json;
 using Aksio.Collections;
-using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Models;
 using Aksio.Cratis.Projections;
 using Aksio.Cratis.Projections.Definitions;
@@ -14,6 +13,7 @@ using Aksio.Cratis.Schemas;
 using Aksio.Reflection;
 using Cratis.Chronicle.Connections;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.EventSequences;
 
 namespace Cratis.Chronicle.Projections;
 

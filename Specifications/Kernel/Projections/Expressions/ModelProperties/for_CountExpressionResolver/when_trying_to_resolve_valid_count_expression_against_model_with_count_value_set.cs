@@ -2,10 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Dynamic;
-using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Identities;
 using Aksio.Cratis.Properties;
 using Aksio.Cratis.Schemas;
+using Cratis.Chronicle.Auditing;
+using Cratis.Chronicle.Identities;
 
 namespace Aksio.Cratis.Kernel.Projections.Expressions.ModelProperties.for_CountExpressionResolver;
 

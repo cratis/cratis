@@ -1,7 +1,6 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Jobs;
 using Aksio.Cratis.Kernel.Grains.Jobs;
 using Aksio.Cratis.Kernel.Storage;
@@ -9,6 +8,7 @@ using Aksio.Cratis.Kernel.Storage.EventSequences;
 using Aksio.Cratis.Kernel.Storage.Jobs;
 using Aksio.Cratis.Observation;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.EventSequences;
 using Orleans.Runtime;
 
 namespace Aksio.Cratis.Kernel.Grains.Observation.Jobs;

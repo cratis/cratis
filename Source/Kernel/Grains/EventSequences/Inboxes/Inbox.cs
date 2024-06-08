@@ -1,11 +1,11 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.EventSequences;
-using Aksio.Cratis.EventSequences.Inboxes;
 using Aksio.Cratis.Kernel.Grains.Observation;
 using Aksio.Cratis.Observation;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.EventSequences;
+using Cratis.Chronicle.EventSequences.Inboxes;
 
 namespace Aksio.Cratis.Kernel.Grains.EventSequences.Inbox;
 
