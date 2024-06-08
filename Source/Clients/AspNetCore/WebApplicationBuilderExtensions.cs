@@ -1,6 +1,7 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using Aksio.Execution;
 using Cratis.Chronicle;
 using Cratis.Chronicle.AspNetCore;
 using Cratis.Chronicle.Client;
@@ -45,6 +46,7 @@ public static class WebApplicationBuilderExtensions
     {
         app.UseCausation();
         app.UseExecutionContext();
+        app.ApplicationServices.GetRequiredService<IExecutionContextManager>().Establish(TenantId.NotSet, CorrelationId.New(), MicroserviceId.Unspecified);
 
         app.UseRouting();
         app.UseEndpoints(endpoints => endpoints
