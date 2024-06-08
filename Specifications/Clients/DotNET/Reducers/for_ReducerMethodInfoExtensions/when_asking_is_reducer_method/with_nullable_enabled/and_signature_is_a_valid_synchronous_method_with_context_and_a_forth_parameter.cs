@@ -4,6 +4,7 @@
 #nullable enable
 
 using Aksio.Cratis.Observation.Reducers;
+using Cratis.Chronicle.Reducers;
 
 namespace Aksio.Cratis.Reducers.for_ReducerMethodInfoExtensions.when_asking_is_reducer_method.with_nullable_enabled;
 

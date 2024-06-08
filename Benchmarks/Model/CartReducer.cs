@@ -3,6 +3,7 @@
 
 using Benchmarks;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Reducers;
 
 namespace Benchmark.Model;
 

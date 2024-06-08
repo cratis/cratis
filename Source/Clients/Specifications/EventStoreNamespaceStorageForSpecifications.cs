@@ -8,6 +8,7 @@ using Aksio.Cratis.Kernel.Storage.Jobs;
 using Aksio.Cratis.Kernel.Storage.Keys;
 using Aksio.Cratis.Kernel.Storage.Observation;
 using Aksio.Cratis.Kernel.Storage.Recommendations;
+using Cratis.Chronicle.EventSequences;
 
 namespace Cratis.Chronicle.Specifications;
 

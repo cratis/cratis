@@ -2,7 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Immutable;
+using Cratis.Chronicle.Aggregates;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Specifications.Auditing;
+using Cratis.Chronicle.Specifications.Events;
 
 namespace Cratis.Chronicle.Specifications.Aggregates;
 

@@ -4,6 +4,8 @@
 using Aksio.Cratis.Changes;
 using Aksio.Specifications;
 using Cratis.Chronicle.EventSequences;
+using Cratis.Chronicle.Integration;
+using Cratis.Chronicle.Specifications.Auditing;
 
 namespace Cratis.Chronicle.Specifications.Integration;
 
