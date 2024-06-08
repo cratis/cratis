@@ -263,6 +263,10 @@ public abstract class RestKernelConnection : IConnection, IDisposable
             var tenantId = _options.Value.IsMultiTenanted ? _executionContextManager.Current.TenantId : TenantId.NotSet;
             client.DefaultRequestHeaders.Add(ExecutionContextAppBuilderExtensions.TenantIdHeader, tenantId.ToString());
         }
+        else
+        {
+            client.DefaultRequestHeaders.Add(ExecutionContextAppBuilderExtensions.TenantIdHeader, TenantId.NotSet.ToString());
+        }
         return client;
     }
 

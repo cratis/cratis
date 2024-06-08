@@ -5,6 +5,7 @@ using System.Text.Json;
 using Aksio.Tasks;
 using Aksio.Timers;
 using Cratis.Chronicle.Configuration;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -17,6 +18,7 @@ namespace Cratis.Chronicle.Connections;
 public class SingleKernelConnection : RestKernelConnection
 {
     readonly IHttpClientFactory _httpClientFactory;
+    readonly IExecutionContextManager _executionContextManager;
     readonly IOptions<ClientOptions> _options;
 
     /// <summary>
@@ -54,6 +56,7 @@ public class SingleKernelConnection : RestKernelConnection
             logger)
     {
         _httpClientFactory = httpClientFactory;
+        _executionContextManager = executionContextManager;
         _options = options;
     }
 
@@ -62,6 +65,15 @@ public class SingleKernelConnection : RestKernelConnection
     {
         var client = _httpClientFactory.CreateClient();
         client.BaseAddress = _options.Value.Kernel.SingleKernel?.Endpoint;
+        if (_executionContextManager.IsInContext)
+        {
+            var tenantId = _options.Value.IsMultiTenanted ? _executionContextManager.Current.TenantId : TenantId.NotSet;
+            client.DefaultRequestHeaders.Add(ExecutionContextAppBuilderExtensions.TenantIdHeader, tenantId.ToString());
+        }
+        else
+        {
+            client.DefaultRequestHeaders.Add(ExecutionContextAppBuilderExtensions.TenantIdHeader, TenantId.NotSet.ToString());
+        }
         return client;
     }
 }

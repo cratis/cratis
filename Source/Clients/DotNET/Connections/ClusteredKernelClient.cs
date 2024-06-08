@@ -6,6 +6,7 @@ using Aksio.Cratis.Net;
 using Aksio.Tasks;
 using Aksio.Timers;
 using Cratis.Chronicle.Configuration;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -17,7 +18,9 @@ namespace Cratis.Chronicle.Connections;
 /// </summary>
 public abstract class ClusteredKernelClient : RestKernelConnection
 {
+    readonly IOptions<ClientOptions> _options;
     readonly ILoadBalancedHttpClientFactory _httpClientFactory;
+    readonly IExecutionContextManager _executionContextManager;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ClusteredKernelClient"/> class.
@@ -53,7 +56,9 @@ public abstract class ClusteredKernelClient : RestKernelConnection
             jsonSerializerOptions,
             logger)
     {
+        _options = options;
         _httpClientFactory = httpClientFactory;
+        _executionContextManager = executionContextManager;
     }
 
     /// <summary>
@@ -62,5 +67,18 @@ public abstract class ClusteredKernelClient : RestKernelConnection
     protected abstract IEnumerable<Uri> Endpoints { get; }
 
     /// <inheritdoc/>
-    protected override HttpClient CreateHttpClient() => _httpClientFactory.Create(Endpoints);
+    protected override HttpClient CreateHttpClient()
+    {
+        var client = _httpClientFactory.Create(Endpoints);
+        if (_executionContextManager.IsInContext)
+        {
+            var tenantId = _options.Value.IsMultiTenanted ? _executionContextManager.Current.TenantId : TenantId.NotSet;
+            client.DefaultRequestHeaders.Add(ExecutionContextAppBuilderExtensions.TenantIdHeader, tenantId.ToString());
+        }
+        else
+        {
+            client.DefaultRequestHeaders.Add(ExecutionContextAppBuilderExtensions.TenantIdHeader, TenantId.NotSet.ToString());
+        }
+        return client;
+    }
 }
