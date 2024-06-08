@@ -1,34 +1,34 @@
-# Aksio Cratis
+# Cratis Chronicle
 
 ## Packages / Deployables
 
-[![Nuget](https://img.shields.io/nuget/v/Aksio.Cratis?logo=nuget)](http://nuget.org/packages/aksio.cratis)
-[![Docker](https://img.shields.io/docker/v/aksioinsurtech/cratis?label=Cratis%20Kernel&logo=docker&sort=semver)](https://hub.docker.com/r/aksioinsurtech/cratis)
+[![Nuget](https://img.shields.io/nuget/v/Cratis?logo=nuget)](http://nuget.org/packages/cratis)
+[![Docker](https://img.shields.io/docker/v/cratis/cratis?label=Cratis%20Chronicle&logo=docker&sort=semver)](https://hub.docker.com/r/cratis/chronicle)
 
 ## Builds
 
-[![C# Build](https://github.com/cratis/Cratis/actions/workflows/dotnet-build.yml/badge.svg)](https://github.com/aksio-insurtech/Cratis/actions/workflows/dotnet-build.yml)
-[![Publish](https://github.com/cratis/Cratis/actions/workflows/publish.yml/badge.svg)](https://github.com/aksio-insurtech/Cratis/actions/workflows/publish.yml)
-[![Documentation Site](https://github.com/cratis/Cratis/actions/workflows/pages.yml/badge.svg)](https://github.com/aksio-insurtech/Cratis/actions/workflows/pages.yml)
+[![C# Build](https://github.com/cratis/chronicle/actions/workflows/dotnet-build.yml/badge.svg)](https://github.com/cratis/chronicle/actions/workflows/dotnet-build.yml)
+[![Publish](https://github.com/cratis/chronicle/actions/workflows/publish.yml/badge.svg)](https://github.com/cratis/chronicle/actions/workflows/publish.yml)
+[![Documentation Site](https://github.com/cratis/chronicle/actions/workflows/pages.yml/badge.svg)](https://github.com/cratis/chronicle/actions/workflows/pages.yml)
 
 ## Statistics
 
-![Alt](https://repobeats.axiom.co/api/embed/51aa0aa357e84296b1d66b50d7143c917fee9471.svg "Repobeats analytics image")
+![Alt](https://repobeats.axiom.co/api/embed/552921f84632f2b5d78bfc34af351af69fdbc15b.svg "Repobeats analytics image")
 
 ## Introduction
 
-Cratis is an Event Sourcing database built with ease of use, productivity, compliance and maintainability in mind.
+Chronicle is an Event Sourcing database built with ease of use, productivity, compliance and maintainability in mind.
 It provides the core server, referred to as the **Kernel** with a client SDK to access it (.NET only for the time being) and tooling
 built into it.
 
 Read the documentation on our site [https://cratis.io](https://cratis.io) for all the details.
-For general guidance on the core values and principles we @ Aksio use, read more [here](https://github.com/aksio-insurtech/Home/blob/main/profile/README.md).
+For general guidance on the core values and principles we @ Cratis use, read more [here](https://github.com/cratis/.github/blob/main/profile/README.md).
 
 If you want to jump into building this repository and possibly contributing, please refer to [contributing](./Documentation/contributing.md).
 
 ## Opening in VSCode online
 
-If you prefer to browse the code in VSCode, you can do so by clicking [here](https://vscode.dev/github/aksio-insurtech/Cratis).
+If you prefer to browse the code in VSCode, you can do so by clicking [here](https://vscode.dev/github/cratis/chronicle).
 
 ## Running the samples
 

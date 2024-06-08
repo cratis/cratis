@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "description": "",
     "private": true,
-    "author": "Aksio Insurtech",
+    "author": "Cratis",
     "license": "MIT",
     "engines": {
         "node": ">= 16"
