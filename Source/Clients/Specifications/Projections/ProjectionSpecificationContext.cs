@@ -5,8 +5,6 @@ using System.Text.Json;
 using Aksio.Cratis.Changes;
 using Aksio.Cratis.Compliance;
 using Aksio.Cratis.Dynamic;
-using Aksio.Cratis.Events;
-using Cratis.Chronicle.EventSequences;
 using Aksio.Cratis.Json;
 using Aksio.Cratis.Kernel.Keys;
 using Aksio.Cratis.Kernel.Projections;
@@ -25,6 +23,8 @@ using Aksio.Cratis.Schemas;
 using Aksio.Json;
 using Aksio.Reflection;
 using Aksio.Types;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.EventSequences;
 
 namespace Cratis.Chronicle.Specifications.Integration;
 

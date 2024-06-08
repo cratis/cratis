@@ -4,7 +4,6 @@
 using System.Net;
 using System.Text.Json;
 using Aksio.Commands;
-using Aksio.Cratis.Specifications.Events;
 using Aksio.Json;
 
 namespace Aksio.Cratis.Observation.for_ClientObserversEndpoints.when_handling;

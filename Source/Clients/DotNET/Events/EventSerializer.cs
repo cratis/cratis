@@ -4,7 +4,6 @@
 using System.Dynamic;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Aksio.Cratis.Events;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Cratis.Chronicle.Events;

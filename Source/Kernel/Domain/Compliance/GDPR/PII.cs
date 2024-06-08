@@ -1,9 +1,9 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Compliance.GDPR;
-using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Kernel.Compliance.GDPR.Events;
+using Cratis.Chronicle.Compliance.GDPR;
+using Cratis.Chronicle.EventSequences;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aksio.Cratis.Kernel.Domain.Compliance.GDPR;

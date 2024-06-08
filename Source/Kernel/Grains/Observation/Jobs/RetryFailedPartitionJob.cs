@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using Aksio.Cratis.Jobs;
 using Aksio.Cratis.Kernel.Grains.Jobs;
 using Aksio.Cratis.Kernel.Storage.Jobs;
+using Cratis.Chronicle.Events;
 
 namespace Aksio.Cratis.Kernel.Grains.Observation.Jobs;
 
@@ -53,7 +54,7 @@ public class RetryFailedPartitionJob : Job<RetryFailedPartitionRequest, JobState
                     request.ObserverSubscription,
                     request.Key,
                     request.FromSequenceNumber,
-                    Events.EventObservationState.None,
+                    EventObservationState.None,
                     request.EventTypes))
         }.ToImmutableList();
 

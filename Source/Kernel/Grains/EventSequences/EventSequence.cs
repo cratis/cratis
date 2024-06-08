@@ -3,7 +3,6 @@
 
 using System.Text.Json.Nodes;
 using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.EventTypes;
 using Aksio.Cratis.Identities;
@@ -17,6 +16,7 @@ using Aksio.Cratis.Kernel.Storage.Identities;
 using Aksio.Cratis.Kernel.Storage.Observation;
 using Aksio.Cratis.Metrics;
 using Aksio.Cratis.Observation;
+using Cratis.Chronicle.Events;
 using Microsoft.Extensions.Logging;
 using Orleans.Providers;
 using Orleans.Runtime;

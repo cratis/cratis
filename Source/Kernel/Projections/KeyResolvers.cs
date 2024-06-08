@@ -3,10 +3,10 @@
 
 using System.Dynamic;
 using Aksio.Cratis.Dynamic;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Kernel.Keys;
 using Aksio.Cratis.Kernel.Storage.EventSequences;
 using Aksio.Cratis.Properties;
+using Cratis.Chronicle.Events;
 
 namespace Aksio.Cratis.Kernel.Projections;
 

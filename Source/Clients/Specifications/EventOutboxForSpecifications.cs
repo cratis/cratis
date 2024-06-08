@@ -3,11 +3,11 @@
 
 using System.Collections.Immutable;
 using Aksio.Cratis.Compliance;
-using Aksio.Cratis.Events;
-using Cratis.Chronicle.EventSequences;
 using Aksio.Cratis.Json;
 using Aksio.Cratis.Schemas;
 using Aksio.Types;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.EventSequences;
 
 namespace Cratis.Chronicle.Specifications;
 

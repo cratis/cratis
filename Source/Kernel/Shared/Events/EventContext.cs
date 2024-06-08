@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using Aksio.Cratis.Auditing;
 using Aksio.Cratis.Identities;
 
-namespace Aksio.Cratis.Events;
+namespace Cratis.Chronicle.Events;
 
 /// <summary>
 /// Represents the context in which an event exists - typically what it was appended with.

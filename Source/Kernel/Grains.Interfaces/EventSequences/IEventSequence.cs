@@ -3,8 +3,8 @@
 
 using System.Text.Json.Nodes;
 using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Identities;
+using Cratis.Chronicle.Events;
 using Orleans.Concurrency;
 
 namespace Aksio.Cratis.Kernel.Grains.EventSequences;

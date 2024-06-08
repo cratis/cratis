@@ -3,7 +3,7 @@
 
 using System.Collections.Immutable;
 using System.Reflection;
-using Aksio.Cratis.Events;
+using Cratis.Chronicle.Events;
 
 namespace Cratis.Chronicle.Specifications;
 

@@ -1,9 +1,9 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Kernel.Keys;
 using Aksio.Cratis.Properties;
+using Cratis.Chronicle.Events;
 using MongoDB.Driver;
 
 namespace Aksio.Cratis.Kernel.Storage.MongoDB.Keys;

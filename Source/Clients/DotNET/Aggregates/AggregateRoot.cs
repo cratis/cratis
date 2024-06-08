@@ -3,7 +3,6 @@
 
 using System.Collections.Immutable;
 using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
 using Cratis.Chronicle.Auditing;
 using Cratis.Chronicle.Events;

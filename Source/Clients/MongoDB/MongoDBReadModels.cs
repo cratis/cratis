@@ -3,9 +3,9 @@
 
 using System.Collections.Concurrent;
 using Aksio.Cratis;
-using Aksio.Cratis.Configuration;
 using Aksio.Execution;
 using Aksio.MongoDB;
+using Cratis.Chronicle.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 

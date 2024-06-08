@@ -1,8 +1,6 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Specifications;
-
 namespace Aksio.Cratis.Aggregates.for_AggregateRootEventHandlersFactory;
 
 public class when_creating_for_stateless_aggregate_root : Specification

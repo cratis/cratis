@@ -3,8 +3,8 @@
 
 #pragma warning disable SA1600
 
-using Aksio.Cratis.Client;
 using Aksio.Cratis.Kernel.Grains.Clients;
+using Cratis.Chronicle.Client;
 
 namespace Aksio.Cratis.Kernel.Server;
 

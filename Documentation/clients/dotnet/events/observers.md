@@ -34,7 +34,7 @@ They are discovered automatically from their interface type and configured at st
 For instance, lets say you want to create a middleware that logs something before and after handle:
 
 ```csharp
-using Aksio.Cratis.Events;
+using Cratis.Chronicle.Events;
 using Aksio.Cratis.Observation;
 
 public class MyObserverMiddleware : IObserverMiddleware

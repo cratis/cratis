@@ -5,8 +5,6 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Aksio.Commands;
-using Aksio.Cratis.Client;
-using Aksio.Cratis.Configuration;
 using Aksio.Cratis.Connections;
 using Aksio.Tasks;
 using Aksio.Timers;

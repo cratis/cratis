@@ -3,10 +3,9 @@
 
 using System.Text.Json.Nodes;
 using Aksio.Cratis.Dynamic;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Kernel.Grains.EventSequences;
-using Aksio.Cratis.Schemas;
 using Benchmark.Model;
+using Cratis.Chronicle.Events;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Benchmarks;

@@ -3,7 +3,6 @@
 
 using Aksio.Cratis.Auditing;
 using Aksio.Cratis.Changes;
-using Aksio.Cratis.EventSequences;
 using AutoMapper;
 
 namespace Aksio.Cratis.Integration.for_ImportOperations.given;

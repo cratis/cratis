@@ -2,8 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Immutable;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
+using Cratis.Chronicle.Events;
 
 namespace Aksio.Cratis.Kernel.Storage.EventSequences;
 

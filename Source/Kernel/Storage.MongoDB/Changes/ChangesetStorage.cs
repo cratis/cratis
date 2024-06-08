@@ -3,8 +3,8 @@
 
 using System.Dynamic;
 using Aksio.Cratis.Changes;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Kernel.Storage.Changes;
+using Cratis.Chronicle.Events;
 
 namespace Aksio.Cratis.Kernel.Storage.MongoDB.Projections;
 

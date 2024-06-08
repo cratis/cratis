@@ -2,10 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Immutable;
-using Aksio.Cratis.Aggregates;
-using Aksio.Cratis.Events;
-using Aksio.Cratis.Specifications.Auditing;
-using Aksio.Cratis.Specifications.Events;
+using Cratis.Chronicle.Events;
 
 namespace Cratis.Chronicle.Specifications.Aggregates;
 

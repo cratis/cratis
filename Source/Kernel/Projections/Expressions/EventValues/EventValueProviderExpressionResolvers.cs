@@ -3,11 +3,11 @@
 
 using System.Collections;
 using System.Dynamic;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Properties;
 using Aksio.Cratis.Schemas;
 using Aksio.Reflection;
 using Aksio.Types;
+using Cratis.Chronicle.Events;
 using NJsonSchema;
 
 namespace Aksio.Cratis.Kernel.Projections.Expressions.EventValues;

@@ -148,7 +148,7 @@ Lets add an event type called `ItemAddedToCart` by adding a file called `ItemAdd
 Add the following to it:
 
 ```csharp
-using Aksio.Cratis.Events;
+using Cratis.Chronicle.Events;
 
 namespace ECommerce;
 
@@ -198,7 +198,7 @@ With the **read model** in place, we can move on to creating the actual reducer.
 Create a file called `CartReducer.cs` and add the following code to it:
 
 ```csharp
-using Aksio.Cratis.Events;
+using Cratis.Chronicle.Events;
 using Aksio.Cratis.Reducers;
 
 namespace ECommerce;

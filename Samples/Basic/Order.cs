@@ -3,10 +3,10 @@
 
 using System.Linq;
 using System.Threading.Tasks;
-using Aksio.Cratis.Aggregates;
-using Aksio.Cratis.Events;
-using Aksio.Cratis.Projections;
-using Aksio.Cratis.Reducers;
+using Cratis.Chronicle.Aggregates;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Projections;
+using Cratis.Chronicle.Reducers;
 
 namespace Basic;
 

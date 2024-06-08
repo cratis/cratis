@@ -12,7 +12,7 @@ The latter would make it more decouple and is probably preferred from a systems 
 Below is an example of
 
 ```csharp
-using Aksio.Cratis.Events;
+using Cratis.Chronicle.Events;
 
 public class DebitAccountsBalance
 {

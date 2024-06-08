@@ -8,7 +8,7 @@ global using Aksio.Applications.ModelBinding;
 global using Aksio.Applications.Queries;
 global using Aksio.Applications.Queries.MongoDB;
 global using Aksio.Applications.Validation;
-global using Aksio.Cratis.Events;
+global using Cratis.Chronicle.Events;
 global using Aksio.Cratis.EventSequences;
 global using Aksio.Cratis.EventSequences.Outbox;
 global using Aksio.Cratis.Integration;

@@ -3,6 +3,7 @@
 
 using Aksio.Collections;
 using Aksio.Cratis.Auditing;
+using Cratis.Chronicle.Auditing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 

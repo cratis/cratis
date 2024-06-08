@@ -1,11 +1,11 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis;
-using Aksio.Cratis.AspNetCore;
+using Cratis.Chronicle;
+using Cratis.Chronicle.AspNetCore;
 using Cratis.Chronicle.Client;
-using Aksio.Cratis.Observation;
-using Aksio.Cratis.Reducers;
+using Cratis.Chronicle.Observation;
+using Cratis.Chronicle.Reducers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;

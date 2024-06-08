@@ -4,9 +4,9 @@
 using System.Collections.Immutable;
 using System.Dynamic;
 using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Identities;
 using Aksio.Cratis.Kernel.Storage.EventSequences;
+using Cratis.Chronicle.Events;
 
 namespace Cratis.Chronicle.Specifications;
 

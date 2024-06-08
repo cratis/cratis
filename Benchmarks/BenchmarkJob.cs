@@ -5,12 +5,12 @@ using System.Reflection;
 using System.Text.Json.Nodes;
 using Aksio.Collections;
 using Aksio.Cratis;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Kernel.Configuration;
 using Aksio.Cratis.Kernel.Storage;
 using Aksio.Cratis.Kernel.Storage.EventTypes;
 using Aksio.Cratis.Schemas;
 using Aksio.MongoDB;
+using Cratis.Chronicle.Events;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 

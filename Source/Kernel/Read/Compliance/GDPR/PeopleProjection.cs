@@ -3,6 +3,7 @@
 
 using Aksio.Cratis.Kernel.Compliance.GDPR.Events;
 using Aksio.Cratis.Projections;
+using Cratis.Chronicle.Projections;
 
 namespace Aksio.Cratis.Kernel.Read.Compliance.GDPR;
 

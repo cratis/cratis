@@ -4,7 +4,6 @@
 using System.Collections.Immutable;
 using System.Text;
 using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Identities;
 using Cratis.Chronicle.Auditing;

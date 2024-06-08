@@ -8,7 +8,6 @@ using Aksio.Cratis.Kernel.Keys;
 using Aksio.Cratis.Kernel.Observation;
 using Aksio.Cratis.Kernel.Storage.EventSequences;
 using Aksio.Cratis.Kernel.Storage.Observation;
-using Aksio.Cratis.Specifications;
 using Aksio.Json;
 using Microsoft.Extensions.Logging;
 using Orleans.Core;

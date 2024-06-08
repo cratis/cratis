@@ -1,7 +1,6 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.Properties;
 
 namespace Aksio.Cratis.Kernel.Projections.for_ProjectionExtensions.when_applying_from_filter;

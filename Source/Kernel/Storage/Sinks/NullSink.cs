@@ -3,9 +3,9 @@
 
 using System.Dynamic;
 using Aksio.Cratis.Changes;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Kernel.Keys;
 using Aksio.Cratis.Sinks;
+using Cratis.Chronicle.Events;
 
 namespace Aksio.Cratis.Kernel.Storage.Sinks;
 

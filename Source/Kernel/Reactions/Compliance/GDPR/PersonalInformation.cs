@@ -3,10 +3,10 @@
 
 #pragma warning disable IDE0060
 
-using Aksio.Cratis.Compliance.GDPR;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Kernel.Compliance.GDPR.Events;
-using Aksio.Cratis.Observation;
+using Aksio.Cratis.Kernel.Grains.Compliance.GDPR;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Observation;
 
 namespace Aksio.Cratis.Kernel.Reactions.Compliance.GDPR;
 

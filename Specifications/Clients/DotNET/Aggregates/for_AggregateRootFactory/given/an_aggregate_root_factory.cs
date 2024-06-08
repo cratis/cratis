@@ -2,8 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Immutable;
-using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Client;
 using Aksio.Cratis.EventSequences;
 
 namespace Aksio.Cratis.Aggregates.for_AggregateRootStateFactory.given;

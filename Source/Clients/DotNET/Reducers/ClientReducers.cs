@@ -3,8 +3,8 @@
 
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Observation.Reducers;
+using Cratis.Chronicle.Events;
 using Microsoft.Extensions.Logging;
 
 namespace Cratis.Chronicle.Reducers;

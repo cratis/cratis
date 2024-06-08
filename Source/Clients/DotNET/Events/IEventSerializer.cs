@@ -3,7 +3,6 @@
 
 using System.Dynamic;
 using System.Text.Json.Nodes;
-using Aksio.Cratis.Events;
 
 namespace Cratis.Chronicle.Events;
 

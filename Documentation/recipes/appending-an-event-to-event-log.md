@@ -9,7 +9,7 @@ append on it. This is done by taking a dependency to `IEventLog` from the `Aksio
 Assuming you have an event as defined [here](./creating-an-event.md), you can do the following:
 
 ```csharp
-using Aksio.Cratis.Events;
+using Cratis.Chronicle.Events;
 
 public class DebitAccounts
 {

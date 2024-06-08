@@ -6,6 +6,7 @@ using Aksio.Cratis.Jobs;
 using Aksio.Cratis.Kernel.Grains.Jobs;
 using Aksio.Cratis.Kernel.Grains.Observation.States;
 using Aksio.Cratis.Kernel.Storage;
+using Cratis.Chronicle.Events;
 
 namespace Aksio.Cratis.Kernel.Grains.Observation.Jobs;
 
@@ -78,7 +79,7 @@ public class CatchUpObserver : Job<CatchUpObserverRequest, CatchUpObserverState>
                     request.ObserverSubscription,
                     key,
                     request.FromEventSequenceNumber,
-                    Events.EventObservationState.None,
+                    EventObservationState.None,
                     request.EventTypes)));
         }
 

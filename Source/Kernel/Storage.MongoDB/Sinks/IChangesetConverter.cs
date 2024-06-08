@@ -3,8 +3,8 @@
 
 using System.Dynamic;
 using Aksio.Cratis.Changes;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Kernel.Keys;
+using Cratis.Chronicle.Events;
 using MongoDB.Driver;
 
 namespace Aksio.Cratis.Kernel.Storage.MongoDB.Sinks;

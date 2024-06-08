@@ -2,9 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Text.Json;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.EventTypes;
 using Aksio.Cratis.Kernel.Storage;
+using Cratis.Chronicle.Events;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aksio.Cratis.Kernel.Read.EventTypes;

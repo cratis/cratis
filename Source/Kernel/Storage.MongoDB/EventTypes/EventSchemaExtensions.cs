@@ -3,6 +3,7 @@
 
 using Aksio.Cratis.EventTypes;
 using Aksio.Cratis.Schemas;
+using Cratis.Chronicle.Events;
 using NJsonSchema;
 
 namespace Aksio.Cratis.Events.MongoDB.EventTypes;

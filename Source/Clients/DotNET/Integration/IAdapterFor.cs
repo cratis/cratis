@@ -1,8 +1,8 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Events;
 using AutoMapper;
+using Cratis.Chronicle.Events;
 using Cratis.Chronicle.Projections;
 
 namespace Cratis.Chronicle.Integration;

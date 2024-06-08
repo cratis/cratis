@@ -1,12 +1,12 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
-using Aksio.Cratis.Identities;
 using Aksio.Cratis.Kernel.Events.EventSequences;
 using Aksio.Cratis.Kernel.Storage.EventSequences;
+using Cratis.Chronicle.Auditing;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Identities;
 using Microsoft.AspNetCore.Mvc;
 using EventRedacted = Aksio.Cratis.Kernel.Events.EventSequences.EventRedacted;
 using IEventSequence = Aksio.Cratis.Kernel.Grains.EventSequences.IEventSequence;

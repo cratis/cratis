@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Aksio.Cratis.Identities;
+using Cratis.Chronicle.Identities;
 using Microsoft.AspNetCore.Http;
 
 namespace Cratis.Chronicle.AspNetCore.Identities;

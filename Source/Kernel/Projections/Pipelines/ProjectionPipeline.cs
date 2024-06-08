@@ -3,7 +3,6 @@
 
 using System.Dynamic;
 using Aksio.Cratis.Changes;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Kernel.Keys;
 using Aksio.Cratis.Kernel.Storage.Changes;
 using Aksio.Cratis.Kernel.Storage.EventSequences;
@@ -11,6 +10,7 @@ using Aksio.Cratis.Kernel.Storage.Sinks;
 using Aksio.Cratis.Properties;
 using Aksio.Cratis.Schemas;
 using Aksio.Types;
+using Cratis.Chronicle.Events;
 using Microsoft.Extensions.Logging;
 using EngineProjection = Aksio.Cratis.Kernel.Projections.IProjection;
 

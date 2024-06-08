@@ -1,10 +1,6 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Auditing;
-using Aksio.Cratis.Connections;
-using Aksio.Cratis.Identities;
-
 namespace Aksio.Cratis.EventSequences.for_EventSequence.given;
 
 public class all_dependencies : Specification

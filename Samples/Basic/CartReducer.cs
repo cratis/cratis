@@ -3,10 +3,10 @@ using System;
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Aksio.Concepts;
-using Aksio.Cratis.Events;
-using Aksio.Cratis.Keys;
-using Aksio.Cratis.Observation;
-using Aksio.Cratis.Reducers;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Keys;
+using Cratis.Chronicle.Observation;
+using Cratis.Chronicle.Reducers;
 
 namespace Basic;
 

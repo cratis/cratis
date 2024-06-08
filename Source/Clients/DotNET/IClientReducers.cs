@@ -2,8 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Text.Json.Nodes;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Observation.Reducers;
+using Cratis.Chronicle.Events;
 
 namespace Cratis.Chronicle.Reducers;
 

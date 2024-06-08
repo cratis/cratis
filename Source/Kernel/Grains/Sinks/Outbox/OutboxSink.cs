@@ -6,7 +6,6 @@ using System.Text.Json;
 using Aksio.Cratis.Auditing;
 using Aksio.Cratis.Changes;
 using Aksio.Cratis.Dynamic;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences;
 using Aksio.Cratis.EventTypes;
 using Aksio.Cratis.Identities;
@@ -17,6 +16,7 @@ using Aksio.Cratis.Kernel.Storage.Sinks;
 using Aksio.Cratis.Objects;
 using Aksio.Cratis.Projections;
 using Aksio.Cratis.Sinks;
+using Cratis.Chronicle.Events;
 
 namespace Aksio.Cratis.Kernel.Grains.Sinks.Outbox;
 

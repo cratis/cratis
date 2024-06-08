@@ -2,10 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Text.Json.Nodes;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.Kernel.Compliance;
 using Aksio.Cratis.Kernel.Storage.EventTypes;
 using Aksio.Cratis.Kernel.Storage.Identities;
+using Cratis.Chronicle.Events;
 
 namespace Aksio.Cratis.Kernel.Storage.MongoDB;
 

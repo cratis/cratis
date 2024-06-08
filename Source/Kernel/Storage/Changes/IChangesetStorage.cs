@@ -3,7 +3,7 @@
 
 using System.Dynamic;
 using Aksio.Cratis.Changes;
-using Aksio.Cratis.Events;
+using Cratis.Chronicle.Events;
 
 namespace Aksio.Cratis.Kernel.Storage.Changes;
 

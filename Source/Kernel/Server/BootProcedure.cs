@@ -4,7 +4,6 @@
 using System.Diagnostics;
 using System.Text.Json.Nodes;
 using Aksio.Cratis.Boot;
-using Aksio.Cratis.Events;
 using Aksio.Cratis.EventSequences.Inboxes;
 using Aksio.Cratis.Kernel.Configuration;
 using Aksio.Cratis.Kernel.Grains.EventSequences;
@@ -15,6 +14,8 @@ using Aksio.Cratis.Kernel.Grains.Projections;
 using Aksio.Cratis.Kernel.Storage;
 using Aksio.Cratis.Observation;
 using Aksio.Cratis.Schemas;
+using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Schemas;
 using NJsonSchema;
 using IObservers = Aksio.Cratis.Kernel.Grains.Observation.IObservers;
 

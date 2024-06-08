@@ -5,6 +5,7 @@ using Aksio.Cratis.EventTypes;
 using Aksio.Cratis.Kernel.Storage.EventTypes;
 using Aksio.Cratis.Kernel.Storage.MongoDB;
 using Aksio.Cratis.Schemas;
+using Cratis.Chronicle.Events;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using NJsonSchema;

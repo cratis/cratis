@@ -4,6 +4,7 @@
 using System.Collections.Immutable;
 using Aksio.Cratis.Kernel.Grains.Jobs;
 using Aksio.Cratis.Kernel.Storage.Jobs;
+using Cratis.Chronicle.Events;
 
 namespace Aksio.Cratis.Kernel.Grains.Observation.Jobs;
 
@@ -34,7 +35,7 @@ public class ReplayObserverPartition : Job<ReplayObserverPartitionRequest, JobSt
                     request.ObserverSubscription,
                     request.Key,
                     request.FromSequenceNumber,
-                    Events.EventObservationState.Replay,
+                    EventObservationState.Replay,
                     request.EventTypes))
         }.ToImmutableList();
 

@@ -4,7 +4,7 @@
 using Aksio.Cratis.Auditing;
 using Aksio.Cratis.Identities;
 
-namespace Aksio.Cratis.Events;
+namespace Cratis.Chronicle.Events;
 
 /// <summary>
 /// Represents the content of a redaction event.
