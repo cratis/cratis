@@ -8,11 +8,13 @@ using Aksio.Collections;
 using Aksio.Cratis.Models;
 using Aksio.Cratis.Schemas;
 using Aksio.Reflection;
+using Cratis.Chronicle.Configuration;
 using Cratis.Chronicle.Connections;
 using Cratis.Chronicle.Events;
 using Cratis.Chronicle.EventSequences;
 using Cratis.Chronicle.Projections.Definitions;
 using Cratis.Chronicle.Projections.Json;
+using Microsoft.Extensions.Options;
 
 namespace Cratis.Chronicle.Projections;
 
@@ -21,6 +23,7 @@ namespace Cratis.Chronicle.Projections;
 /// </summary>
 public class ImmediateProjections : IImmediateProjections
 {
+    readonly IOptions<ClientOptions> _options;
     readonly IModelNameResolver _modelNameResolver;
     readonly IClientArtifactsProvider _clientArtifacts;
     readonly IServiceProvider _serviceProvider;
@@ -37,6 +40,7 @@ public class ImmediateProjections : IImmediateProjections
     /// <summary>
     /// Initializes a new instance of the <see cref="ImmediateProjections"/> class.
     /// </summary>
+    /// <param name="options">The <see cref="ClientOptions"/>.</param>
     /// <param name="modelNameResolver">The <see cref="IModelNameResolver"/> to use for naming the models.</param>
     /// <param name="clientArtifacts">Optional <see cref="IClientArtifactsProvider"/> for the client artifacts.</param>
     /// <param name="serviceProvider"><see cref="IServiceProvider"/> for providing projections.</param>
@@ -48,6 +52,7 @@ public class ImmediateProjections : IImmediateProjections
     /// <param name="connection">The <see cref="IConnection"/> for connecting to the kernel.</param>
     /// <param name="executionContextManager"><see cref="IExecutionContextManager"/> to work with the execution context.</param>
     public ImmediateProjections(
+        IOptions<ClientOptions> options,
         IModelNameResolver modelNameResolver,
         IClientArtifactsProvider clientArtifacts,
         IServiceProvider serviceProvider,
@@ -59,6 +64,7 @@ public class ImmediateProjections : IImmediateProjections
         IConnection connection,
         IExecutionContextManager executionContextManager)
     {
+        _options = options;
         _modelNameResolver = modelNameResolver;
         _clientArtifacts = clientArtifacts;
         _serviceProvider = serviceProvider;
@@ -145,7 +151,7 @@ public class ImmediateProjections : IImmediateProjections
             modelKey,
             eventsToApply);
 
-        var route = $"/api/events/store/{ExecutionContextManager.GlobalMicroserviceId}/projections/immediate/{_executionContextManager.Current.TenantId}/session/{correlationId}/with-events";
+        var route = $"/api/events/store/{ExecutionContextManager.GlobalMicroserviceId}/projections/immediate/{GetTenantId()}/session/{correlationId}/with-events";
 
         var response = await _connection.PerformCommand(route, immediateProjection);
         var element = (JsonElement)response.Response!;
@@ -164,7 +170,7 @@ public class ImmediateProjections : IImmediateProjections
             EventSequenceId.Log,
             modelKey);
 
-        var route = $"/api/events/store/{ExecutionContextManager.GlobalMicroserviceId}/projections/immediate/{_executionContextManager.Current.TenantId}/session/{correlationId}/dehydrate";
+        var route = $"/api/events/store/{ExecutionContextManager.GlobalMicroserviceId}/projections/immediate/{GetTenantId()}/session/{correlationId}/dehydrate";
         await _connection.PerformCommand(route, immediateProjection);
     }
 
@@ -175,7 +181,7 @@ public class ImmediateProjections : IImmediateProjections
             EventSequenceId.Log,
             modelKey);
 
-        var route = $"/api/events/store/{ExecutionContextManager.GlobalMicroserviceId}/projections/immediate/{_executionContextManager.Current.TenantId}";
+        var route = $"/api/events/store/{ExecutionContextManager.GlobalMicroserviceId}/projections/immediate/{GetTenantId()}";
         if (correlationId is not null)
         {
             route = $"{route}/session/{correlationId}";
@@ -185,6 +191,8 @@ public class ImmediateProjections : IImmediateProjections
         var element = (JsonElement)result.Response!;
         return element.Deserialize<ImmediateProjectionResultRaw>(_jsonSerializerOptions)!;
     }
+
+    TenantId GetTenantId() => _options.Value.IsMultiTenanted ? _executionContextManager.Current.TenantId : TenantId.NotSet;
 
     void HandleProjectionTypeCache<TModel>()
     {
