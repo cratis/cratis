@@ -4,7 +4,7 @@
 # Cratis Server
 # Build runtime image.
 ####################################
-FROM aksioinsurtech/cratis-base
+FROM cratis/base-mongodb
 ARG VERSION
 ARG ENTRYPOINT=entrypoint.sh
 
