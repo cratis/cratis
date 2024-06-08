@@ -45,7 +45,11 @@ public class Order : AggregateRoot<OrderState>
 }
 
 
-public record OrderState(int Items, IEnumerable<CartItem> CartItems);
+public class OrderState
+{
+    public int Items { get; set; }
+    public IEnumerable<CartItem> CartItems { get; set; } = Enumerable.Empty<CartItem>();
+}
 
 // [Reducer("5027a520-6d25-47c7-9d52-b1e9f82905d2")]
 // public class OrderStateReducer : IReducerFor<OrderState>
