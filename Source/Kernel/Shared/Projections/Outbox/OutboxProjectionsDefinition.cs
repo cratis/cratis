@@ -1,10 +1,10 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Projections.Definitions;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Projections.Definitions;
 
-namespace Aksio.Cratis.Projections.Outbox;
+namespace Cratis.Chronicle.Projections.Outbox;
 
 /// <summary>
 /// Represents the definition of outbox projections.

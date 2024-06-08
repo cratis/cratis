@@ -4,8 +4,8 @@
 using Aksio.Cratis.Kernel.Grains.Observation;
 using Aksio.Cratis.Kernel.Projections.Pipelines;
 using Aksio.Cratis.Observation;
-using Aksio.Cratis.Projections;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Projections;
 
 namespace Aksio.Cratis.Kernel.Grains.Projections;
 

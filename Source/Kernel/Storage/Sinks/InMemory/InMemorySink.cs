@@ -6,7 +6,6 @@ using System.Text;
 using Aksio.Cratis.Changes;
 using Aksio.Cratis.Dynamic;
 using Aksio.Cratis.Kernel.Keys;
-using Aksio.Cratis.Projections;
 using Aksio.Cratis.Reflection;
 using Aksio.Cratis.Schemas;
 using Aksio.Cratis.Sinks;
@@ -14,6 +13,7 @@ using Aksio.Json;
 using Aksio.Reflection;
 using Aksio.Types;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Projections;
 
 namespace Aksio.Cratis.Kernel.Storage.Sinks.InMemory;
 

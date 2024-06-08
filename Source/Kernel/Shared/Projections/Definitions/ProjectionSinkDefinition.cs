@@ -3,7 +3,7 @@
 
 using Aksio.Cratis.Sinks;
 
-namespace Aksio.Cratis.Projections.Definitions;
+namespace Cratis.Chronicle.Projections.Definitions;
 
 /// <summary>
 /// Represents the definition of where to store results from a projection.

@@ -2,8 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Immutable;
-using Aksio.Cratis.Projections.Definitions;
 using Cratis.Chronicle.Integration;
+using Cratis.Chronicle.Projections.Definitions;
 using Cratis.Chronicle.Rules;
 
 namespace Cratis.Chronicle.Projections;

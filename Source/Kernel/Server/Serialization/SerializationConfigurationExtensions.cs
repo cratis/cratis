@@ -8,9 +8,9 @@ using Aksio.Cratis.Kernel.EventSequences;
 using Aksio.Cratis.Kernel.Grains.Observation;
 using Aksio.Cratis.Kernel.Keys;
 using Aksio.Cratis.Kernel.Storage.Jobs;
-using Aksio.Cratis.Projections.Json;
 using Aksio.Cratis.Properties;
 using Aksio.Json;
+using Cratis.Chronicle.Projections.Json;
 using Orleans.Serialization;
 
 namespace Aksio.Cratis.Kernel.Server.Serialization;
@@ -48,7 +48,10 @@ public static class SerializationConfigurationExtensions
         options.Converters.Add(new TypeWithObjectPropertiesJsonConverterFactory<JobStepStateJsonConverter, JobStepState>());
 
         services.AddSerializer(serializerBuilder => serializerBuilder.AddJsonSerializer(
-            _ => _ == typeof(JsonObject) || (_.Namespace?.StartsWith("Aksio") ?? false),
+            _ =>
+                _ == typeof(JsonObject) ||
+                (_.Namespace?.StartsWith("Aksio") ?? false) ||
+                (_.Namespace?.StartsWith("Cratis") ?? false),
             options));
     }
 }

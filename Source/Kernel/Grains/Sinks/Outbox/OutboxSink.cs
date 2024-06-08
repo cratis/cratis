@@ -11,12 +11,12 @@ using Aksio.Cratis.Kernel.Keys;
 using Aksio.Cratis.Kernel.Storage.EventSequences;
 using Aksio.Cratis.Kernel.Storage.Sinks;
 using Aksio.Cratis.Objects;
-using Aksio.Cratis.Projections;
 using Aksio.Cratis.Sinks;
 using Cratis.Chronicle.Auditing;
 using Cratis.Chronicle.Events;
 using Cratis.Chronicle.EventSequences;
 using Cratis.Chronicle.Identities;
+using Cratis.Chronicle.Projections;
 
 namespace Aksio.Cratis.Kernel.Grains.Sinks.Outbox;
 

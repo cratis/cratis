@@ -5,7 +5,7 @@ using System.Text.Json.Nodes;
 using Aksio.Cratis.Properties;
 using Cratis.Chronicle.Events;
 
-namespace Aksio.Cratis.Projections.Definitions;
+namespace Cratis.Chronicle.Projections.Definitions;
 
 /// <summary>
 /// Represents the definition of a children projection.

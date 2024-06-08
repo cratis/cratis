@@ -3,7 +3,7 @@
 
 using System.Text.Json;
 using Aksio.Cratis.Kernel.Compliance;
-using Aksio.Cratis.Projections.Json;
+using Cratis.Chronicle.Projections.Json;
 using Microsoft.Extensions.Logging;
 
 namespace Aksio.Cratis.Kernel.Storage.MongoDB;

@@ -3,11 +3,11 @@
 
 using System.Linq.Expressions;
 using System.Text.Json;
-using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Properties;
 using Aksio.Cratis.Reflection;
 using Aksio.Cratis.Schemas;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Projections.Definitions;
 using Cratis.Chronicle.Projections.Expressions;
 
 namespace Cratis.Chronicle.Projections;

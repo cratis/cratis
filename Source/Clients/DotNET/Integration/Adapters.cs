@@ -3,8 +3,8 @@
 
 using System.Collections.Immutable;
 using System.Reflection;
-using Aksio.Cratis.Projections.Definitions;
 using AutoMapper;
+using Cratis.Chronicle.Projections.Definitions;
 
 namespace Cratis.Chronicle.Integration;
 

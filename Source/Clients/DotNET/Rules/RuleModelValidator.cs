@@ -2,8 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Reflection;
-using Aksio.Cratis.Projections;
 using Aksio.Reflection;
+using Cratis.Chronicle.Projections;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;

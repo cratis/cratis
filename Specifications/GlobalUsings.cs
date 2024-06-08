@@ -3,11 +3,11 @@
 
 global using Aksio.Concepts;
 global using Aksio.Cratis.Observation;
-global using Aksio.Cratis.Projections;
 global using Aksio.Execution;
 global using Aksio.Specifications;
 global using Aksio.Types;
 global using Cratis.Chronicle.Events;
+global using Cratis.Chronicle.Projections;
 global using Moq;
 global using Xunit;
 global using static Moq.It;

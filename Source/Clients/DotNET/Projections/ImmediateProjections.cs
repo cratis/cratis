@@ -6,14 +6,13 @@ using System.Reflection;
 using System.Text.Json;
 using Aksio.Collections;
 using Aksio.Cratis.Models;
-using Aksio.Cratis.Projections;
-using Aksio.Cratis.Projections.Definitions;
-using Aksio.Cratis.Projections.Json;
 using Aksio.Cratis.Schemas;
 using Aksio.Reflection;
 using Cratis.Chronicle.Connections;
 using Cratis.Chronicle.Events;
 using Cratis.Chronicle.EventSequences;
+using Cratis.Chronicle.Projections.Definitions;
+using Cratis.Chronicle.Projections.Json;
 
 namespace Cratis.Chronicle.Projections;
 

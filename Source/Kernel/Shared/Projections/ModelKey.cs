@@ -3,7 +3,7 @@
 
 using Cratis.Chronicle.Events;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 /// <summary>
 /// Represents the unique identifier of an instance of an event source.

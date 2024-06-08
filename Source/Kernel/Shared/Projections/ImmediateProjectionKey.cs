@@ -3,7 +3,7 @@
 
 using Cratis.Chronicle.EventSequences;
 
-namespace Aksio.Cratis.Projections;
+namespace Cratis.Chronicle.Projections;
 
 /// <summary>
 /// Represents the compound key for an immediate projection.

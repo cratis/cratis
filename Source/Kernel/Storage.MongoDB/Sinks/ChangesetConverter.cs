@@ -4,11 +4,11 @@
 using System.Dynamic;
 using Aksio.Cratis.Changes;
 using Aksio.Cratis.Kernel.Keys;
-using Aksio.Cratis.Projections;
 using Aksio.Cratis.Properties;
 using Aksio.Cratis.Schemas;
 using Aksio.Reflection;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Projections;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using NJsonSchema;

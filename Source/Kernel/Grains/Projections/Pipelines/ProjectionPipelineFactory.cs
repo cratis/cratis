@@ -5,9 +5,9 @@ using Aksio.Cratis.Changes;
 using Aksio.Cratis.Kernel.Projections.Pipelines;
 using Aksio.Cratis.Kernel.Storage;
 using Aksio.Cratis.Kernel.Storage.Sinks;
-using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Schemas;
 using Cratis.Chronicle.EventSequences;
+using Cratis.Chronicle.Projections.Definitions;
 using Microsoft.Extensions.Logging;
 using EngineProjection = Aksio.Cratis.Kernel.Projections.IProjection;
 

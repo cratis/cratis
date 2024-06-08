@@ -2,10 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Text.Json;
-using Aksio.Cratis.Projections.Definitions;
-using Aksio.Cratis.Projections.Json;
 using Aksio.Cratis.Sinks;
 using Cratis.Chronicle.Connections;
+using Cratis.Chronicle.Projections.Definitions;
+using Cratis.Chronicle.Projections.Json;
 using Microsoft.Extensions.Logging;
 
 namespace Cratis.Chronicle.Projections;

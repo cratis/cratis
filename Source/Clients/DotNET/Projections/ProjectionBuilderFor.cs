@@ -4,10 +4,9 @@
 using System.Text.Json;
 using Aksio.Cratis.EventTypes;
 using Aksio.Cratis.Models;
-using Aksio.Cratis.Projections;
-using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Schemas;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Projections.Definitions;
 
 namespace Cratis.Chronicle.Projections;
 

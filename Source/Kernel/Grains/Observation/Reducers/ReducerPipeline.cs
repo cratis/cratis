@@ -4,8 +4,8 @@
 using System.Dynamic;
 using Aksio.Cratis.Changes;
 using Aksio.Cratis.Kernel.Storage.Sinks;
-using Aksio.Cratis.Projections;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Projections;
 
 namespace Aksio.Cratis.Kernel.Grains.Observation.Reducers;
 

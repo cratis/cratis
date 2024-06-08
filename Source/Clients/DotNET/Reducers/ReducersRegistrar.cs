@@ -4,7 +4,6 @@
 using System.Reflection;
 using Aksio.Cratis.Models;
 using Aksio.Cratis.Observation.Reducers;
-using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Schemas;
 using Aksio.Cratis.Sinks;
 using Aksio.Reflection;
@@ -12,6 +11,7 @@ using Cratis.Chronicle.Aggregates;
 using Cratis.Chronicle.Connections;
 using Cratis.Chronicle.Events;
 using Cratis.Chronicle.Observation;
+using Cratis.Chronicle.Projections.Definitions;
 using Microsoft.Extensions.Logging;
 
 namespace Cratis.Chronicle.Reducers;

@@ -13,7 +13,7 @@ global using Cratis.Chronicle.EventSequences;
 global using Aksio.Cratis.EventSequences.Outbox;
 global using Aksio.Cratis.Integration;
 global using Aksio.Cratis.Observation;
-global using Aksio.Cratis.Projections;
+global using Cratis.Chronicle.Projections;
 global using Aksio.Concepts;
 global using Aksio.Cratis.Models;
 global using Aksio.Cratis.Rules;

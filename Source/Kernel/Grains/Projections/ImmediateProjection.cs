@@ -10,10 +10,10 @@ using Aksio.Cratis.Kernel.Keys;
 using Aksio.Cratis.Kernel.Projections;
 using Aksio.Cratis.Kernel.Storage;
 using Aksio.Cratis.Kernel.Storage.EventSequences;
-using Aksio.Cratis.Projections;
-using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Properties;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Projections;
+using Cratis.Chronicle.Projections.Definitions;
 using Microsoft.Extensions.Logging;
 using EngineProjection = Aksio.Cratis.Kernel.Projections.IProjection;
 

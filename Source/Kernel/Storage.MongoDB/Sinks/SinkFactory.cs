@@ -3,9 +3,9 @@
 
 using System.Dynamic;
 using Aksio.Cratis.Kernel.Storage.Sinks;
-using Aksio.Cratis.Projections;
 using Aksio.Cratis.Schemas;
 using Aksio.Cratis.Sinks;
+using Cratis.Chronicle.Projections;
 
 namespace Aksio.Cratis.Kernel.Storage.MongoDB.Sinks;
 

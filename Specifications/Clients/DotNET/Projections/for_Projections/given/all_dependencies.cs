@@ -5,7 +5,7 @@ using System.Text.Json;
 using Aksio.Cratis.Models;
 using Aksio.Cratis.Schemas;
 
-namespace Aksio.Cratis.Projections.for_Projections.given;
+namespace Cratis.Chronicle.Projections.for_Projections.given;
 
 public class all_dependencies : Specification
 {

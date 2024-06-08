@@ -16,8 +16,6 @@ using Aksio.Cratis.Kernel.Storage.Changes;
 using Aksio.Cratis.Kernel.Storage.EventSequences;
 using Aksio.Cratis.Kernel.Storage.Sinks.InMemory;
 using Aksio.Cratis.Models;
-using Aksio.Cratis.Projections;
-using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Properties;
 using Aksio.Cratis.Schemas;
 using Aksio.Json;
@@ -25,6 +23,8 @@ using Aksio.Reflection;
 using Aksio.Types;
 using Cratis.Chronicle.Events;
 using Cratis.Chronicle.EventSequences;
+using Cratis.Chronicle.Projections;
+using Cratis.Chronicle.Projections.Definitions;
 
 namespace Cratis.Chronicle.Specifications.Integration;
 

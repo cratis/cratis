@@ -3,8 +3,8 @@
 
 using System.Text.Json.Nodes;
 using Aksio.Cratis.Kernel.Projections.Pipelines;
-using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Properties;
+using Cratis.Chronicle.Projections.Definitions;
 using EngineProjection = Aksio.Cratis.Kernel.Projections.IProjection;
 
 namespace Aksio.Cratis.Kernel.Grains.Projections.for_ProjectionManager.given;

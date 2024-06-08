@@ -4,8 +4,8 @@
 using Aksio.Cratis.Kernel.Grains.Observation;
 using Aksio.Cratis.Kernel.Orleans.Observers;
 using Aksio.Cratis.Observation;
-using Aksio.Cratis.Projections;
-using Aksio.Cratis.Projections.Definitions;
+using Cratis.Chronicle.Projections;
+using Cratis.Chronicle.Projections.Definitions;
 using Microsoft.Extensions.Logging;
 using EngineProjection = Aksio.Cratis.Kernel.Projections.IProjection;
 

@@ -3,7 +3,7 @@
 
 using Cratis.Chronicle.Events;
 
-namespace Aksio.Cratis.Projections.Definitions;
+namespace Cratis.Chronicle.Projections.Definitions;
 
 /// <summary>
 /// Represents the definition of a child projection based on one property in an event.

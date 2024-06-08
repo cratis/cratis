@@ -10,7 +10,7 @@ using Aksio.Cratis.Kernel.Storage.Identities;
 using Aksio.Cratis.Kernel.Storage.MongoDB.Identities;
 using Aksio.Cratis.Kernel.Storage.MongoDB.Projections;
 using Aksio.Cratis.Kernel.Storage.Projections;
-using Aksio.Cratis.Projections.Json;
+using Cratis.Chronicle.Projections.Json;
 using Microsoft.Extensions.Logging;
 
 namespace Aksio.Cratis.Kernel.Storage.MongoDB;

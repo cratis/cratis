@@ -5,9 +5,9 @@ using System.Collections.Immutable;
 using System.Reflection;
 using System.Text.Json;
 using Aksio.Cratis.Models;
-using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Schemas;
 using Cratis.Chronicle.Events;
+using Cratis.Chronicle.Projections.Definitions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Cratis.Chronicle.Projections;

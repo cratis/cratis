@@ -3,7 +3,6 @@
 
 using System.Reflection;
 using System.Text.Json;
-using Aksio.Cratis.Projections;
 using Aksio.Strings;
 using Cratis.Chronicle.Projections;
 

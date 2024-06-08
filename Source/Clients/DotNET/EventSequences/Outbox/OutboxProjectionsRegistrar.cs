@@ -3,14 +3,14 @@
 
 using System.Text.Json;
 using Aksio.Cratis.Models;
-using Aksio.Cratis.Projections.Definitions;
-using Aksio.Cratis.Projections.Json;
-using Aksio.Cratis.Projections.Outbox;
 using Aksio.Cratis.Schemas;
 using Aksio.Cratis.Sinks;
 using Cratis.Chronicle.Connections;
 using Cratis.Chronicle.Events;
 using Cratis.Chronicle.Projections;
+using Cratis.Chronicle.Projections.Definitions;
+using Cratis.Chronicle.Projections.Json;
+using Cratis.Chronicle.Projections.Outbox;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 

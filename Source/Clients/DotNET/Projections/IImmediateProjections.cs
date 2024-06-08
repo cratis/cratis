@@ -3,8 +3,7 @@
 
 using System.Collections.Immutable;
 using System.Text.Json.Nodes;
-using Aksio.Cratis.Projections;
-using Aksio.Cratis.Projections.Definitions;
+using Cratis.Chronicle.Projections.Definitions;
 
 namespace Cratis.Chronicle.Projections;
 

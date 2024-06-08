@@ -3,10 +3,10 @@
 
 using System.Collections.Immutable;
 using System.Text.Json.Nodes;
-using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Properties;
+using Cratis.Chronicle.Projections.Definitions;
 
-namespace Aksio.Cratis.Projections.for_ClientProjections;
+namespace Cratis.Chronicle.Projections.for_ClientProjections;
 
 public class when_there_are_projections_from_all_sources : given.all_dependencies
 {

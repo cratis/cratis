@@ -8,12 +8,12 @@ using Aksio.Cratis.Kernel.Projections.Expressions.EventValues;
 using Aksio.Cratis.Kernel.Projections.Expressions.Keys;
 using Aksio.Cratis.Kernel.Storage;
 using Aksio.Cratis.Kernel.Storage.EventSequences;
-using Aksio.Cratis.Projections;
-using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Properties;
 using Aksio.Cratis.Schemas;
 using Cratis.Chronicle.Events;
 using Cratis.Chronicle.EventSequences;
+using Cratis.Chronicle.Projections;
+using Cratis.Chronicle.Projections.Definitions;
 using NJsonSchema;
 
 namespace Aksio.Cratis.Kernel.Projections;

@@ -3,9 +3,9 @@
 
 using System.Text.Json;
 using Aksio.Cratis.Kernel.Grains.Projections;
-using Aksio.Cratis.Projections;
-using Aksio.Cratis.Projections.Definitions;
-using Aksio.Cratis.Projections.Json;
+using Cratis.Chronicle.Projections;
+using Cratis.Chronicle.Projections.Definitions;
+using Cratis.Chronicle.Projections.Json;
 using Microsoft.AspNetCore.Mvc;
 using ImmediateProjectionResult = Aksio.Cratis.Kernel.Grains.Projections.ImmediateProjectionResult;
 using IProjections = Aksio.Cratis.Kernel.Grains.Projections.IProjections;

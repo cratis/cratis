@@ -1,9 +1,9 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Aksio.Cratis.Projections.Definitions;
 using Aksio.Cratis.Sinks;
 using Cratis.Chronicle.EventSequences;
+using Cratis.Chronicle.Projections.Definitions;
 
 namespace Aksio.Cratis.Observation.Reducers;
 
