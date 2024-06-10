@@ -12,7 +12,7 @@ CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
 CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 
 var builder = WebApplication.CreateBuilder(args)
-                .UseCratis(_ => _
+                .UseChronicle(_ => _
                     .MultiTenanted()
                     .WithSoftwareVersion("1.0.0", "1234567890")
                     .IdentifiedAs("Bank")
@@ -26,7 +26,7 @@ builder.Host
 
 var app = builder.Build();
 app.UseRouting();
-app.UseCratis();
+app.UseChronicle();
 app.UseAksio();
 
 app.Run();

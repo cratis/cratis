@@ -5,7 +5,7 @@
 - Reorganization of storage related APIs. Moved into a specific Storage project, making it clearer to maintain and also when adding support for other storage engines.
 - Introducing EventStore and EventStoreNamespace as concepts, making it more flexible and not tied to concepts such as Microservice and Tenant.
 - Formalizing internal APIs for accessing Kernel, EventStore and EventStoreNamespace
-- Formalizing internal storage APIs for accessing EventStore and EventStoreNamespace 
+- Formalizing internal storage APIs for accessing EventStore and EventStoreNamespace
 - Removing usage of execution context internally, making everything explicit (#265)
 - Removed an additional `[HttpGet]` that was added to the `GetRange()` API that was conflicting with the existing root `GET`, this caused the workbench to break when getting content of an event sequence.
 - Upgrading to latest version of `Aksio.MongoDB` with working support for throttling calls (connections) to the underlying database.
@@ -79,7 +79,7 @@ Minor bugfix.
 
 ### Fixed
 
-- Configuring the CPU bound workers as the first thing, seems to be a timing issue with this not being configured and dependencies to `LimitedConcurrencyLevelTaskScheduler`. 
+- Configuring the CPU bound workers as the first thing, seems to be a timing issue with this not being configured and dependencies to `LimitedConcurrencyLevelTaskScheduler`.
 
 
 # [v9.14.11] - 2023-12-11 [PR: #1043](https://github.com/aksio-insurtech/Cratis/pull/1043)
@@ -651,8 +651,8 @@ Keep in mind though that new features are planned for 9 that will break this com
 
 ### Changed
 
-- `.UseCratis()` for the `HostBuilder` or `IServiceCollection` is now relying on a fluent interface for configuring the different parts to it, so you no longer pass it anything but the optional delegate for configuring the client.
-- If you're using a `Startup` class for your ASP.NET Core setup, you now need to call `.UseCratis()` extension method on the `IApplicationBuilder`. This will connect the client.
+- `.UseChronicle()` for the `HostBuilder` or `IServiceCollection` is now relying on a fluent interface for configuring the different parts to it, so you no longer pass it anything but the optional delegate for configuring the client.
+- If you're using a `Startup` class for your ASP.NET Core setup, you now need to call `.UseChronicle()` extension method on the `IApplicationBuilder`. This will connect the client.
 - MongoDB is now optional from a client perspective, a new package called `Aksio.Cratis.MongoDB` can be added. To use its functionality of automatically hooking up multi-tenanted `IMongoCollection<>` bindings you simply add a `.AddMongoDBReadModels()` when you configure your `IServiceCollection`.
 
 # [v8.15.0] - 2023-4-25 [PR: #857](https://github.com/aksio-insurtech/Cratis/pull/857)

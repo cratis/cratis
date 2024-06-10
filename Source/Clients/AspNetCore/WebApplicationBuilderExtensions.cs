@@ -25,14 +25,14 @@ public static class WebApplicationBuilderExtensions
     /// <param name="configureDelegate">Optional delegate used to configure the Cratis client.</param>
     /// <param name="loggerFactory">Optional <see cref="ILoggerFactory"/>.</param>
     /// <returns><see cref="WebApplicationBuilder"/> for configuration continuation.</returns>
-    public static WebApplicationBuilder UseCratis(
+    public static WebApplicationBuilder UseChronicle(
         this WebApplicationBuilder webApplicationBuilder,
         Action<IClientBuilder>? configureDelegate = default,
         ILoggerFactory? loggerFactory = default)
     {
         webApplicationBuilder.Services.AddRules();
         webApplicationBuilder.Services.AddHttpContextAccessor();
-        webApplicationBuilder.Host.UseCratis(configureDelegate, loggerFactory);
+        webApplicationBuilder.Host.UseChronicle(configureDelegate, loggerFactory);
         return webApplicationBuilder;
     }
 
@@ -42,7 +42,7 @@ public static class WebApplicationBuilderExtensions
     /// <param name="app"><see cref="IApplicationBuilder"/> to extend.</param>
     /// <param name="automaticallyConnect">Whether or not to automatically connect to Cratis or not.</param>
     /// <returns><see cref="IApplicationBuilder"/> for continuation.</returns>
-    public static IApplicationBuilder UseCratis(this IApplicationBuilder app, bool automaticallyConnect = true)
+    public static IApplicationBuilder UseChronicle(this IApplicationBuilder app, bool automaticallyConnect = true)
     {
         app.UseCausation();
         app.UseExecutionContext();

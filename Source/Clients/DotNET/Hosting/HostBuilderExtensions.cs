@@ -1,6 +1,7 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using Aksio.Types;
 using Cratis.Chronicle;
 using Microsoft.Extensions.Logging;
 
@@ -18,11 +19,13 @@ public static class HostBuilderExtensions
     /// <param name="configureDelegate">Optional delegate used to configure the Cratis client.</param>
     /// <param name="loggerFactory">Optional <see cref="ILoggerFactory"/>.</param>
     /// <returns><see cref="IHostBuilder"/> for configuration continuation.</returns>
-    public static IHostBuilder UseCratis(
+    public static IHostBuilder UseChronicle(
         this IHostBuilder hostBuilder,
         Action<IClientBuilder>? configureDelegate = default,
         ILoggerFactory? loggerFactory = default)
     {
+        PackageReferencedAssemblies.Instance.AddAssemblyPrefixesToInclude("Cratis");
+
 #pragma warning disable CA2000
         loggerFactory ??= LoggerFactory.Create(builder => builder.AddConsole());
 

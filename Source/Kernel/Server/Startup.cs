@@ -26,7 +26,7 @@ public class Startup
 
         app.UseRouting();
         app.UseWebSockets();
-        app.UseCratis(false);
+        app.UseChronicle(false);
         var appLifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
         appLifetime.ApplicationStarted.Register(() =>
         {

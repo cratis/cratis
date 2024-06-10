@@ -32,7 +32,7 @@ public static class Program
             .ConfigureCpuBoundWorkers()
             .UseMongoDB()
             .UseAksio(mvcOptions => mvcOptions.Filters.Add<KernelReadyResourceFilter>(0))
-            .UseCratis(_ => _.InKernel())
+            .UseChronicle(_ => _.InKernel())
             .UseOrleans(_ => _
                 .UseCluster()
                 .UseStreamCaching()

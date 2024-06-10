@@ -18,7 +18,7 @@ CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 
 var builder = WebApplication
                 .CreateBuilder(args)
-                .UseCratis(_ => _
+                .UseChronicle(_ => _
                     .MultiTenanted()
                     .ForMicroservice("cfd2f397-3476-4080-885f-feb36878a307", "Basic"));
 
@@ -29,7 +29,7 @@ builder.Host
 
 var app = builder.Build();
 app.UseRouting();
-app.UseCratis();
+app.UseChronicle();
 app.UseAksio();
 
 app.Run();

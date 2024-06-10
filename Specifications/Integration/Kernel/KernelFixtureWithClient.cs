@@ -15,14 +15,14 @@ public class KernelFixtureWithClient : KernelFixture
     {
 #pragma warning disable CA2000 // Dispose objects before losing scope
         var webAppBuilder = WebApplication.CreateBuilder()
-            .UseCratis(_ => _
+            .UseChronicle(_ => _
                 .ForMicroservice(MicroserviceId.Unspecified, "Test"),
                 loggerFactory: new NullLoggerFactory());
 
         webAppBuilder.Logging.ClearProviders();
         var webApp = webAppBuilder.Build();
 #pragma warning restore CA2000 // Dispose objects before losing scope
-        webApp.UseCratis();
+        webApp.UseChronicle();
 
         webApp.StartAsync(_cancellationTokenSource.Token);
         EventLog = webApp.Services.GetRequiredService<IEventLog>();

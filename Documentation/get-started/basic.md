@@ -76,14 +76,14 @@ Open up the `Program.cs` file that was generated and change it to the following:
 
 ```c#
 var builder = WebApplication.CreateBuilder(args);
-builder.UseCratis();    // Adds the necessary Cratis configuration
+builder.UseChronicle();    // Adds the necessary Cratis configuration
 var app = builder.Build();
-app.UseCratis();        // Makes sure to get Cratis client started
+app.UseChronicle();        // Makes sure to get Cratis client started
 app.Run();
 ````
 
 The code hooks into the ASP.NET Core builders and configures Cratis.
-Make note that the first `UseCratis()` method sets up configuration and has an
+Make note that the first `UseChronicle()` method sets up configuration and has an
 overload that allows you to specify more configuration, such as what tenancy model
 to use (single or multi, single is default).
 
@@ -243,7 +243,7 @@ Since Cratis uses the configured service container to resolve instances, it reli
 being a registration of the `CartReducer`. By default, ASP.NET Core does not discover any
 types and automatically register them, so you have to manually register it with the `Services`.
 
-Add the following line after the first `app.UseCratis()`.
+Add the following line after the first `app.UseChronicle()`.
 
 ```csharp
 builder.Services.AddTransient<CartReducer>();
@@ -284,12 +284,12 @@ using Cratis.Chronicle.EventSequences;
 using ECommerce;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.UseCratis();
+builder.UseChronicle();
 
 builder.Services.AddTransient<CartReducer>();
 
 var app = builder.Build();
-app.UseCratis();
+app.UseChronicle();
 
 app.MapPost("/api/cart", async () =>
 {
