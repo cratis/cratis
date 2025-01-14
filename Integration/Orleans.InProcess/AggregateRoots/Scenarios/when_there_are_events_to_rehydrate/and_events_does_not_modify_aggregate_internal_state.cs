@@ -11,7 +11,7 @@ namespace Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Scenario
 [Collection(GlobalCollection.Name)]
 public class and_events_does_not_modify_aggregate_internal_state(context context) : Given<context>(context)
 {
-    public class context(GlobalFixture globalFixture) : given.context_for_aggregate_root<IUser, UserInternalState>(globalFixture)
+    public class context(GlobalFixture globalFixture) : given.an_aggregate_root<IUser, UserInternalState>(globalFixture)
     {
         UserId _userId;
 
@@ -44,3 +44,4 @@ public class and_events_does_not_modify_aggregate_internal_state(context context
     [Fact]
     void should_not_have_assigned_username() => Context.ResultState.Name.ShouldEqual(new StateProperty<UserName>(default, 0));
 }
+

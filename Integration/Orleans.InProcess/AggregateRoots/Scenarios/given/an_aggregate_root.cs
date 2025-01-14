@@ -1,6 +1,7 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using Cratis.Chronicle.Aggregates;
 using Cratis.Chronicle.Events;
 using Cratis.Chronicle.Integration.Base;
 using Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Domain;
@@ -10,8 +11,8 @@ using Cratis.Chronicle.Transactions;
 
 namespace Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Scenarios.given;
 
-public class context_for_aggregate_root<TAggregate, TInternalState>(GlobalFixture globalFixture) : IntegrationSpecificationContext(globalFixture)
-    where TAggregate : IIntegrationTestAggregateRoot<TInternalState>
+public class an_aggregate_root<TAggregate, TInternalState>(GlobalFixture globalFixture) : IntegrationSpecificationContext(globalFixture)
+    where TAggregate : class, Aggregates.IAggregateRoot, IStateForAggregateRoot<TInternalState>
     where TInternalState : class
 {
 #pragma warning disable CA2213 // Disposable fields should be disposed

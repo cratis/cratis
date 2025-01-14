@@ -12,7 +12,7 @@ namespace Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Scenario
 [Collection(GlobalCollection.Name)]
 public class and_performing_no_action_on_aggregate(context context) : Given<context>(context)
 {
-    public class context(GlobalFixture globalFixture) : given.context_for_aggregate_root<IUser, UserInternalState>(globalFixture)
+    public class context(GlobalFixture globalFixture) : given.an_aggregate_root<IUser, UserInternalState>(globalFixture)
     {
         UserId _userId;
         public UserName UserName;

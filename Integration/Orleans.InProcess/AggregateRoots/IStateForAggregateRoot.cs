@@ -5,7 +5,7 @@ using Cratis.Chronicle.Orleans.Aggregates;
 
 namespace Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots;
 
-public interface IIntegrationTestAggregateRoot<TInternalState> : IAggregateRoot
+public interface IStateForAggregateRoot<TInternalState>
     where TInternalState : class
 {
     Task<TInternalState> GetState();
