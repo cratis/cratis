@@ -11,17 +11,13 @@ using Cratis.Chronicle.Transactions;
 
 namespace Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Scenarios.given;
 
-public class an_aggregate_root<TAggregate, TInternalState>(GlobalFixture globalFixture) : IntegrationSpecificationContext(globalFixture)
-    where TAggregate : class, Aggregates.IAggregateRoot, IStateForAggregateRoot<TInternalState>
-    where TInternalState : class
+public class context_for_aggregates(GlobalFixture globalFixture) : IntegrationSpecificationContext(globalFixture)
 {
 #pragma warning disable CA2213 // Disposable fields should be disposed
     protected GlobalFixture _globalFixture = globalFixture;
-#pragma warning restore CA2213 // Disposable fields should be disposed
-
-    public TInternalState ResultState;
-    public bool IsNew;
     public IUnitOfWork UnitOfWork;
+#pragma warning restore CA2213 // Disposable fields should be disposed
+    public bool IsNew;
 
     public override IEnumerable<Type> AggregateRoots => [typeof(User)];
     public override IEnumerable<Type> EventTypes => [typeof(UserOnBoarded), typeof(UserCreated), typeof(UserDeleted), typeof(UserNameChanged)];
@@ -29,27 +25,17 @@ public class an_aggregate_root<TAggregate, TInternalState>(GlobalFixture globalF
     protected List<EventAndEventSourceId> EventsWithEventSourceIdToAppend = [];
     protected IAggregateRootFactory AggregateRootFactory => Services.GetRequiredService<IAggregateRootFactory>();
     protected IUnitOfWorkManager UnitOfWorkManager => Services.GetRequiredService<IUnitOfWorkManager>();
+    protected ICorrelationIdAccessor CorrelationIdAccessor => Services.GetRequiredService<ICorrelationIdAccessor>();
+    protected CorrelationId CorrelationId;
 
     protected override void ConfigureServices(IServiceCollection services)
     {
     }
 
-    protected async Task DoOnAggregate(EventSourceId eventSourceId, Func<TAggregate, Task> action, bool commitUnitOfWork = true)
-    {
-        var user = await AggregateRootFactory.Get<TAggregate>(eventSourceId);
-        IsNew = await user.GetIsNew();
-        await action(user);
-        var correlationId = await user.GetCorrelationId();
-        ResultState = await user.GetState();
-        UnitOfWorkManager.TryGetFor(correlationId, out UnitOfWork);
-        if (commitUnitOfWork)
-        {
-            await UnitOfWork!.Commit();
-        }
-    }
-
     void Establish()
     {
+        CorrelationId = CorrelationId.New();
+        UnitOfWork = UnitOfWorkManager.Begin(CorrelationId);
     }
 
     async Task Because()

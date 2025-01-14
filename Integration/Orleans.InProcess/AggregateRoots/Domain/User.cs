@@ -23,7 +23,6 @@ public class User(IAggregateRootFactory aggregateRootFactory) : AggregateRoot, I
         Name.Value == newName ? Task.CompletedTask : ApplyIfNotDeleted(new UserNameChanged(newName));
 
     public Task<bool> Exists() => Task.FromResult(!IsNew && !Deleted.Value);
-    public Task<CorrelationId> GetCorrelationId() => Task.FromResult(Context!.UnitOfWOrk.CorrelationId);
 #pragma warning disable CA1721
     public Task<bool> GetIsNew() => Task.FromResult(IsNew);
 #pragma warning restore CA1721

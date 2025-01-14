@@ -3,27 +3,36 @@
 
 using Cratis.Chronicle.Integration.Base;
 using Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Concepts;
+using Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Domain;
 using Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Domain.Interfaces;
 using Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Events;
+using OneOf.Types;
 using context = Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Scenarios.when_there_are_events_to_rehydrate.and_events_does_not_modify_aggregate_internal_state.context;
 namespace Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Scenarios.when_there_are_events_to_rehydrate;
 
 [Collection(GlobalCollection.Name)]
 public class and_events_does_not_modify_aggregate_internal_state(context context) : Given<context>(context)
 {
-    public class context(GlobalFixture globalFixture) : given.an_aggregate_root<IUser, UserInternalState>(globalFixture)
+    public class context(GlobalFixture globalFixture) : given.context_for_aggregates(globalFixture)
     {
         UserId _userId;
 
         public bool UserExists;
+        public IUser User;
+        public UserInternalState ResultState;
 
-        void Establish()
+        async Task Establish()
         {
             _userId = Guid.NewGuid();
             EventsWithEventSourceIdToAppend.Add(new EventAndEventSourceId(_userId.Value, new UserCreated()));
+            User = await AggregateRootFactory.Get<IUser>(_userId.Value);
         }
 
-        Task Because() => DoOnAggregate(_userId.Value, async user => UserExists = await user.Exists());
+        async Task Because()
+        {
+            UserExists = await User.Exists();
+            ResultState = await User.GetState();
+        }
     }
 
     [Fact]

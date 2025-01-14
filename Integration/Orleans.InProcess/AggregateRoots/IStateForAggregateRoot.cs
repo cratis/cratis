@@ -9,6 +9,5 @@ public interface IStateForAggregateRoot<TInternalState>
     where TInternalState : class
 {
     Task<TInternalState> GetState();
-    Task<CorrelationId> GetCorrelationId();
     Task<bool> GetIsNew();
 }
