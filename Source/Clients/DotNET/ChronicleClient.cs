@@ -109,7 +109,7 @@ public class ChronicleClient : IChronicleClient, IDisposable
             name,
             @namespace,
             _connection!,
-            AggregateRootFactoryProvider,
+            Options.AggregateRootFactoryProvider ?? AggregateRootFactoryProvider,
             Options.ArtifactsProvider,
             Options.CorrelationIdAccessor,
             CausationManager,
