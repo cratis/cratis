@@ -13,11 +13,12 @@ namespace Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Scenario
 [Collection(GlobalCollection.Name)]
 public class and_events_does_not_modify_aggregate_internal_state(context context) : Given<context>(context)
 {
-    public class context(GlobalFixture globalFixture) : given.context_for_aggregates(globalFixture)
+    public class context(GlobalFixture globalFixture) : given.context_for_aggregates_with_single_unit_of_work(globalFixture)
     {
         UserId _userId;
 
         public bool UserExists;
+        public bool IsNew;
         public IUser User;
         public UserInternalState ResultState;
 
@@ -32,6 +33,7 @@ public class and_events_does_not_modify_aggregate_internal_state(context context
         {
             UserExists = await User.Exists();
             ResultState = await User.GetState();
+            IsNew = await User.GetIsNew();
         }
     }
 

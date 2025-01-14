@@ -13,13 +13,14 @@ namespace Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Scenario
 [Collection(GlobalCollection.Name)]
 public class and_performing_no_action_on_aggregate(context context) : Given<context>(context)
 {
-    public class context(GlobalFixture globalFixture) : given.context_for_aggregates(globalFixture)
+    public class context(GlobalFixture globalFixture) : given.context_for_aggregates_with_single_unit_of_work(globalFixture)
     {
         UserId _userId;
         public UserName UserName;
 
         public IUser User;
         public bool UserExists;
+        public bool IsNew;
         public UserInternalState ResultState;
 
         async Task Establish()
@@ -34,6 +35,7 @@ public class and_performing_no_action_on_aggregate(context context) : Given<cont
         {
             UserExists = await User.Exists();
             ResultState = await User.GetState();
+            IsNew = await User.GetIsNew();
         }
     }
 
