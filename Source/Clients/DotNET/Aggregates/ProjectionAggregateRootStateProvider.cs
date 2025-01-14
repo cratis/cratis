@@ -22,7 +22,7 @@ public class ProjectionAggregateRootStateProvider<TState>(
     public async Task<TState?> Provide()
     {
         var result = await projections.GetInstanceByIdForSession(
-            aggregateRootContext.UnitOfWOrk.CorrelationId,
+            aggregateRootContext.UnitOfWork.CorrelationId,
             typeof(TState),
             aggregateRootContext.EventSourceId);
 
@@ -33,7 +33,7 @@ public class ProjectionAggregateRootStateProvider<TState>(
     public async Task<TState?> Update(TState? initialState, IEnumerable<object> events)
     {
         var result = await projections.GetInstanceByIdForSessionWithEventsApplied(
-            aggregateRootContext.UnitOfWOrk.CorrelationId,
+            aggregateRootContext.UnitOfWork.CorrelationId,
             typeof(TState),
             aggregateRootContext.EventSourceId,
             events);
@@ -44,7 +44,7 @@ public class ProjectionAggregateRootStateProvider<TState>(
     public async Task Dehydrate()
     {
         await projections.DehydrateSession(
-            aggregateRootContext.UnitOfWOrk.CorrelationId,
+            aggregateRootContext.UnitOfWork.CorrelationId,
             typeof(TState),
             aggregateRootContext.EventSourceId);
     }

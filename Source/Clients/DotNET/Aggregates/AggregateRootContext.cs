@@ -47,7 +47,7 @@ public class AggregateRootContext(
     public IAggregateRoot AggregateRoot { get; } = aggregateRoot;
 
     /// <inheritdoc/>
-    public IUnitOfWork UnitOfWOrk { get; } = unitOfWork;
+    public IUnitOfWork UnitOfWork { get; } = unitOfWork;
 
     /// <inheritdoc/>
     public EventSequenceNumber NextSequenceNumber { get; set; } = nextSequenceNumber;

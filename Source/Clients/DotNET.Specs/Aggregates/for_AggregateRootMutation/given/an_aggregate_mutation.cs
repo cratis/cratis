@@ -35,7 +35,7 @@ public class an_aggregate_mutation : Specification
         _aggregateRootContext = Substitute.For<IAggregateRootContext>();
         _aggregateRootContext.EventSourceId.Returns(_eventSourceId);
         _aggregateRootContext.AggregateRoot.Returns(_aggregateRoot);
-        _aggregateRootContext.UnitOfWOrk.Returns(_unitOfWork);
+        _aggregateRootContext.UnitOfWork.Returns(_unitOfWork);
 
         _mutation = new AggregateRootMutation(
             _aggregateRootContext,
