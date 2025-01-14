@@ -16,11 +16,18 @@ public class context_for_aggregates_with_single_unit_of_work(GlobalFixture globa
 #pragma warning restore CA2213 // Disposable fields should be disposed
 
     public override IEnumerable<Type> AggregateRoots => [typeof(User)];
-    public override IEnumerable<Type> EventTypes => [typeof(UserOnBoarded), typeof(UserCreated), typeof(UserDeleted), typeof(UserNameChanged)];
+    public override IEnumerable<Type> EventTypes => [
+        typeof(UserOnBoarded),
+        typeof(UserCreated),
+        typeof(UserDeleted),
+        typeof(UserNameChanged),
+        typeof(SomethingHappened),
+        typeof(UserDidSomething)];
+
+    public IUnitOfWorkManager UnitOfWorkManager => Services.GetRequiredService<IUnitOfWorkManager>();
 
     protected List<EventAndEventSourceId> EventsWithEventSourceIdToAppend = [];
     protected IAggregateRootFactory AggregateRootFactory => Services.GetRequiredService<IAggregateRootFactory>();
-    protected IUnitOfWorkManager UnitOfWorkManager => Services.GetRequiredService<IUnitOfWorkManager>();
     protected CorrelationId CorrelationId;
 
     protected override void ConfigureServices(IServiceCollection services)
