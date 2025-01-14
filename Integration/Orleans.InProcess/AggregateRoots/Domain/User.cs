@@ -27,6 +27,13 @@ public class User(IAggregateRootFactory aggregateRootFactory) : AggregateRoot, I
     public Task<bool> GetIsNew() => Task.FromResult(IsNew);
 #pragma warning restore CA1721
 
+    public async Task DoSomething()
+    {
+        var aggregate = await aggregateRootFactory.Get<IAnother>(Context!.EventSourceId);
+        await Apply(new UserDidSomething());
+        await aggregate.DoSomething();
+    }
+
     Task ApplyIfNotDeleted(object evt) => Deleted.Value ? throw new UserDeleted(IdentityString) : Apply(evt);
 
     public Task On(UserOnBoarded evt)
@@ -48,4 +55,9 @@ public class User(IAggregateRootFactory aggregateRootFactory) : AggregateRoot, I
     }
 
     public Task<UserInternalState> GetState() => Task.FromResult(new UserInternalState(Name, Deleted));
+}
+
+public class Another : AggregateRoot, IAnother
+{
+    public Task DoSomething() => Apply(new SomethingHappened());
 }
