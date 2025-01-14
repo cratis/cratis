@@ -23,5 +23,5 @@ public interface IAggregateRootFactory
     /// will be retrieved and the event handler methods will be invoked.
     /// </remarks>
     Task<TAggregateRoot> Get<TAggregateRoot>(EventSourceId id, EventStreamId? streamId = default, EventSourceType? eventSourceType = default)
-        where TAggregateRoot : IAggregateRoot;
+        where TAggregateRoot : class, IAggregateRoot;
 }

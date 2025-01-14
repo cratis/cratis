@@ -1,6 +1,7 @@
 // Copyright (c) Cratis. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using Cratis.Chronicle.Aggregates;
 using Cratis.Chronicle.Events;
 
 namespace Cratis.Chronicle.Orleans.Aggregates;
@@ -13,9 +14,11 @@ public class AggregateRootFactory(IGrainFactory grainFactory) : IAggregateRootFa
 {
     /// <inheritdoc/>
     public Task<TAggregateRoot> Get<TAggregateRoot>(EventSourceId id, EventStreamId? streamId = default, EventSourceType? eventSourceType = default)
-        where TAggregateRoot : IAggregateRoot
+        where TAggregateRoot : class, Chronicle.Aggregates.IAggregateRoot
     {
+        WrongTypeForAggregateRoot.ThrowIfWrongType(typeof(TAggregateRoot));
         var key = new AggregateRootKey(eventSourceType ?? EventSourceType.Default, id, streamId ?? EventStreamId.Default);
-        return Task.FromResult(grainFactory.GetGrain<TAggregateRoot>((string)key));
+        var aggregateRoot = (grainFactory.GetGrain(typeof(TAggregateRoot), (string)key) as TAggregateRoot)!;
+        return Task.FromResult(aggregateRoot);
     }
 }

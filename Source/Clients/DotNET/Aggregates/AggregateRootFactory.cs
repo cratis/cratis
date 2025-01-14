@@ -26,7 +26,7 @@ public class AggregateRootFactory(
 {
     /// <inheritdoc/>
     public async Task<TAggregateRoot> Get<TAggregateRoot>(EventSourceId id, EventStreamId? streamId = default, EventSourceType? eventSourceType = default)
-        where TAggregateRoot : IAggregateRoot
+        where TAggregateRoot : class, IAggregateRoot
     {
         // TODO: Create Issue: Must dispose of unit of work in some way or else it's a memory leak.
         var unitOfWork = unitOfWorkManager.HasCurrent ? unitOfWorkManager.Current : unitOfWorkManager.Begin(CorrelationId.New());
