@@ -3,7 +3,6 @@
 
 using Cratis.Chronicle.Integration.Base;
 using Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Concepts;
-using Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Domain;
 using Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Domain.Interfaces;
 using Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Events;
 using context = Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Scenarios.when_there_are_events_to_rehydrate.and_performing_no_action_on_aggregate.context;

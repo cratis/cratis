@@ -3,11 +3,10 @@
 
 using Cratis.Chronicle.Integration.Base;
 using Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Concepts;
-using Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Domain;
 using Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Domain.Interfaces;
 using Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Events;
-using OneOf.Types;
 using context = Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Scenarios.when_there_are_events_to_rehydrate.and_events_does_not_modify_aggregate_internal_state.context;
+
 namespace Cratis.Chronicle.Integration.Orleans.InProcess.AggregateRoots.Scenarios.when_there_are_events_to_rehydrate;
 
 [Collection(GlobalCollection.Name)]
@@ -55,4 +54,3 @@ public class and_events_does_not_modify_aggregate_internal_state(context context
     [Fact]
     void should_not_have_assigned_username() => Context.ResultState.Name.ShouldEqual(new StateProperty<UserName>(default, 0));
 }
-

@@ -27,6 +27,12 @@ public class context_for_aggregates_with_single_unit_of_work(GlobalFixture globa
     {
     }
 
+    protected async Task PerformInUnitOfWork(Func<Task> action)
+    {
+        UnitOfWorkManager.SetCurrent(UnitOfWork);
+        await action();
+    }
+
     void Establish()
     {
         CorrelationId = CorrelationId.New();
