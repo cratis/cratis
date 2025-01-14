@@ -28,7 +28,6 @@ public class EventStore : IEventStore
     readonly ICorrelationIdAccessor _correlationIdAccessor;
     readonly ICausationManager _causationManager;
     readonly IIdentityProvider _identityProvider;
-    readonly IEventSerializer _eventSerializer;
     readonly ILogger<EventStore> _logger;
 
     /// <summary>
@@ -37,6 +36,7 @@ public class EventStore : IEventStore
     /// <param name="eventStoreName">Name of the event store.</param>
     /// <param name="namespace">Namespace for the event store.</param>
     /// <param name="connection"><see cref="IChronicleConnection"/> for working with the connection to Chronicle.</param>
+    /// <param name="aggregateRootFactoryProvider"><see cref="AggregateRootFactoryProvider"/> for getting aggregate root factories.</param>
     /// <param name="clientArtifactsProvider"><see cref="IClientArtifactsProvider"/> for getting client artifacts.</param>
     /// <param name="correlationIdAccessor"><see cref="ICorrelationIdAccessor"/> for getting correlation.</param>
     /// <param name="causationManager"><see cref="ICausationManager"/> for getting causation.</param>
@@ -50,6 +50,7 @@ public class EventStore : IEventStore
         EventStoreName eventStoreName,
         EventStoreNamespaceName @namespace,
         IChronicleConnection connection,
+        AggregateRootFactoryProvider aggregateRootFactoryProvider,
         IClientArtifactsProvider clientArtifactsProvider,
         ICorrelationIdAccessor correlationIdAccessor,
         ICausationManager causationManager,
@@ -72,7 +73,7 @@ public class EventStore : IEventStore
         UnitOfWorkManager = new UnitOfWorkManager(this);
         _correlationIdAccessor = correlationIdAccessor;
 
-        _eventSerializer = new EventSerializer(
+        EventSerializer = new EventSerializer(
             clientArtifactsProvider,
             serviceProvider,
             EventTypes,
@@ -92,7 +93,7 @@ public class EventStore : IEventStore
             connection,
             EventTypes,
             Constraints,
-            _eventSerializer,
+            EventSerializer,
             correlationIdAccessor,
             causationManager,
             identityProvider);
@@ -103,7 +104,7 @@ public class EventStore : IEventStore
             clientArtifactsProvider,
             serviceProvider,
             new ReactorMiddlewares(clientArtifactsProvider, serviceProvider),
-            _eventSerializer,
+            EventSerializer,
             causationManager,
             loggerFactory.CreateLogger<Reactors.Reactors>(),
             loggerFactory);
@@ -116,7 +117,7 @@ public class EventStore : IEventStore
             serviceProvider,
             new ReducerValidator(),
             EventTypes,
-            _eventSerializer,
+            EventSerializer,
             modelNameResolver,
             schemaGenerator,
             jsonSerializerOptions,
@@ -135,20 +136,11 @@ public class EventStore : IEventStore
                 jsonSerializerOptions),
             schemaGenerator,
             modelNameResolver,
-            _eventSerializer,
+            EventSerializer,
             serviceProvider,
             jsonSerializerOptions);
 
-        AggregateRootFactory = new AggregateRootFactory(
-            this,
-            new AggregateRootMutatorFactory(
-                this,
-                new AggregateRootStateProviders(Reducers, Projections, serviceProvider),
-                new AggregateRootEventHandlersFactory(EventTypes),
-                _eventSerializer,
-                correlationIdAccessor),
-            UnitOfWorkManager,
-            serviceProvider);
+        AggregateRootFactory = aggregateRootFactoryProvider(this);
     }
 
     /// <inheritdoc/>
@@ -183,6 +175,9 @@ public class EventStore : IEventStore
 
     /// <inheritdoc/>
     public IProjections Projections { get; }
+
+    /// <inheritdoc/>
+    public IEventSerializer EventSerializer { get; }
 
     /// <inheritdoc/>
     public async Task DiscoverAll()
@@ -223,7 +218,7 @@ public class EventStore : IEventStore
             Connection,
             EventTypes,
             Constraints,
-            _eventSerializer,
+            EventSerializer,
             _correlationIdAccessor,
             _causationManager,
             _identityProvider);

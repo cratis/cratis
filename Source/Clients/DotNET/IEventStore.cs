@@ -73,6 +73,11 @@ public interface IEventStore
     IProjections Projections { get; }
 
     /// <summary>
+    /// Gets the <see cref="IEventSerializer"/> for the event store.
+    /// </summary>
+    IEventSerializer EventSerializer { get; }
+
+    /// <summary>
     /// Discover all artifacts for the event store.
     /// </summary>
     /// <returns>Awaitable task.</returns>

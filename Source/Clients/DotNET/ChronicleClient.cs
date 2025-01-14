@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Concurrent;
+using Cratis.Chronicle.Aggregates;
 using Cratis.Chronicle.Auditing;
 using Cratis.Chronicle.Compliance;
 using Cratis.Chronicle.Connections;
@@ -108,6 +109,7 @@ public class ChronicleClient : IChronicleClient, IDisposable
             name,
             @namespace,
             _connection!,
+            AggregateRootFactoryProvider,
             Options.ArtifactsProvider,
             Options.CorrelationIdAccessor,
             CausationManager,
@@ -133,6 +135,17 @@ public class ChronicleClient : IChronicleClient, IDisposable
         var eventStores = await _connection.Services.EventStores.GetEventStores();
         return eventStores.Select(_ => (EventStoreName)_).ToArray();
     }
+
+    AggregateRootFactory AggregateRootFactoryProvider(IEventStore eventStore) => new(
+              eventStore,
+              new AggregateRootMutatorFactory(
+                  eventStore,
+                  new AggregateRootStateProviders(eventStore.Reducers, eventStore.Projections, Options.ServiceProvider),
+                  new AggregateRootEventHandlersFactory(eventStore.EventTypes),
+                  eventStore.EventSerializer,
+                  Options.CorrelationIdAccessor),
+              eventStore.UnitOfWorkManager,
+              Options.ServiceProvider);
 
     (ICausationManager CausationManager, IJsonSchemaGenerator JsonSchemaGenerator) Initialize()
     {

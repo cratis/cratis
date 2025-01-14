@@ -7,6 +7,7 @@ using Cratis.Chronicle;
 using Cratis.Chronicle.Connections;
 using Cratis.Chronicle.Grains.Observation.Reactors.Clients;
 using Cratis.Chronicle.Grains.Observation.Reducers.Clients;
+using Cratis.Chronicle.Orleans.Aggregates;
 using Cratis.Chronicle.Orleans.InProcess;
 using Cratis.Chronicle.Orleans.Transactions;
 using Cratis.Chronicle.Rules;
@@ -120,6 +121,7 @@ public static class ChronicleClientSiloBuilderExtensions
 
                 var connectionLifecycle = new ConnectionLifecycle(options.LoggerFactory.CreateLogger<ConnectionLifecycle>());
                 var connection = new Cratis.Chronicle.Orleans.InProcess.ChronicleConnection(connectionLifecycle, services, grainFactory);
+                options.AggregateRootFactoryProvider = (_) => new AggregateRootFactory(grainFactory);
                 return new ChronicleClient(connection, options);
             });
 
