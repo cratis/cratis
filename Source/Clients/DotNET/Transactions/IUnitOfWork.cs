@@ -60,6 +60,12 @@ public interface IUnitOfWork : IDisposable
     IEnumerable<AppendError> GetAppendErrors();
 
     /// <summary>
+    /// Enlist an <see cref="IUnitOfWorkEnlistee"/> to the <see cref="IUnitOfWork"/>.
+    /// </summary>
+    /// <param name="enlistee"><see cref="IUnitOfWorkEnlistee"/> to enlist.</param>
+    void Enlist(IUnitOfWorkEnlistee enlistee);
+
+    /// <summary>
     /// Commit the <see cref="IUnitOfWork"/>.
     /// </summary>
     /// <returns>Awaitable task.</returns>
