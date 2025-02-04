@@ -128,6 +128,8 @@ public class Observer(
         logger.Subscribing();
 
         State = State with { Type = type };
+        State.ReplayingPartitions.Clear();
+        State.CatchingUpPartitions.Clear();
 
         _subscription = new ObserverSubscription(
             _observerId,
